@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Look Who's Talking</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <!-- Chart.js från CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+<!-- Startskärm -->
+<div id="start-screen" class="screen">
+    <h1>Look Who's Talking</h1>
+    <p>En app för att mäta talartid i möten</p>
+    <button id="new-meeting-btn">Nytt möte</button>
+</div>
+
+<!-- Setup-skärm -->
+<div id="setup-screen" class="screen" style="display: none;">
+    <h1>Ställ in möte</h1>
+    <form id="meeting-form">
+        <div class="form-group">
+            <label for="meeting-name">Mötesnamn:</label>
+            <input type="text" id="meeting-name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="meeting-date">Datum:</label>
+            <input type="date" id="meeting-date" required>
+        </div>
+
+        <div class="form-group">
+            <h2>Antal deltagare</h2>
+
+            <div class="participant-input">
+                <label for="men-count">Män:</label>
+                <input type="number" id="men-count" min="0" value="0">
+            </div>
+
+            <div class="participant-input">
+                <label for="women-count">Kvinnor:</label>
+                <input type="number" id="women-count" min="0" value="0">
+            </div>
+
+            <div class="participant-input">
+                <label for="nonbinary-count">Icke-binära:</label>
+                <input type="number" id="nonbinary-count" min="0" value="0">
+            </div>
+        </div>
+
+        <button type="button" id="start-meeting">Starta möte</button>
+    </form>
+</div>
+
+<!-- Aktiv mötesskärm -->
+<div id="meeting-screen" class="screen" style="display: none;">
+    <h1 id="meeting-title">Mötesnamn</h1>
+    <div id="timer-display">00:00</div>
+
+    <div class="speaker-buttons">
+        <button id="men-speaking" class="speaker-btn men">Man talar</button>
+        <button id="women-speaking" class="speaker-btn women">Kvinna talar</button>
+        <button id="nonbinary-speaking" class="speaker-btn nonbinary">Icke-binär talar</button>
+    </div>
+
+    <div class="control-buttons">
+        <button id="pause-meeting">Paus</button>
+        <button id="end-meeting">Avsluta möte</button>
+    </div>
+</div>
+
+<!-- Timer-popup för mötet -->
+<div id="timer-popup" class="popup">
+    <div class="popup-header">
+        <h3>Talartimer</h3>
+        <div class="popup-controls">
+            <button id="minimize-popup" class="popup-control">_</button>
+            <button id="close-popup" class="popup-control">×</button>
+        </div>
+    </div>
+
+    <div class="popup-content">
+        <div id="popup-timer-display">00:00</div>
+
+        <div class="speaker-buttons">
+            <button id="popup-men-speaking" class="speaker-btn men">Man</button>
+            <button id="popup-women-speaking" class="speaker-btn women">Kvinna</button>
+            <button id="popup-nonbinary-speaking" class="speaker-btn nonbinary">Icke-binär</button>
+        </div>
+
+        <div class="control-buttons">
+            <button id="popup-pause-meeting">Paus</button>
+            <button id="popup-end-meeting">Avsluta möte</button>
+        </div>
+    </div>
+</div>
+
+<!-- Statistikskärm -->
+<div id="stats-screen" class="screen" style="display: none;">
+    <h1>Mötesstatistik</h1>
+
+    <div class="stats-container">
+        <div class="chart-container">
+            <canvas id="speaking-time-chart"></canvas>
+        </div>
+
+        <div class="text-stats">
+            <p>Total talartid: <span id="total-time">00:00</span></p>
+            <div id="gender-stats"></div>
+            <div id="fair-distribution"></div>
+        </div>
+    </div>
+
+    <button id="back-to-start">Start</button>
+</div>
+
+<!-- JavaScript -->
+<script src="js/models/meeting.js"></script>
+<script src="js/models/timer.js"></script>
+<script src="js/utils/popupManager.js"></script>
+<script src="js/utils/storage.js"></script>
+<script src="js/views/setupView.js"></script>
+<script src="js/views/meetingView.js"></script>
+<script src="js/views/statsView.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
