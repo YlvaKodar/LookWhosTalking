@@ -8,7 +8,6 @@ class StatsView {
     }
 
     calculateStats() {
-        // Beräkna all statistik baserat på mötet
         const stats = {
             totalDuration: 0,
             totalSpeakingTime: { men: 0, women: 0, nonBinary: 0 },
@@ -18,7 +17,6 @@ class StatsView {
             fairDistribution: { men: 0, women: 0, nonBinary: 0 }
         };
 
-        // Beräkna totalvärden
         Object.keys(this.meeting.speakingData).forEach(gender => {
             const times = this.meeting.speakingData[gender];
             stats.totalInterventions[gender] = times.length;
@@ -26,14 +24,10 @@ class StatsView {
             stats.totalDuration += stats.totalSpeakingTime[gender];
         });
 
-        // Beräkna genomsnitt och "rättvis" fördelning
-        // ...
-
         return stats;
     }
 
     renderCharts() {
-        // Skapa cirkeldiagram för talartid
         const ctx = document.getElementById('speaking-time-chart').getContext('2d');
         new Chart(ctx, {
             type: 'pie',
@@ -50,20 +44,20 @@ class StatsView {
             },
             options: {
                 responsive: true,
-                // Fler inställningar...
+                //Fler inställningar ...
             }
         });
 
-        // Skapa fler diagram för andra statistikvyer
+        //Skapa fler diagram för andra statistikvyer
     }
 
     displayTextStats() {
-        // Visa textbaserad statistik
+        //Visa textbaserad statistik
         document.getElementById('total-time').textContent = this.formatTime(this.stats.totalDuration);
-        // Fler statistikelement...
+        //Fler statistikelement...
     }
 
     formatTime(seconds) {
-        // Formatera tid i läsbart format
+        //Formatera tid i läsbart format
     }
 }

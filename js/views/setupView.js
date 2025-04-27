@@ -67,7 +67,7 @@ class SetupView {
             }
         };
 
-        // Spara i temporär lagring för övergång till MeetingView
+        //Spara i temporär lagring för övergång till MeetingView
         localStorage.setItem('setupMeetingData', JSON.stringify(meetingData));
 
         return true;
