@@ -1,3 +1,4 @@
+import { CONFIG } from '../utils/config.js';
 class SpeakingTimer {
     constructor(meeting) {
         this.meeting = meeting;
@@ -12,7 +13,7 @@ class SpeakingTimer {
 
         this.meeting.currentSpeaker = gender;
         this.startTime = Date.now();
-        this.interval = setInterval(() => this.updateTimer(), 100);
+        this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
     }
 
     stopTimer() {

@@ -1,12 +1,13 @@
+import { CONFIG } from '../utils/config.js';
 class SetupView {
     constructor() {
-        this.meetingNameInput = document.getElementById('meeting-name');
-        this.dateInput = document.getElementById('meeting-date');
-        this.menCount = document.getElementById('men-count');
-        this.womenCount = document.getElementById('women-count');
-        this.nonBinaryCount = document.getElementById('nonbinary-count');
+        this.meetingNameInput = document.getElementById(CONFIG.DOM.FORM.MEETING_NAME);
+        this.dateInput = document.getElementById(CONFIG.DOM.FORM.MEETING_DATE);
+        this.menCount = document.getElementById(CONFIG.DOM.FORM.MEN_COUNT);
+        this.womenCount = document.getElementById(CONFIG.DOM.FORM.WOMEN_COUNT);
+        this.nonBinaryCount = document.getElementById(CONFIG.DOM.FORM.NONBINARY_COUNT);
 
-        App.registerFormNavigation('start-meeting', 'meeting', () => this.validateForm());
+        App.registerFormNavigation(CONFIG.DOM.FORM.START_BUTTON, CONFIG.DOM.SCREENS.MEETING, () => this.validateForm());
 
         this.initializeDefaults();
     }
@@ -32,12 +33,12 @@ class SetupView {
     validateForm() {
         //Meeting needs name and date.
         if (!this.meetingNameInput || !this.meetingNameInput.value.trim()) {
-            alert('Vad ska vi kalla mötet?');
+            alert(CONFIG.ERRORS.MEETING_NAME_REQUIRED);
             return false;
         }
 
         if (!this.dateInput || !this.dateInput.value) {
-            alert('Vilken dag är det?');
+            alert(CONFIG.ERRORS.DATE_REQUIRED);
             return false;
         }
 
@@ -47,7 +48,7 @@ class SetupView {
         const nonBinaryCount = parseInt(this.nonBinaryCount?.value || 0);
 
         if (menCount + womenCount + nonBinaryCount < 2) {
-            alert('Inget möte utan minst två deltagare.');
+            alert(CONFIG.DOM.ERRORS.MIN_PARTICIPANTS);
             return false;
         }
 
@@ -68,7 +69,7 @@ class SetupView {
         };
 
         //Spara i temporär lagring för övergång till MeetingView
-        localStorage.setItem('setupMeetingData', JSON.stringify(meetingData));
+        localStorage.setItem(CONFIG.STORAGE.SETUP_MEETING_DATA, JSON.stringify(meetingData));
 
         return true;
     }

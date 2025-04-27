@@ -2,17 +2,18 @@
  * Timer window view:
  * Initializes timer window and syncs between timerView and meetingView
  */
+import { CONFIG } from '../utils/config.js';
 class TimerWindow {
     /**
      * Initializes timer view elements.
      */
     constructor() {
-        this.menButton = document.getElementById('men-speaking');
-        this.womenButton = document.getElementById('women-speaking');
-        this.nonBinaryButton = document.getElementById('nonbinary-speaking');
-        this.pauseButton = document.getElementById('pause-meeting');
-        this.endButton = document.getElementById('end-meeting');
-        this.timerDisplay = document.getElementById('timer-display');
+        this.menButton = document.getElementById(CONFIG.DOM.BUTTONS.MEN);
+        this.womenButton = document.getElementById(CONFIG.DOM.BUTTONS.WOMEN);
+        this.nonBinaryButton = document.getElementById(CONFIG.DOM.BUTTONS.NON_BINARY);
+        this.pauseButton = document.getElementById(CONFIG.DOM.BUTTONS.PAUSE);
+        this.endButton = document.getElementById(CONFIG.DOM.BUTTONS.END);
+        this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.DISPLAY);
         this.meetingInfo = document.getElementById('meeting-info');
 
         //Meeting and timer state
@@ -90,9 +91,9 @@ class TimerWindow {
      * @returns {void}
      */
     initEventListeners() {
-        this.menButton.addEventListener('click', () => this.startSpeaking('men'));
-        this.womenButton.addEventListener('click', () => this.startSpeaking('women'));
-        this.nonBinaryButton.addEventListener('click', () => this.startSpeaking('nonBinary'));
+        this.menButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.labels.men));
+        this.womenButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.labels.women));
+        this.nonBinaryButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.labels.nonBinary));
         this.pauseButton.addEventListener('click', () => this.pauseSpeaking());
         this.endButton.addEventListener('click', () => this.endMeeting());
     }
@@ -192,11 +193,11 @@ class TimerWindow {
         this.womenButton.classList.remove('active');
         this.nonBinaryButton.classList.remove('active');
 
-        if (this.currentSpeaker === 'men') {
+        if (this.currentSpeaker === CONFIG.GENDERS.labels.men) {
             this.menButton.classList.add('active');
-        } else if (this.currentSpeaker === 'women') {
+        } else if (this.currentSpeaker === CONFIG.GENDERS.labels.women) {
             this.womenButton.classList.add('active');
-        } else if (this.currentSpeaker === 'nonBinary') {
+        } else if (this.currentSpeaker === CONFIG.GENDERS.labels.nonBinary) {
             this.nonBinaryButton.classList.add('active');
         }
     }

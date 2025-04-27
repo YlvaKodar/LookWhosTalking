@@ -2,25 +2,21 @@
  * Timer window view:
  * Initializes timer window and syncs between timerView and meetingView
  */
+import { CONFIG } from '../utils/config.js';
 class MeetingView {
     /**
      * Initializes meetingView element.
      */
     constructor() {
-        this.menButton = document.getElementById('men-speaking');
-        this.womenButton = document.getElementById('women-speaking');
-        this.nonBinaryButton = document.getElementById('nonbinary-speaking');
-        this.pauseButton = document.getElementById('pause-meeting');
-        this.endButton = document.getElementById('end-meeting');
-        this.timerDisplay = document.getElementById('timer-display');
-
-        //Debug which buttons are undefined
-        console.log('Men button found:', !!this.menButton);
-        console.log('Women button found:', !!this.womenButton);
-        console.log('Non-binary button found:', !!this.nonBinaryButton);
-
+        this.menButton = document.getElementById(CONFIG.DOM.BUTTONS.MEN);
+        this.womenButton = document.getElementById(CONFIG.DOM.BUTTONS.WOMEN);
+        this.nonBinaryButton = document.getElementById(CONFIG.DOM.BUTTONS.NON_BINARY);
+        this.pauseButton = document.getElementById(CONFIG.DOM.BUTTONS.PAUSE);
+        this.endButton = document.getElementById(CONFIG.DOM.BUTTONS.END);
+        this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.DISPLAY);
 
         //Pop-out timer button
+        //Wanna move this ...
         this.popOutButton = document.createElement('button');
         this.popOutButton.textContent = "Pop Out Timer";
         this.popOutButton.className = "pop-out-btn";

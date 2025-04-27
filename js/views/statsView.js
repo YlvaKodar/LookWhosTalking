@@ -1,3 +1,4 @@
+import { CONFIG } from '../utils/config.js';
 class StatsView {
     constructor() {
         this.meeting = StorageManager.getCurrentMeeting();
@@ -28,18 +29,18 @@ class StatsView {
     }
 
     renderCharts() {
-        const ctx = document.getElementById('speaking-time-chart').getContext('2d');
+        const ctx = document.getElementById(CONFIG.DOM.CHARTS.SPEAKING_TIME).getContext('2d');
         new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Män', 'Kvinnor', 'Icke-binära'],
+                labels: [CONFIG.GENDERS.labels.men, CONFIG.GENDERS.labels.women, CONFIG.GENDERS.labels.nonBinary],
                 datasets: [{
                     data: [
                         this.stats.totalSpeakingTime.men,
                         this.stats.totalSpeakingTime.women,
                         this.stats.totalSpeakingTime.nonBinary
                     ],
-                    backgroundColor: ['#36a2eb', '#ff6384', '#ffcd56']
+                    backgroundColor: [CONFIG.GENDERS.colors.men, CONFIG.GENDERS.colors.women, CONFIG.GENDERS.labels.nonBinary],
                 }]
             },
             options: {
@@ -53,7 +54,7 @@ class StatsView {
 
     displayTextStats() {
         //Visa textbaserad statistik
-        document.getElementById('total-time').textContent = this.formatTime(this.stats.totalDuration);
+        document.getElementById(CONFIG.DOM.STATS.TOTAL_TIME).textContent = this.formatTime(this.stats.totalDuration);
         //Fler statistikelement...
     }
 

@@ -1,3 +1,4 @@
+import { CONFIG } from '../utils/config.js';
 class Meeting {
     constructor(name, date) {
         this.name = name;

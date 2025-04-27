@@ -1,10 +1,11 @@
+import { CONFIG } from '../utils/config.js';
 class StorageManager {
     static saveMeeting(meeting) {
-        localStorage.setItem('currentMeeting', JSON.stringify(meeting));
+        localStorage.setItem(CONFIG.STORAGE.CURRENT_MEETING, JSON.stringify(meeting));
     }
 
     static getCurrentMeeting() {
-        const data = localStorage.getItem('currentMeeting');
+        const data = localStorage.getItem(CONFIG.STORAGE.CURRENT_MEETING);
         if (!data) return null;
 
         const parsed = JSON.parse(data);

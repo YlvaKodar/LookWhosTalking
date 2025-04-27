@@ -2,6 +2,8 @@
  * Head controller for the application.
  * Handles initialization and navigation between screens.
  */
+
+import { CONFIG } from '../utils/config.js';
 class App {
     /**
      * Initializes the app by setting up navigation listeners.
