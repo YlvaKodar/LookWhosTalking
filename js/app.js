@@ -12,6 +12,9 @@ class App {
         this.setupGlobalNavigationListener('end-meeting', 'stats');
         this.setupGlobalNavigationListener('back-to-start', 'start');
 
+        //Check for completed meetings
+        this.checkForCompletedMeetings();
+
         this.navigateTo('start');
     }
     /**
@@ -86,6 +89,36 @@ class App {
             case 'stats':
                 new StatsView();
                 break;
+        }
+    }
+    /**
+     * If previous meeting statistics are find, asks user if they want to see them.
+     * Then either creates a meeting object for displaying data or deletes data.
+     * @returns {void}
+     */
+    static checkForCompletedMeetings() {
+        const completedMeeting = localStorage.getItem('completedMeeting');
+
+        if (completedMeeting) {
+            //Ask user if they want to view the results
+            if (confirm("A completed meeting was found. Would you like to view the statistics?")) {
+                const meetingData = JSON.parse(completedMeeting);
+
+                //Create a Meeting object with the saved data
+                const meeting = new Meeting(meetingData.name, meetingData.date);
+                meeting.participants = meetingData.participants || { men: 0, women: 0, nonBinary: 0 };
+                meeting.speakingData = meetingData.speakingData || { men: [], women: [], nonBinary: [] };
+
+                //Save to storage and show stats
+                StorageManager.saveMeeting(meeting);
+                App.navigateTo('stats');
+
+                //Clear the completed meeting data
+                localStorage.removeItem('completedMeeting');
+            } else {
+                //User declined, so clear the data
+                localStorage.removeItem('completedMeeting');
+            }
         }
     }
     /**

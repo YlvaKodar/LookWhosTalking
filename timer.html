@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Timer</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            padding: 15px;
+            max-width: 300px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+
+        #timer-display {
+            font-size: 42px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        .speaker-btn {
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            color: white;
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+        .speaker-btn:hover {
+            opacity: 0.9;
+        }
+
+        .speaker-btn.men {
+            background-color: #36a2eb;
+        }
+
+        .speaker-btn.women {
+            background-color: #ff6384;
+        }
+
+        .speaker-btn.nonbinary {
+            background-color: #ffcd56;
+        }
+
+        .speaker-btn.active {
+            border: 3px solid #333;
+        }
+
+        .control-btn {
+            padding: 10px;
+            margin-top: 5px;
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #meeting-info {
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h2>Meeting Timer</h2>
+<div id="meeting-info">Loading meeting info...</div>
+<div id="timer-display">00:00</div>
+
+<button id="men-speaking" class="speaker-btn men">Man Speaking</button>
+<button id="women-speaking" class="speaker-btn women">Woman Speaking</button>
+<button id="nonbinary-speaking" class="speaker-btn nonbinary">Non-binary Speaking</button>
+<button id="pause-meeting" class="speaker-btn control-btn">Pause</button>
+<button id="end-meeting" class="speaker-btn control-btn">End Meeting</button>
+
+<script src="js/views/timerView.js"></script>
+</body>
+</html>
