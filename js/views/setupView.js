@@ -1,4 +1,4 @@
-import { CONFIG } from '../utils/config.js';
+
 class SetupView {
     constructor() {
         this.meetingNameInput = document.getElementById(CONFIG.DOM.FORM.MEETING_NAME);

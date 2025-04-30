@@ -2,7 +2,7 @@
  * Timer window view:
  * Initializes timer window and syncs between timerView and meetingView
  */
-import { CONFIG } from '../utils/config.js';
+
 class MeetingView {
     /**
      * Initializes meetingView element.

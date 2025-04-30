@@ -1,4 +1,3 @@
-import { CONFIG } from '../utils/config.js';
 class StorageManager {
     static saveMeeting(meeting) {
         localStorage.setItem(CONFIG.STORAGE.CURRENT_MEETING, JSON.stringify(meeting));

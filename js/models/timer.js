@@ -1,4 +1,3 @@
-import { CONFIG } from '../utils/config.js';
 class SpeakingTimer {
     constructor(meeting) {
         this.meeting = meeting;

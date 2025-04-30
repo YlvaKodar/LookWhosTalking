@@ -2,33 +2,33 @@
  * Head config for Look Who's Talking app
  */
 
-export const CONFIG = {
+const CONFIG = {
     //App info:
     APP_NAME: "Look Who's Talking",
     APP_VERSION: "1.0.0",
 
     //Genders:
     GENDERS: {
-        types: ['men', 'women', 'nonBinary'],
+        types: ['men', 'women', 'nonbinary'],
         labels: {
             men: 'Män',
             women: 'Kvinnor',
-            nonBinary: 'Icke-binära',
+            nonbinary: 'Icke-binära',
         },
         colors: {
-            men: '#322942',
-            women: '#5e2d37',
-            nonBinary: '#214b4d',
+            men: '#d5680d',
+            women: '#2f0402',
+            nonbinary: '#701e11',
         },
         buttonLabels: {
             men: 'Man talar',
             women: 'Kvinna talar',
-            nonBinary: 'Icke-binär talar'
+            nonbinary: 'Icke-binär talar'
         },
         popupButtonLabels: {
             men: 'Man',
             women: 'Kvinna',
-            nonBinary: 'Icke-binär'
+            nonbinary: 'Icke-binär'
         }
     },
 
@@ -113,5 +113,51 @@ export const CONFIG = {
     URLS: {
         TIMER_WINDOW: 'timer.html',
         TIMER_WINDOW_FEATURES: 'width=300,height=400,resizable=yes,status=no,location=no,menubar=no'
+    },
+
+    // UI Theme configuration
+    THEME: {
+        // Colors
+        COLORS: {
+            PRIMARY: 'rgb(213,104,13)',
+            PRIMARY_HOVER: '#672907',
+            HEADER_BG: '#2f0402',
+            BORDER: '#2f0402',
+            POPUP_BORDER: '#2f0402',
+            POPUP_BUTTON: '#d5680d',
+            ACTIVE_BORDER: '#fdecdf'
+        },
+
+        // Sizing and dimensions
+        SIZING: {
+            BODY_MAX_WIDTH: '800px',
+            CONTAINER_PADDING: '20px',
+            ELEMENT_GAP: '20px',
+            BUTTON_PADDING: '10px 20px',
+            POPUP_MIN_WIDTH: '250px',
+            POPUP_MIN_HEIGHT: '200px',
+            CHART_MAX_WIDTH: '400px'
+        },
+
+        // Typography
+        TYPOGRAPHY: {
+            TIMER_FONT_SIZE: '48px',
+            POPUP_TIMER_FONT_SIZE: '28px',
+            BUTTON_FONT_SIZE: '16px',
+            SPEAKER_BUTTON_FONT_SIZE: '18px',
+            POPUP_FONT_SIZE: '14px'
+        },
+
+        // Border styling
+        BORDERS: {
+            RADIUS: '4px',
+            POPUP_RADIUS: '6px',
+            ACTIVE_BORDER_WIDTH: '3px'
+        },
+
+        // Responsive breakpoints
+        BREAKPOINTS: {
+            MOBILE: '600px'
+        }
     }
 };

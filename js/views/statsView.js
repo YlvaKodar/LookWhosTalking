@@ -1,4 +1,4 @@
-import { CONFIG } from '../utils/config.js';
+
 class StatsView {
     constructor() {
         this.meeting = StorageManager.getCurrentMeeting();
@@ -33,14 +33,14 @@ class StatsView {
         new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: [CONFIG.GENDERS.labels.men, CONFIG.GENDERS.labels.women, CONFIG.GENDERS.labels.nonBinary],
+                labels: [CONFIG.GENDERS.labels.men, CONFIG.GENDERS.labels.women, CONFIG.GENDERS.labels.nonbinary],
                 datasets: [{
                     data: [
                         this.stats.totalSpeakingTime.men,
                         this.stats.totalSpeakingTime.women,
                         this.stats.totalSpeakingTime.nonBinary
                     ],
-                    backgroundColor: [CONFIG.GENDERS.colors.men, CONFIG.GENDERS.colors.women, CONFIG.GENDERS.labels.nonBinary],
+                    backgroundColor: [CONFIG.GENDERS.colors.men, CONFIG.GENDERS.colors.women, CONFIG.GENDERS.labels.nonbinary],
                 }]
             },
             options: {

@@ -2,7 +2,7 @@
  * Timer window view:
  * Initializes timer window and syncs between timerView and meetingView
  */
-import { CONFIG } from '../utils/config.js';
+
 class TimerWindow {
     /**
      * Initializes timer view elements.
@@ -93,7 +93,7 @@ class TimerWindow {
     initEventListeners() {
         this.menButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.labels.men));
         this.womenButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.labels.women));
-        this.nonBinaryButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.labels.nonBinary));
+        this.nonBinaryButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.labels.nonbinary));
         this.pauseButton.addEventListener('click', () => this.pauseSpeaking());
         this.endButton.addEventListener('click', () => this.endMeeting());
     }
@@ -197,7 +197,7 @@ class TimerWindow {
             this.menButton.classList.add('active');
         } else if (this.currentSpeaker === CONFIG.GENDERS.labels.women) {
             this.womenButton.classList.add('active');
-        } else if (this.currentSpeaker === CONFIG.GENDERS.labels.nonBinary) {
+        } else if (this.currentSpeaker === CONFIG.GENDERS.labels.nonbinary) {
             this.nonBinaryButton.classList.add('active');
         }
     }

@@ -3,21 +3,20 @@
  * Handles initialization and navigation between screens.
  */
 
-import { CONFIG } from '../utils/config.js';
 class App {
     /**
      * Initializes the app by setting up navigation listeners.
      * Shows the start screen when complete.
      */
     static init() {
-        this.setupGlobalNavigationListener('new-meeting-btn', 'setup');
-        this.setupGlobalNavigationListener('end-meeting', 'stats');
-        this.setupGlobalNavigationListener('back-to-start', 'start');
+        this.setupGlobalNavigationListener('new-meeting-btn', CONFIG.DOM.SCREENS.SETUP);
+        this.setupGlobalNavigationListener('end-meeting', CONFIG.DOM.SCREENS.STATS);
+        this.setupGlobalNavigationListener('back-to-start', CONFIG.DOM.SCREENS.START);
 
         //Check for completed meetings
         this.checkForCompletedMeetings();
 
-        this.navigateTo('start');
+        this.navigateTo(CONFIG.DOM.SCREENS.START);
     }
     /**
      * Sets up navigation for elements that don't require validation.
@@ -64,10 +63,10 @@ class App {
         });
 
         //Show $screen or error
-        if (document.getElementById(`${screen}-screen`)) {
-            document.getElementById(`${screen}-screen`).style.display = 'block';
+        if (document.getElementById(`${screen}`)) {
+            document.getElementById(`${screen}`).style.display = 'block';
         } else {
-            console.error(`Skärm med ID '${screen}-screen' hittades inte!`);
+            console.error(`Skärm med ID '${screen}' hittades inte!`);
             return;
         }
         this.initializeView(screen);
@@ -80,15 +79,15 @@ class App {
     static initializeView(screen){
         this.cleanupActiveProcesses();
         switch(screen) {
-            case 'start':
+            case CONFIG.DOM.SCREENS.START:
                 break;
-            case 'setup':
+            case CONFIG.DOM.SCREENS.SETUP:
                 new SetupView();
                 break;
-            case 'meeting':
+            case CONFIG.DOM.SCREENS.MEETING:
                 new MeetingView();
                 break;
-            case 'stats':
+            case CONFIG.DOM.SCREENS.STATS:
                 new StatsView();
                 break;
         }
@@ -99,7 +98,7 @@ class App {
      * @returns {void}
      */
     static checkForCompletedMeetings() {
-        const completedMeeting = localStorage.getItem('completedMeeting');
+        const completedMeeting = localStorage.getItem(CONFIG.STORAGE.COMPLETED_MEETING);
 
         if (completedMeeting) {
             //Ask user if they want to view the results
@@ -115,12 +114,9 @@ class App {
                 StorageManager.saveMeeting(meeting);
                 App.navigateTo('stats');
 
-                //Clear the completed meeting data
-                localStorage.removeItem('completedMeeting');
-            } else {
-                //User declined, so clear the data
-                localStorage.removeItem('completedMeeting');
             }
+                //Clear the data
+                localStorage.removeItem(CONFIG.STORAGE.COMPLETED_MEETING);
         }
     }
     /**
@@ -133,5 +129,6 @@ class App {
 }
 // Initializes the app when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+    applyThemeFromConfig();
     App.init();
 });

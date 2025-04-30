@@ -1,3 +1,11 @@
+/*
+ * styles.css - Look Who's Talking App
+ *
+ * This stylesheet uses only variables that are set dynamically
+ * from config.js values. No hardcoded values should be here.
+ */
+
+/* Base styles */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,40 +14,41 @@
 }
 
 body {
-    max-width: 800px;
+    max-width: var(--body-max-width);
     margin: 0 auto;
-    padding: 20px;
+    padding: var(--container-padding);
 }
 
+/* Screen container styles for all view screens */
 .screen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
+    gap: var(--element-gap);
+    padding: var(--container-padding);
 }
 
-/* Popup styling */
+/* Popup window styling */
 .popup {
     position: fixed;
     z-index: 1000;
     width: 300px;
     background-color: white;
-    border: 1px solid #ccc;
-    border-radius: 6px;
+    border: 1px solid var(--popup-border-color);
+    border-radius: var(--popup-border-radius);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     resize: both;
-    min-width: 250px;
-    min-height: 200px;
-    display: none; /* Dold som standard */
+    min-width: var(--popup-min-width);
+    min-height: var(--popup-min-height);
+    display: none; /* Hidden by default */
 }
 
 .popup-header {
     padding: 8px 12px;
-    background-color: #f1f1f1;
-    border-bottom: 1px solid #ddd;
-    cursor: move; /* Visar att denna del kan användas för att dra */
+    background-color: var(--header-bg-color);
+    border-bottom: 1px solid var(--border-color);
+    cursor: move; /* Shows this part can be used for dragging */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -47,7 +56,7 @@ body {
 
 .popup-header h3 {
     margin: 0;
-    font-size: 14px;
+    font-size: var(--popup-font-size);
 }
 
 .popup-controls {
@@ -58,7 +67,7 @@ body {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: var(--button-font-size);
     padding: 0 5px;
 }
 
@@ -66,7 +75,7 @@ body {
     padding: 10px;
 }
 
-/* När popup är minimerad visas bara headern */
+/* Styling for minimized popup window */
 .popup.minimized .popup-content {
     display: none;
 }
@@ -77,23 +86,24 @@ body {
     resize: none;
 }
 
-/* Timer display för popup */
+/* Timer display styles for popup */
 #popup-timer-display {
-    font-size: 28px;
+    font-size: var(--popup-timer-font-size);
     font-weight: bold;
     text-align: center;
     margin: 10px 0;
 }
 
-/* Anpassa knappstorlek för popup */
+/* Button sizing for popup */
 .popup .speaker-btn {
     padding: 8px;
-    font-size: 14px;
+    font-size: var(--popup-font-size);
     margin-bottom: 8px;
 }
 
+/* Popup button styling */
 .pop-out-btn {
-    background-color: #607d8b;
+    background-color: var(--popup-button-color);
     margin: 10px 0;
     display: flex;
     align-items: center;
@@ -103,28 +113,31 @@ body {
 .pop-out-btn:before {
     content: "↗";
     margin-right: 5px;
-    font-size: 14px;
+    font-size: var(--popup-font-size);
 }
 
+/* Text styles */
 h1 {
-    margin-bottom: 20px;
+    margin-bottom: var(--element-gap);
     text-align: center;
 }
 
+/* General button styling */
 button {
-    padding: 10px 20px;
-    background-color: #4CAF50;
+    padding: var(--button-padding);
+    background-color: var(--primary-color);
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--border-radius);
     cursor: pointer;
-    font-size: 16px;
+    font-size: var(--button-font-size);
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: var(--primary-hover-color);
 }
 
+/* Form styling */
 .form-group {
     margin-bottom: 15px;
     width: 100%;
@@ -140,8 +153,8 @@ input[type="date"],
 input[type="number"] {
     width: 100%;
     padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
 }
 
 .participant-input {
@@ -160,56 +173,63 @@ input[type="number"] {
     max-width: 80px;
 }
 
+/* Speaker button container */
 .speaker-buttons {
     display: flex;
     flex-direction: column;
     gap: 15px;
     width: 100%;
     max-width: 300px;
-    margin-bottom: 20px;
+    margin-bottom: var(--element-gap);
 }
 
+/* Speaker button styles */
 .speaker-btn {
     padding: 15px;
-    font-size: 18px;
+    font-size: var(--speaker-button-font-size);
 }
 
+/* Gender-specific button colors */
 .speaker-btn.men {
-    background-color: #36a2eb;
+    background-color: var(--men-color);
 }
 
 .speaker-btn.women {
-    background-color: #ff6384;
+    background-color: var(--women-color);
 }
 
 .speaker-btn.nonbinary {
-    background-color: #ffcd56;
+    background-color: var(--nonbinary-color);
 }
 
+/* Active speaker button indication */
 .speaker-btn.active {
-    border: 3px solid #333;
+    border: var(--active-border-width) solid var(--active-border-color);
 }
 
+/* Timer display */
 #timer-display {
-    font-size: 48px;
+    font-size: var(--timer-font-size);
     font-weight: bold;
-    margin: 20px 0;
+    margin: var(--element-gap) 0;
 }
 
+/* Control button container */
 .control-buttons {
     display: flex;
     gap: 10px;
 }
 
+/* Statistics display container */
 .stats-container {
     width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: var(--element-gap);
 }
 
 .chart-container {
-    max-width: 400px;
+    max-width: var(--chart-max-width);
     margin: 0 auto;
 }
 
@@ -217,7 +237,8 @@ input[type="number"] {
     line-height: 1.6;
 }
 
-@media (max-width: 600px) {
+/* Responsive styles */
+@media (max-width: var(--mobile-breakpoint)) {
     .stats-container {
         flex-direction: column;
     }
