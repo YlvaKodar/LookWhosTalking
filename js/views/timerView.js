@@ -8,27 +8,28 @@ class TimerWindow {
      * Initializes timer view elements.
      */
     constructor() {
-        this.menButton = document.getElementById(CONFIG.DOM.BUTTONS.MEN);
-        this.womenButton = document.getElementById(CONFIG.DOM.BUTTONS.WOMEN);
-        this.nonBinaryButton = document.getElementById(CONFIG.DOM.BUTTONS.NON_BINARY);
-        this.pauseButton = document.getElementById(CONFIG.DOM.BUTTONS.PAUSE);
-        this.endButton = document.getElementById(CONFIG.DOM.BUTTONS.END);
-        this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.DISPLAY);
-        this.meetingInfo = document.getElementById('meeting-info');
+        // Get references to DOM elements using CONFIG
+        this.menButton = document.getElementById(CONFIG.DOM.BUTTONS.POPUP_MEN);
+        this.womenButton = document.getElementById(CONFIG.DOM.BUTTONS.POPUP_WOMEN);
+        this.nonBinaryButton = document.getElementById(CONFIG.DOM.BUTTONS.POPUP_NON_BINARY);
+        this.pauseButton = document.getElementById(CONFIG.DOM.BUTTONS.POPUP_PAUSE);
+        this.endButton = document.getElementById(CONFIG.DOM.BUTTONS.POPUP_END);
+        this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.POPUP_DISPLAY);
+        this.meetingInfo = document.getElementById(CONFIG.TIMER_POPUP.DOM.MEETING_INFO);
 
-        //Meeting and timer state
+        // Meeting and timer state
         this.meeting = null;
         this.startTime = null;
         this.currentSpeaker = null;
         this.interval = null;
 
-        //Initialize from localStorage or opener window
+        // Initialize from localStorage or opener window
         this.loadMeetingData();
 
-        //Set up event listeners
+        // Set up event listeners
         this.initEventListeners();
 
-        //Set up communication channel
+        // Set up communication channel
         this.setupCommunication();
     }
     /**
@@ -37,10 +38,10 @@ class TimerWindow {
      * @returns {void}
      */
     loadMeetingData() {
-        //Try to get meeting data from the opener window
+        // Try to get meeting data from the opener window
         if (window.opener && !window.opener.closed) {
             try {
-                //This assumes the opener window has a global meeting object
+                // This assumes the opener window has a global meeting object
                 const openerMeeting = window.opener.getCurrentMeeting();
                 if (openerMeeting) {
                     this.meeting = openerMeeting;
@@ -48,26 +49,34 @@ class TimerWindow {
                     return;
                 }
             } catch (error) {
-                console.error("Error accessing opener window:", error);
+                console.error(CONFIG.CONSOLE_MESSAGES.ERROR_OPENER_ACCESS, error);
             }
         }
-        //Fallback to localStorage
+        // Fallback to localStorage
         try {
-            const savedMeeting = localStorage.getItem('currentMeeting');
+            const savedMeeting = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
             if (savedMeeting) {
                 this.meeting = JSON.parse(savedMeeting);
                 this.updateMeetingInfo();
                 return;
             }
         } catch (error) {
-            console.error("Error loading from localStorage:", error);
+            console.error(CONFIG.CONSOLE_MESSAGES.ERROR_LOCALSTORAGE, error);
         }
-        //If all else fails, create a basic meeting object
+        // If all else fails, create a basic meeting object
         this.meeting = {
-            name: "Unnamed Meeting",
+            name: CONFIG.DEFAULTS.MEETING_NAME,
             date: new Date().toISOString().split('T')[0],
-            participants: { men: 0, women: 0, nonBinary: 0 },
-            speakingData: { men: [], women: [], nonBinary: [] },
+            participants: {
+                [CONFIG.GENDERS.types[0]]: 0,
+                [CONFIG.GENDERS.types[1]]: 0,
+                [CONFIG.GENDERS.types[2]]: 0
+            },
+            speakingData: {
+                [CONFIG.GENDERS.types[0]]: [],
+                [CONFIG.GENDERS.types[1]]: [],
+                [CONFIG.GENDERS.types[2]]: []
+            },
             currentSpeaker: null
         };
 
@@ -79,11 +88,11 @@ class TimerWindow {
      */
     updateMeetingInfo() {
         if (this.meeting) {
-            const total = this.meeting.participants.men +
-                this.meeting.participants.women +
-                this.meeting.participants.nonBinary;
+            const total = this.meeting.participants[CONFIG.GENDERS.types[0]] +
+                this.meeting.participants[CONFIG.GENDERS.types[1]] +
+                this.meeting.participants[CONFIG.GENDERS.types[2]];
 
-            this.meetingInfo.textContent = `${this.meeting.name} | ${total} participants`;
+            this.meetingInfo.textContent = `${this.meeting.name} | ${total} ${CONFIG.LABELS.PARTICIPANTS}`;
         }
     }
     /**
@@ -91,9 +100,9 @@ class TimerWindow {
      * @returns {void}
      */
     initEventListeners() {
-        this.menButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.labels.men));
-        this.womenButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.labels.women));
-        this.nonBinaryButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.labels.nonbinary));
+        this.menButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.types[0]));
+        this.womenButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.types[1]));
+        this.nonBinaryButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.types[2]));
         this.pauseButton.addEventListener('click', () => this.pauseSpeaking());
         this.endButton.addEventListener('click', () => this.endMeeting());
     }
@@ -104,41 +113,41 @@ class TimerWindow {
      */
     setupCommunication() {
         window.addEventListener('storage', (event) => {
-            if (event.key === 'currentMeeting') {
+            if (event.key === CONFIG.STORAGE.KEYS.CURRENT_MEETING) {
                 try {
                     this.meeting = JSON.parse(event.newValue);
                     this.updateMeetingInfo();
                 } catch (error) {
-                    console.error("Error parsing meeting data:", error);
+                    console.error(CONFIG.CONSOLE_MESSAGES.ERROR_PARSE_MEETING, error);
                 }
             }
         });
 
-        //Periodic save of data back to localStorage
-        setInterval(() => this.saveData(), 1000);
+        // Periodic save of data back to localStorage
+        setInterval(() => this.saveData(), CONFIG.TIMER.SAVE_INTERVAL);
     }
     /**
      * Starts timer for current speaker.
      * Updates UI.
-     * @param {string} gender -
+     * @param {string} gender - The gender of the current speaker
      * @returns {void}
      */
     startSpeaking(gender) {
-        //Stop any current speaker
+        // Stop any current speaker
         if (this.interval) {
             this.pauseSpeaking();
         }
 
-        //Start timing for the new speaker
+        // Start timing for the new speaker
         this.currentSpeaker = gender;
         this.startTime = Date.now();
-        this.interval = setInterval(() => this.updateTimer(), 100);
+        this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
 
-        //Update the UI
+        // Update the UI
         this.updateButtonStates();
 
-        //Notify main window if open
-        this.notifyMainWindow('speakerChange', { gender });
+        // Notify main window if open
+        this.notifyMainWindow(CONFIG.COMMUNICATION.ACTIONS.SPEAKER_CHANGE, { gender });
     }
     /**
      * Pauses all timers and resets timer state.
@@ -150,28 +159,32 @@ class TimerWindow {
 
         const duration = (Date.now() - this.startTime) / 1000; // in seconds
 
-        //Add to meeting data
+        // Add to meeting data
         if (!this.meeting.speakingData[this.currentSpeaker]) {
             this.meeting.speakingData[this.currentSpeaker] = [];
         }
         this.meeting.speakingData[this.currentSpeaker].push(duration);
 
-        //Reset timer state
+        // Reset timer state
         clearInterval(this.interval);
         this.interval = null;
         this.startTime = null;
         this.currentSpeaker = null;
 
-        //Update UI
+        // Update UI
         this.updateButtonStates();
-        this.timerDisplay.textContent = "00:00";
+        this.timerDisplay.textContent = CONFIG.TIMER.DEFAULT_DISPLAY;
 
-        //Save and notify
+        // Save and notify
         this.saveData();
-        this.notifyMainWindow('speakerPaused', { duration });
+        this.notifyMainWindow(CONFIG.COMMUNICATION.ACTIONS.SPEAKER_PAUSED, { duration });
     }
     /**
      * Updates timer.
+     * @returns {void}
+     */
+    /**
+     * Updates timer display based on elapsed time.
      * @returns {void}
      */
     updateTimer() {
@@ -189,31 +202,37 @@ class TimerWindow {
      * @returns {void}
      */
     updateButtonStates() {
-        this.menButton.classList.remove('active');
-        this.womenButton.classList.remove('active');
-        this.nonBinaryButton.classList.remove('active');
+        this.menButton.classList.remove(CONFIG.CSS_CLASSES.ACTIVE);
+        this.womenButton.classList.remove(CONFIG.CSS_CLASSES.ACTIVE);
+        this.nonBinaryButton.classList.remove(CONFIG.CSS_CLASSES.ACTIVE);
 
-        if (this.currentSpeaker === CONFIG.GENDERS.labels.men) {
-            this.menButton.classList.add('active');
-        } else if (this.currentSpeaker === CONFIG.GENDERS.labels.women) {
-            this.womenButton.classList.add('active');
-        } else if (this.currentSpeaker === CONFIG.GENDERS.labels.nonbinary) {
-            this.nonBinaryButton.classList.add('active');
+        if (this.currentSpeaker === CONFIG.GENDERS.types[0]) {
+            this.menButton.classList.add(CONFIG.CSS_CLASSES.ACTIVE);
+        } else if (this.currentSpeaker === CONFIG.GENDERS.types[1]) {
+            this.womenButton.classList.add(CONFIG.CSS_CLASSES.ACTIVE);
+        } else if (this.currentSpeaker === CONFIG.GENDERS.types[2]) {
+            this.nonBinaryButton.classList.add(CONFIG.CSS_CLASSES.ACTIVE);
         }
     }
     /**
-     * Saves data to local storage.
+     * Saves meeting data to local storage.
      * @returns {void}
      */
     saveData() {
-        localStorage.setItem('currentMeeting', JSON.stringify(this.meeting));
+        localStorage.setItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING, JSON.stringify(this.meeting));
     }
     /**
      * Updates main window with current data.
      * @returns {void}
      */
+    /**
+     * Notifies main window of actions and data changes.
+     * @param {string} action - The action type to notify about
+     * @param {Object} data - Additional data to send with the notification
+     * @returns {void}
+     */
     notifyMainWindow(action, data) {
-        //If main window is open, call its update method
+        // If main window is open, call its update method
         if (window.opener && !window.opener.closed) {
             try {
                 window.opener.updateFromTimerWindow(action, {
@@ -221,43 +240,40 @@ class TimerWindow {
                     meeting: this.meeting
                 });
             } catch (error) {
-                console.error("Error notifying main window:", error);
+                console.error(CONFIG.MESSAGES.ERROR_NOTIFY_MAIN, error);
             }
         }
     }
     /**
-     * Updates main window with current data.
+     * Ends the meeting and sends data to main window.
      * @returns {void}
      */
     endMeeting() {
-        //First pause any ongoing speaking
+        // First pause any ongoing speaking
         if (this.interval) {
             this.pauseSpeaking();
         }
 
-        //Mark meeting as complete
-        localStorage.setItem('completedMeeting', JSON.stringify(this.meeting));
+        // Mark meeting as complete
+        localStorage.setItem(CONFIG.STORAGE.KEYS.COMPLETED_MEETING, JSON.stringify(this.meeting));
 
-        //Notify main window if open
+        // Notify main window if open
         if (window.opener && !window.opener.closed) {
             try {
-                window.opener.updateFromTimerWindow('meetingEnded', {
+                window.opener.updateFromTimerWindow(CONFIG.COMMUNICATION.ACTIONS.MEETING_ENDED, {
                     meeting: this.meeting
                 });
 
-                //Only close if main window acknowledged the end
+                // Only close if main window acknowledged the end
                 window.close();
             } catch (error) {
-                console.error("Error ending meeting:", error);
-                alert("Meeting completed! Please open the main application to view statistics.");
+                console.error(CONFIG.CONSOLE_MESSAGES.ERROR_END_MEETING, error);
             }
-        } else {
-            alert("Meeting completed! Please open the main application to view statistics.");
-        }
+        alert(CONFIG.MESSAGES.ALERT_MEETING_COMPLETED);
     }
 }
 
-//Initialize when the DOM is loaded
+// Initialize when the DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
     window.timerWindow = new TimerWindow();
 });

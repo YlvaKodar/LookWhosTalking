@@ -107,7 +107,7 @@ class App {
      * @returns {void}
      */
     static checkForCompletedMeetings() {
-        const completedMeetingData = localStorage.getItem(CONFIG.STORAGE.COMPLETED_MEETING);
+        const completedMeetingData = localStorage.getItem(CONFIG.STORAGE.KEY.COMPLETED_MEETING);
 
         if (completedMeetingData) {
             if (confirm(CONFIG.MESSAGES.CONFIRM_VIEW_STATS)) {
@@ -135,7 +135,7 @@ class App {
             }
 
             //Clear the data regardless of user choice
-            localStorage.removeItem(CONFIG.STORAGE.COMPLETED_MEETING);
+            localStorage.removeItem(CONFIG.STORAGE.KEY.COMPLETED_MEETING);
         }
     }
     /**

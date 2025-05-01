@@ -7,6 +7,10 @@ const CONFIG = {
     APP_NAME: "Look Who's Talking",
     APP_VERSION: "1.0.0",
 
+    LABELS: {
+        PARTICIPANTS: "deltagare",
+    },
+
     //Genders:
     GENDERS: {
         types: ['men', 'women', 'nonbinary'],
@@ -38,15 +42,27 @@ const CONFIG = {
 
     //Local keys:
     STORAGE: {
-        CURRENT_MEETING: 'currentMeeting',
-        COMPLETED_MEETING: 'completedMeeting',
-        SETUP_MEETING_DATA: 'setupMeetingData'
+        KEYS: {
+            CURRENT_MEETING: 'currentMeeting',
+            COMPLETED_MEETING: 'completedMeeting',
+            SETUP_MEETING_DATA: 'setupMeetingData'
+        }
     },
 
     // Timer settings
     TIMER: {
-        UPDATE_INTERVAL: 100, // millisekunder
-        UPDATE_ANIMATION_FRAME: true, // använd requestAnimationFrame istället för setInterval om true
+        UPDATE_INTERVAL: 100,
+        SAVE_INTERVAL: 1000,
+        DEFAULT_DISPLAY: "00:00",
+        UPDATE_ANIMATION_FRAME: true,
+    },
+
+    COMMUNICATION: {
+        ACTIONS: {
+            SPEAKER_CHANGE: 'speakerChange',
+            SPEAKER_PAUSED: 'speakerPaused',
+            MEETING_ENDED: 'meetingEnded'
+        }
     },
 
     //Popup
@@ -96,12 +112,24 @@ const CONFIG = {
         ERROR_DATE_REQUIRED: 'Vilken dag är det?',
         ERROR_POPUP_BLOCKED: 'Timer-fönstret blockerades. Kontrollera dina popup-inställningar.',
         ERROR_TIMER_COMMUNICATION: 'Problem med kommunikationen mellan timer-fönster och huvudfönster.',
-        CONFIRM_VIEW_STATS: 'Det finns statistik från ett avslutat möte. Vill du se den?',
+        CONFIRM_VIEW_STATS: 'Det finns statistik från ett avslutat möte. Vill du se den?'
+        ALERT_MEETING_COMPLETED: "Meeting completed! Please open the main application to view statistics."
     },
 
     //Console output:
     CONSOLE_MESSAGES: {
-        ELEMENT_NOT_FOUND: 'The following element could not be found: ',
+        ELEMENT_NOT_FOUND: 'Error: The following element could not be found: ',
+        ERROR_OPENER_ACCESS: 'Error: Could not access window opener: ',
+        ERROR_LOCALSTORAGE: "Error: Could not load from localStorage: ",
+        ERROR_PARSE_MEETING: "Error: Could not parse meeting data: ",
+        ERROR_NOTIFY_MAIN: "Error: Could not notify main window: "
+        ERROR_TIMER_COMMUNICATION: "Unknown action from timer window",
+        ERROR_END_MEETING: "Error: Could not end meeting: ",
+    },
+
+    //Default values:
+    DEFAULTS: {
+        MEETING_NAME: 'Ett högt berg.'
     },
 
     // Element ID for important DOM elements:
@@ -203,6 +231,10 @@ const CONFIG = {
         BREAKPOINTS: {
             MOBILE: '600px'
         },
+
+        CSS_CLASSES: {
+            ACTIVE: 'active',
+        }
 
         POPUP: {
             BG_COLOR: '#ffffff',
