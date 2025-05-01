@@ -33,12 +33,12 @@ class SetupView {
     validateForm() {
         //Meeting needs name and date.
         if (!this.meetingNameInput || !this.meetingNameInput.value.trim()) {
-            alert(CONFIG.ERRORS.MEETING_NAME_REQUIRED);
+            alert(CONFIG.MESSAGES.ERROR_MEETING_NAME_REQUIRED);
             return false;
         }
 
         if (!this.dateInput || !this.dateInput.value) {
-            alert(CONFIG.ERRORS.DATE_REQUIRED);
+            alert(CONFIG.MESSAGES.ERROR_DATE_REQUIRED);
             return false;
         }
 
@@ -48,7 +48,7 @@ class SetupView {
         const nonBinaryCount = parseInt(this.nonBinaryCount?.value || 0);
 
         if (menCount + womenCount + nonBinaryCount < 2) {
-            alert(CONFIG.DOM.ERRORS.MIN_PARTICIPANTS);
+            alert(CONFIG.MESSAGES.ERROR_MIN_PARTICIPANTS);
             return false;
         }
 

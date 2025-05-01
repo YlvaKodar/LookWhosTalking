@@ -12,7 +12,7 @@ class MeetingView {
         this.womenButton = document.getElementById(CONFIG.DOM.BUTTONS.WOMEN);
         this.nonBinaryButton = document.getElementById(CONFIG.DOM.BUTTONS.NON_BINARY);
         this.pauseButton = document.getElementById(CONFIG.DOM.BUTTONS.PAUSE);
-        this.endButton = document.getElementById(CONFIG.DOM.BUTTONS.END);
+        this.endButton = document.getElementById(CONFIG.DOM.BUTTONS.END_MEETING);
         this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.DISPLAY);
 
         //Pop-out timer button

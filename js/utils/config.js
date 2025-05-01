@@ -16,9 +16,9 @@ const CONFIG = {
             nonbinary: 'Icke-binära',
         },
         colors: {
-            men: '#d5680d',
-            women: '#2f0402',
-            nonbinary: '#701e11',
+            men: '#D68D0A',
+            women: '#a82b05',
+            nonbinary: '#420407',
         },
         buttonLabels: {
             men: 'Man talar',
@@ -58,13 +58,19 @@ const CONFIG = {
         }
     },
 
-    //Error messages:
-    ERRORS: {
-        MIN_PARTICIPANTS: 'Inget möte utan minst två deltagare.',
-        MEETING_NAME_REQUIRED: 'Vad ska vi kalla mötet?',
-        DATE_REQUIRED: 'Vilken dag är det?',
-        POPUP_BLOCKED: 'Timer-fönstret blockerades. Kontrollera dina popup-inställningar.',
-        TIMER_COMMUNICATION: 'Problem med kommunikationen mellan timer-fönster och huvudfönster.'
+    //Messages:
+    MESSAGES: {
+        ERROR_MIN_PARTICIPANTS: 'Inget möte utan minst två deltagare.',
+        ERROR_MEETING_NAME_REQUIRED: 'Vad ska vi kalla mötet?',
+        ERROR_DATE_REQUIRED: 'Vilken dag är det?',
+        ERROR_POPUP_BLOCKED: 'Timer-fönstret blockerades. Kontrollera dina popup-inställningar.',
+        ERROR_TIMER_COMMUNICATION: 'Problem med kommunikationen mellan timer-fönster och huvudfönster.',
+        CONFIRM_VIEW_STATS: 'Det finns statistik från ett avslutat möte. Vill du se den?',
+    },
+
+    //Console output:
+    CONSOLE_MESSAGES: {
+        ELEMENT_NOT_FOUND: 'The following element could not be found: ',
     },
 
     // Element ID for important DOM elements:
@@ -80,11 +86,13 @@ const CONFIG = {
             POPUP_DISPLAY: 'popup-timer-display'
         },
         BUTTONS: {
+            NEW_MEETING: 'new-meeting-btn',
+            BACK_TO_START: 'back-to-start',
+            END_MEETING: 'end-meeting',
             MEN: 'men-speaking',
             WOMEN: 'women-speaking',
             NON_BINARY: 'nonbinary-speaking',
             PAUSE: 'pause-meeting',
-            END: 'end-meeting',
             POPUP_MEN: 'popup-men-speaking',
             POPUP_WOMEN: 'popup-women-speaking',
             POPUP_NON_BINARY: 'popup-nonbinary-speaking',
@@ -106,6 +114,10 @@ const CONFIG = {
             WOMEN_COUNT: 'women-count',
             NONBINARY_COUNT: 'nonbinary-count',
             START_BUTTON: 'start-meeting'
+        },
+        DISPLAY: {
+            NONE: 'none',
+            BLOCK: 'block',
         }
     },
 
@@ -119,13 +131,13 @@ const CONFIG = {
     THEME: {
         // Colors
         COLORS: {
-            PRIMARY: 'rgb(213,104,13)',
-            PRIMARY_HOVER: '#672907',
+            PRIMARY: '#385b13',
+            PRIMARY_HOVER: '#5a9120',
             HEADER_BG: '#2f0402',
-            BORDER: '#2f0402',
+            BORDER: '#1f0b0a',
             POPUP_BORDER: '#2f0402',
-            POPUP_BUTTON: '#d5680d',
-            ACTIVE_BORDER: '#fdecdf'
+            POPUP_BUTTON: '#882b07',
+            ACTIVE_BORDER: '#ca7d2b'
         },
 
         // Sizing and dimensions

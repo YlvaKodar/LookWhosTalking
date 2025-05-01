@@ -1,84 +1,90 @@
 /**
- * Head controller for the application.
- * Handles initialization and navigation between screens.
+ * Main controller for the "Look Who's Talking" application.
+ * Handles initialization, navigation between screens, and application lifecycle.
+ * @class
  */
-
 class App {
     /**
-     * Initializes the app by setting up navigation listeners.
+     * Initializes the app by setting up navigation listeners and checking for saved meetings.
      * Shows the start screen when complete.
+     * @static
+     * @returns {void}
      */
     static init() {
-        this.setupGlobalNavigationListener('new-meeting-btn', CONFIG.DOM.SCREENS.SETUP);
-        this.setupGlobalNavigationListener('end-meeting', CONFIG.DOM.SCREENS.STATS);
-        this.setupGlobalNavigationListener('back-to-start', CONFIG.DOM.SCREENS.START);
+        this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.NEW_MEETING, CONFIG.DOM.SCREENS.SETUP);
+        this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.END_MEETING, CONFIG.DOM.SCREENS.STATS);
+        this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.BACK_TO_START, CONFIG.DOM.SCREENS.START);
 
-        //Check for completed meetings
         this.checkForCompletedMeetings();
 
         this.navigateTo(CONFIG.DOM.SCREENS.START);
     }
     /**
      * Sets up navigation for elements that don't require validation.
-     * @param {string} element - ID for the navigation triggering element.
-     * @param {string} screen - ID for the destination screen.
+     * @static
+     * @param {string} elementId - ID for the navigation triggering element.
+     * @param {string} screenId - ID for the destination screen.
      * @returns {void}
      */
-    static setupGlobalNavigationListener(element, screen){
-        if (document.getElementById(element)){
-            document.getElementById(element).addEventListener('click', () => {
-                this.navigateTo(screen);
+    static setupGlobalNavigationListener(elementId, screenId){
+        if (document.getElementById(elementId)){
+            document.getElementById(elementId).addEventListener('click', () => {
+                this.navigateTo(screenId);
             });
         } else {
-            console.warn(`Element ${element} not found.`);
+            console.warn(CONFIG.CONSOLE_MESSAGES.ELEMENT_NOT_FOUND + elementId);
         }
+
     }
     /**
-     * Sets up a button that requires form validation before navigation.
-     * @param {string} formId - ID for the navigation triggering element.
-     * @param {string} targetView - ID for the destination screen.
+     * Sets up a buttons that requires form validation before navigation.
+     * @static
+     * @param {string} buttonId - ID for the button element that triggers navigation.
+     * @param {string} targetScreenId - ID for the destination screen.
      * @param {Function} validationCallback - Optional validation function that returns a boolean.
      * @returns {void}
      */
-    static registerFormNavigation(formId, targetView, validationCallback){
+    static registerFormNavigation(buttonId, targetView, validationCallback){
 
-        if (document.getElementById(formId)){
-            document.getElementById(formId).addEventListener('click', (event) => {
+        if (document.getElementById(buttonId)){
+            document.getElementById(buttonId).addEventListener('click', (event) => {
                 if (validationCallback && !validationCallback()) { //If there is a VC && the return is false:
                     return;
                 }
                 this.navigateTo(targetView);
             });
+        }else {
+        console.warn(`Button '${buttonId}' not found for form navigation.`);
         }
     }
     /**
      * Switches to the specified screen view.
-     * @param {string} screen - ID for the destination screen.
+     * @static
+     * @param {string} screenId - ID for the destination screen.
      * @returns {void}
      */
-    static navigateTo(screen) {
-        //Hide all screens
+    static navigateTo(screenId) {
         document.querySelectorAll('.screen').forEach(element => {
-            element.style.display = 'none';
+            element.style.display = CONFIG.DOM.DISPLAY.NONE;
         });
 
-        //Show $screen or error
-        if (document.getElementById(`${screen}`)) {
-            document.getElementById(`${screen}`).style.display = 'block';
+        if (document.getElementById(`${screenId}`)) {
+            document.getElementById(`${screenId}`).style.display = CONFIG.DOM.DISPLAY.BLOCK;
         } else {
-            console.error(`Skärm med ID '${screen}' hittades inte!`);
+            console.error(`Screen '${screenId}' was not found in the DOM!`);;
             return;
         }
-        this.initializeView(screen);
+        this.initializeView(screenId);
     }
     /**
-     * Initializes the appropriate view for the current screen.
-     * @param {string} screen - ID for the current screen.
+     * Initializes the appropriate view controller for the current screen.
+     * @static
+     * @param {string} screenId - ID for the current screen.
      * @returns {void}
      */
-    static initializeView(screen){
+    static initializeView(screenId){
         this.cleanupActiveProcesses();
-        switch(screen) {
+        switch(screenId) {
             case CONFIG.DOM.SCREENS.START:
                 break;
             case CONFIG.DOM.SCREENS.SETUP:
@@ -90,37 +96,52 @@ class App {
             case CONFIG.DOM.SCREENS.STATS:
                 new StatsView();
                 break;
+            default:
+                console.warn(`No view controller defined for ${screenId}`);
         }
     }
     /**
-     * If previous meeting statistics are find, asks user if they want to see them.
-     * Then either creates a meeting object for displaying data or deletes data.
+     * Checks for previously completed meetings and handles them appropriately.
+     * If found, asks user if they want to view statistics or delete the data.
+     * @static
      * @returns {void}
      */
     static checkForCompletedMeetings() {
-        const completedMeeting = localStorage.getItem(CONFIG.STORAGE.COMPLETED_MEETING);
+        const completedMeetingData = localStorage.getItem(CONFIG.STORAGE.COMPLETED_MEETING);
 
-        if (completedMeeting) {
-            //Ask user if they want to view the results
-            if (confirm("A completed meeting was found. Would you like to view the statistics?")) {
-                const meetingData = JSON.parse(completedMeeting);
+        if (completedMeetingData) {
+            if (confirm(CONFIG.MESSAGES.CONFIRM_VIEW_STATS)) {
+                try {
+                    const meetingData = JSON.parse(completedMeetingData);
 
-                //Create a Meeting object with the saved data
-                const meeting = new Meeting(meetingData.name, meetingData.date);
-                meeting.participants = meetingData.participants || { men: 0, women: 0, nonBinary: 0 };
-                meeting.speakingData = meetingData.speakingData || { men: [], women: [], nonBinary: [] };
+                    const meeting = new Meeting(meetingData.name, meetingData.date);
+                    meeting.participants = meetingData.participants || {
+                        [CONFIG.GENDERS.types.MEN]: 0,
+                        [CONFIG.GENDERS.types.WOMEN]: 0,
+                        [CONFIG.GENDERS.types.NON_BINARY]: 0
+                    };
+                    meeting.speakingData = meetingData.speakingData || {
+                        [CONFIG.GENDERS.types.MEN]: [],
+                        [CONFIG.GENDERS.types.WOMEN]: [],
+                        [CONFIG.GENDERS.types.NON_BINARY]: []
+                    };
 
-                //Save to storage and show stats
-                StorageManager.saveMeeting(meeting);
-                App.navigateTo('stats');
-
+                    StorageManager.saveMeeting(meeting);
+                    App.navigateTo(CONFIG.DOM.SCREENS.STATS);
+                } catch (error) {
+                    console.error('Error parsing completed meeting data:', error);
+                    alert(CONFIG.MESSAGES.ERROR_LOADING_MEETING);
+                }
             }
-                //Clear the data
-                localStorage.removeItem(CONFIG.STORAGE.COMPLETED_MEETING);
+
+            //Clear the data regardless of user choice
+            localStorage.removeItem(CONFIG.STORAGE.COMPLETED_MEETING);
         }
     }
     /**
      * Cleans up resources and saves data before changing views.
+     * Stops active timers and processes to prevent memory leaks.
+     * @static
      * @returns {void}
      */
     static cleanupActiveProcesses() {
