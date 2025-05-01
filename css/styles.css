@@ -116,6 +116,32 @@ body {
     font-size: var(--popup-font-size);
 }
 
+/* Styling specifikt för popup-fönstret */
+.timer-popup-body {
+    background-color: var(--popup-bg-color);
+    color: var(--popup-text-color);
+    padding: var(--popup-padding);
+    max-width: var(--popup-max-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--element-gap);
+}
+
+.timer-popup-body h2 {
+    color: var(--popup-title-color);
+    text-align: center;
+    margin-bottom: var(--element-gap);
+    font-size: var(--popup-title-font-size);
+}
+
+.timer-popup-body #meeting-info {
+    font-size: var(--popup-info-font-size);
+    margin-bottom: var(--element-gap);
+    text-align: center;
+}
+
+
 /* Text styles */
 h1 {
     margin-bottom: var(--element-gap);

@@ -51,8 +51,27 @@ const CONFIG = {
 
     //Popup
     TIMER_POPUP: {
-        BUTTON_TEXT: "Pop Out Timer",
-        BUTTON_CLASS: "pop-out-btn"
+        TITLE: 'Tiny timer tool',
+        BUTTON_TEXT: 'Pop Out Timer',
+        BUTTON_CLASS: 'pop-out-btn',
+        DOM: {
+            TITLE: 'timer-popup-title',
+            MEETING_INFO: 'meeting-info',
+            BODY_CLASS: 'timer-popup-body'
+        },
+        LABELS: {
+            get MEN_BUTTON() {
+              return `${CONFIG.GENDERS.buttonLabels.men}`;
+            },
+            get WOMEN_BUTTON() {
+                return `${CONFIG.GENDERS.buttonLabels.women}`;
+            },
+            get NONBINARY_BUTTON() {
+                return `${CONFIG.GENDERS.buttonLabels.nonbinary}`;
+            },
+            PAUSE_BUTTON: "Paus",
+            END_BUTTON: "Avsluta möte"
+        }
     },
 
     // Chart.js settings:
@@ -134,8 +153,6 @@ const CONFIG = {
         }
     },
 
-
-
     // URL settings:
     URLS: {
         TIMER_WINDOW: 'timer.html',
@@ -185,6 +202,16 @@ const CONFIG = {
         // Responsive breakpoints
         BREAKPOINTS: {
             MOBILE: '600px'
+        },
+
+        POPUP: {
+            BG_COLOR: '#ffffff',
+            TEXT_COLOR: '#333333',
+            TITLE_COLOR: '#2f0402',
+            PADDING: '15px',
+            MAX_WIDTH: '300px',
+            TITLE_FONT_SIZE: '18px',
+            INFO_FONT_SIZE: '14px'
         }
     }
 };

@@ -43,5 +43,26 @@ function applyThemeFromConfig() {
     // Apply breakpoints
     root.style.setProperty('--mobile-breakpoint', CONFIG.THEME.BREAKPOINTS.MOBILE);
 
+    //POPUP STYLING
+    root.style.setProperty('--popup-bg-color', CONFIG.THEME.POPUP.BG_COLOR);
+    root.style.setProperty('--popup-text-color', CONFIG.THEME.POPUP.TEXT_COLOR);
+    root.style.setProperty('--popup-title-color', CONFIG.THEME.POPUP.TITLE_COLOR);
+    root.style.setProperty('--popup-padding', CONFIG.THEME.POPUP.PADDING);
+    root.style.setProperty('--popup-max-width', CONFIG.THEME.POPUP.MAX_WIDTH);
+    root.style.setProperty('--popup-title-font-size', CONFIG.THEME.POPUP.TITLE_FONT_SIZE);
+    root.style.setProperty('--popup-info-font-size', CONFIG.THEME.POPUP.INFO_FONT_SIZE);
+
+    if (document.getElementById(CONFIG.TIMER_POPUP.DOM.TITLE)) {
+        document.getElementById(CONFIG.TIMER_POPUP.DOM.TITLE).textContent = CONFIG.TIMER_POPUP.TITLE;
+    }
+
+    if (document.getElementById(CONFIG.DOM.BUTTONS.POPUP_MEN)) {
+        document.getElementById(CONFIG.DOM.BUTTONS.POPUP_MEN).textContent = CONFIG.TIMER_POPUP.LABELS.MEN_BUTTON;
+        document.getElementById(CONFIG.DOM.BUTTONS.POPUP_WOMEN).textContent = CONFIG.TIMER_POPUP.LABELS.WOMEN_BUTTON;
+        document.getElementById(CONFIG.DOM.BUTTONS.POPUP_NON_BINARY).textContent = CONFIG.TIMER_POPUP.LABELS.NONBINARY_BUTTON;
+        document.getElementById(CONFIG.DOM.BUTTONS.POPUP_PAUSE).textContent = CONFIG.TIMER_POPUP.LABELS.PAUSE_BUTTON;
+        document.getElementById(CONFIG.DOM.BUTTONS.POPUP_END).textContent = CONFIG.TIMER_POPUP.LABELS.END_BUTTON;
+    }
+
     console.log('Theme applied from configuration');
 }
