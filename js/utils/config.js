@@ -49,6 +49,12 @@ const CONFIG = {
         UPDATE_ANIMATION_FRAME: true, // använd requestAnimationFrame istället för setInterval om true
     },
 
+    //Popup
+    TIMER_POPUP: {
+        BUTTON_TEXT: "Pop Out Timer",
+        BUTTON_CLASS: "pop-out-btn"
+    },
+
     // Chart.js settings:
     CHART: {
         pieOptions: {
@@ -103,7 +109,8 @@ const CONFIG = {
             POPUP_WOMEN: 'popup-women-speaking',
             POPUP_NON_BINARY: 'popup-nonbinary-speaking',
             POPUP_PAUSE: 'popup-pause-meeting',
-            POPUP_END: 'popup-end-meeting'
+            POPUP_END: 'popup-end-meeting',
+            TIMER_POPUP: 'timer-popup-btn'
         },
         CHARTS: {
             SPEAKING_TIME: 'speaking-time-chart'
@@ -126,6 +133,8 @@ const CONFIG = {
             BLOCK: 'block',
         }
     },
+
+
 
     // URL settings:
     URLS: {
