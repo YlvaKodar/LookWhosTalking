@@ -31,6 +31,10 @@ const CONFIG = {
             nonbinary: 'Icke-binär'
         }
     },
+    //Meeting settings
+    MEETING: {
+        MIN_PARTICIPANTS: 2,
+    },
 
     //Local keys:
     STORAGE: {
@@ -39,7 +43,7 @@ const CONFIG = {
         SETUP_MEETING_DATA: 'setupMeetingData'
     },
 
-    // Timer-settings
+    // Timer settings
     TIMER: {
         UPDATE_INTERVAL: 100, // millisekunder
         UPDATE_ANIMATION_FRAME: true, // använd requestAnimationFrame istället för setInterval om true
@@ -60,7 +64,9 @@ const CONFIG = {
 
     //Messages:
     MESSAGES: {
-        ERROR_MIN_PARTICIPANTS: 'Inget möte utan minst två deltagare.',
+        get ERROR_MIN_PARTICIPANTS() {
+            return `Inget möte utan minst ${CONFIG.MEETING.MIN_PARTICIPANTS} deltagare.`;
+        },
         ERROR_MEETING_NAME_REQUIRED: 'Vad ska vi kalla mötet?',
         ERROR_DATE_REQUIRED: 'Vilken dag är det?',
         ERROR_POPUP_BLOCKED: 'Timer-fönstret blockerades. Kontrollera dina popup-inställningar.',
