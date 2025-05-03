@@ -112,7 +112,7 @@ const CONFIG = {
         ERROR_DATE_REQUIRED: 'Vilken dag är det?',
         ERROR_POPUP_BLOCKED: 'Timer-fönstret blockerades. Kontrollera dina popup-inställningar.',
         ERROR_TIMER_COMMUNICATION: 'Problem med kommunikationen mellan timer-fönster och huvudfönster.',
-        CONFIRM_VIEW_STATS: 'Det finns statistik från ett avslutat möte. Vill du se den?'
+        CONFIRM_VIEW_STATS: 'Det finns statistik från ett avslutat möte. Vill du se den?',
         ALERT_MEETING_COMPLETED: "Meeting completed! Please open the main application to view statistics."
     },
 
@@ -122,7 +122,7 @@ const CONFIG = {
         ERROR_OPENER_ACCESS: 'Error: Could not access window opener: ',
         ERROR_LOCALSTORAGE: "Error: Could not load from localStorage: ",
         ERROR_PARSE_MEETING: "Error: Could not parse meeting data: ",
-        ERROR_NOTIFY_MAIN: "Error: Could not notify main window: "
+        ERROR_NOTIFY_MAIN: "Error: Could not notify main window: ",
         ERROR_TIMER_COMMUNICATION: "Unknown action from timer window",
         ERROR_END_MEETING: "Error: Could not end meeting: ",
     },
@@ -197,7 +197,7 @@ const CONFIG = {
             BORDER: '#1f0b0a',
             POPUP_BORDER: '#2f0402',
             POPUP_BUTTON: '#882b07',
-            ACTIVE_BORDER: '#ca7d2b'
+            ACTIVE_BORDER: '#442d6b'
         },
 
         // Sizing and dimensions
@@ -234,7 +234,7 @@ const CONFIG = {
 
         CSS_CLASSES: {
             ACTIVE: 'active',
-        }
+        },
 
         POPUP: {
             BG_COLOR: '#ffffff',

@@ -1,11 +1,14 @@
 /**
- * Timer window view:
- * Initializes timer window and syncs between timerView and meetingView
+ * TimerWindow class
+ * Controller for the timer popup window that syncs with the main meeting view.
+ * Allows tracking speaker time from a separate window for better visibility during meetings.
+ * @class
  */
-
 class TimerWindow {
     /**
-     * Initializes timer view elements.
+     * Initializes the timer window view with UI elements and event handlers.
+     * Sets up communication with the main window and loads meeting data.
+     * @constructor
      */
     constructor() {
         // Get references to DOM elements using CONFIG
@@ -17,31 +20,27 @@ class TimerWindow {
         this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.POPUP_DISPLAY);
         this.meetingInfo = document.getElementById(CONFIG.TIMER_POPUP.DOM.MEETING_INFO);
 
-        // Meeting and timer state
         this.meeting = null;
         this.startTime = null;
         this.currentSpeaker = null;
         this.interval = null;
 
-        // Initialize from localStorage or opener window
         this.loadMeetingData();
 
-        // Set up event listeners
         this.initEventListeners();
 
-        // Set up communication channel
         this.setupCommunication();
     }
     /**
-     * Loads meeting data from opener window or local storage.
-     * If that fails, creates new meeting object.
+     * Loads meeting data from the opener window or local storage.
+     * If both fail, creates a new default meeting object as fallback.
      * @returns {void}
      */
     loadMeetingData() {
-        // Try to get meeting data from the opener window
+        //First try to get meeting data from the opener window.
         if (window.opener && !window.opener.closed) {
             try {
-                // This assumes the opener window has a global meeting object
+                //This assumes the opener window has a global meeting object.
                 const openerMeeting = window.opener.getCurrentMeeting();
                 if (openerMeeting) {
                     this.meeting = openerMeeting;
@@ -52,7 +51,7 @@ class TimerWindow {
                 console.error(CONFIG.CONSOLE_MESSAGES.ERROR_OPENER_ACCESS, error);
             }
         }
-        // Fallback to localStorage
+        //Else fallback to localStorage
         try {
             const savedMeeting = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
             if (savedMeeting) {
@@ -63,7 +62,7 @@ class TimerWindow {
         } catch (error) {
             console.error(CONFIG.CONSOLE_MESSAGES.ERROR_LOCALSTORAGE, error);
         }
-        // If all else fails, create a basic meeting object
+        //If all else fails, create a basic meeting object.
         this.meeting = {
             name: CONFIG.DEFAULTS.MEETING_NAME,
             date: new Date().toISOString().split('T')[0],
@@ -83,7 +82,7 @@ class TimerWindow {
         this.updateMeetingInfo();
     }
     /**
-     * Updates meeting participation info.
+     * Updates the meeting info display with current meeting name and participant count.
      * @returns {void}
      */
     updateMeetingInfo() {
@@ -96,7 +95,7 @@ class TimerWindow {
         }
     }
     /**
-     * Sets up listeners for buttons.
+     * Sets up event listeners for all speaker and control buttons.
      * @returns {void}
      */
     initEventListeners() {
@@ -107,8 +106,8 @@ class TimerWindow {
         this.endButton.addEventListener('click', () => this.endMeeting());
     }
     /**
-     * Storage event listener to receive updates from main window.
-     * Periodically saves data back to storage.
+     * Sets up bi-directional communication with the main window.
+     * Uses localStorage events to receive updates and sends periodic updates.
      * @returns {void}
      */
     setupCommunication() {
@@ -123,68 +122,65 @@ class TimerWindow {
             }
         });
 
-        // Periodic save of data back to localStorage
+        //Periodic save of data back to localStorage.
         setInterval(() => this.saveData(), CONFIG.TIMER.SAVE_INTERVAL);
     }
     /**
-     * Starts timer for current speaker.
-     * Updates UI.
-     * @param {string} gender - The gender of the current speaker
+     * Starts tracking time for a speaker of the specified gender.
+     * Stops any current speaker, updates UI, and notifies the main window.
+     * @param {string} gender - The gender identifier of the current speaker
      * @returns {void}
      */
     startSpeaking(gender) {
-        // Stop any current speaker
+        //Stop any current speaker.
         if (this.interval) {
             this.pauseSpeaking();
         }
 
-        // Start timing for the new speaker
+        //Start timing for the new speaker.
         this.currentSpeaker = gender;
         this.startTime = Date.now();
         this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
 
-        // Update the UI
+        //Update the UI.
         this.updateButtonStates();
 
-        // Notify main window if open
+        //Notify main window if open.
         this.notifyMainWindow(CONFIG.COMMUNICATION.ACTIONS.SPEAKER_CHANGE, { gender });
     }
     /**
-     * Pauses all timers and resets timer state.
-     * Saves data to meeting data.
+     * Pauses active speaker timing and records the duration.
+     * Updates the meeting data with the speaking segment and resets timer state.
      * @returns {void}
      */
     pauseSpeaking() {
         if (!this.startTime || !this.currentSpeaker) return;
 
-        const duration = (Date.now() - this.startTime) / 1000; // in seconds
+        const duration = (Date.now() - this.startTime) / 1000;
 
-        // Add to meeting data
+        //Add to meeting data.
         if (!this.meeting.speakingData[this.currentSpeaker]) {
             this.meeting.speakingData[this.currentSpeaker] = [];
         }
         this.meeting.speakingData[this.currentSpeaker].push(duration);
 
-        // Reset timer state
+        //Reset timer state.
         clearInterval(this.interval);
         this.interval = null;
         this.startTime = null;
         this.currentSpeaker = null;
 
-        // Update UI
+        //Update UI.
         this.updateButtonStates();
         this.timerDisplay.textContent = CONFIG.TIMER.DEFAULT_DISPLAY;
 
-        // Save and notify
+        //Save and notify.
         this.saveData();
         this.notifyMainWindow(CONFIG.COMMUNICATION.ACTIONS.SPEAKER_PAUSED, { duration });
     }
     /**
-     * Updates timer.
-     * @returns {void}
-     */
-    /**
-     * Updates timer display based on elapsed time.
+     * Updates the timer display with the current elapsed time.
+     * Formats time as MM:SS with leading zeros.
      * @returns {void}
      */
     updateTimer() {
@@ -198,7 +194,8 @@ class TimerWindow {
             `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
     /**
-     * Sets button state (active /passive)
+     * Updates the visual state of speaker buttons based on current speaker.
+     * Adds 'active' class to the button of the currently speaking gender.
      * @returns {void}
      */
     updateButtonStates() {
@@ -215,18 +212,16 @@ class TimerWindow {
         }
     }
     /**
-     * Saves meeting data to local storage.
+     * Saves the current meeting data to localStorage.
+     * Used for persistence and communication with the main window.
      * @returns {void}
      */
     saveData() {
         localStorage.setItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING, JSON.stringify(this.meeting));
     }
     /**
-     * Updates main window with current data.
-     * @returns {void}
-     */
-    /**
-     * Notifies main window of actions and data changes.
+     * Notifies the main window about actions and data changes.
+     * Uses window.opener to communicate with the parent window.
      * @param {string} action - The action type to notify about
      * @param {Object} data - Additional data to send with the notification
      * @returns {void}
@@ -245,7 +240,8 @@ class TimerWindow {
         }
     }
     /**
-     * Ends the meeting and sends data to main window.
+     * Ends the current meeting, finalizes data, and notifies the main window.
+     * Closes the timer window if communication with main window successful.
      * @returns {void}
      */
     endMeeting() {
@@ -272,8 +268,10 @@ class TimerWindow {
         alert(CONFIG.MESSAGES.ALERT_MEETING_COMPLETED);
     }
 }
-
-// Initialize when the DOM is loaded
+    /**
+     * Initialize the timer window controller when DOM is fully loaded.
+     * Creates a global timerWindow object for access from the main window.
+     */
 document.addEventListener('DOMContentLoaded', () => {
     window.timerWindow = new TimerWindow();
 });

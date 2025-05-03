@@ -107,7 +107,7 @@ class App {
      * @returns {void}
      */
     static checkForCompletedMeetings() {
-        const completedMeetingData = localStorage.getItem(CONFIG.STORAGE.KEY.COMPLETED_MEETING);
+        const completedMeetingData = localStorage.getItem(CONFIG.STORAGE.KEYS.COMPLETED_MEETING);
 
         if (completedMeetingData) {
             if (confirm(CONFIG.MESSAGES.CONFIRM_VIEW_STATS)) {
