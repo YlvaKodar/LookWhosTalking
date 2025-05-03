@@ -164,18 +164,18 @@ class MeetingView {
      * @returns {void}
      */
     updateButtonStates(activeGender) {
-        // Remove active class from all buttons
-        if (this.menButton) this.menButton.classList.remove('active');
-        if (this.womenButton) this.womenButton.classList.remove('active');
-        if (this.nonBinaryButton) this.nonBinaryButton.classList.remove('active');
+        //Remove active class from all buttons
+        if (this.menButton) this.menButton.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
+        if (this.womenButton) this.womenButton.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
+        if (this.nonBinaryButton) this.nonBinaryButton.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
 
-        // Add active class to the button for the currently speaking gender
+        //Add active class to the button for the currently speaking gender
         if (activeGender === CONFIG.GENDERS.types[0] && this.menButton) {
-            this.menButton.classList.add('active');
+            this.menButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         } else if (activeGender === CONFIG.GENDERS.types[1] && this.womenButton) {
-            this.womenButton.classList.add('active');
+            this.womenButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         } else if (activeGender === CONFIG.GENDERS.types[2] && this.nonBinaryButton) {
-            this.nonBinaryButton.classList.add('active');
+            this.nonBinaryButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         }
     }
     /**

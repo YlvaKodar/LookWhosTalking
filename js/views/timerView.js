@@ -31,6 +31,7 @@ class TimerWindow {
 
         this.setupCommunication();
     }
+
     /**
      * Loads meeting data from the opener window or local storage.
      * If both fail, creates a new default meeting object as fallback.
@@ -81,6 +82,7 @@ class TimerWindow {
 
         this.updateMeetingInfo();
     }
+
     /**
      * Updates the meeting info display with current meeting name and participant count.
      * @returns {void}
@@ -94,6 +96,7 @@ class TimerWindow {
             this.meetingInfo.textContent = `${this.meeting.name} | ${total} ${CONFIG.LABELS.PARTICIPANTS}`;
         }
     }
+
     /**
      * Sets up event listeners for all speaker and control buttons.
      * @returns {void}
@@ -105,6 +108,7 @@ class TimerWindow {
         this.pauseButton.addEventListener('click', () => this.pauseSpeaking());
         this.endButton.addEventListener('click', () => this.endMeeting());
     }
+
     /**
      * Sets up bi-directional communication with the main window.
      * Uses localStorage events to receive updates and sends periodic updates.
@@ -125,6 +129,7 @@ class TimerWindow {
         //Periodic save of data back to localStorage.
         setInterval(() => this.saveData(), CONFIG.TIMER.SAVE_INTERVAL);
     }
+
     /**
      * Starts tracking time for a speaker of the specified gender.
      * Stops any current speaker, updates UI, and notifies the main window.
@@ -146,8 +151,9 @@ class TimerWindow {
         this.updateButtonStates();
 
         //Notify main window if open.
-        this.notifyMainWindow(CONFIG.COMMUNICATION.ACTIONS.SPEAKER_CHANGE, { gender });
+        this.notifyMainWindow(CONFIG.COMMUNICATION.ACTIONS.SPEAKER_CHANGE, {gender});
     }
+
     /**
      * Pauses active speaker timing and records the duration.
      * Updates the meeting data with the speaking segment and resets timer state.
@@ -176,8 +182,9 @@ class TimerWindow {
 
         //Save and notify.
         this.saveData();
-        this.notifyMainWindow(CONFIG.COMMUNICATION.ACTIONS.SPEAKER_PAUSED, { duration });
+        this.notifyMainWindow(CONFIG.COMMUNICATION.ACTIONS.SPEAKER_PAUSED, {duration});
     }
+
     /**
      * Updates the timer display with the current elapsed time.
      * Formats time as MM:SS with leading zeros.
@@ -193,24 +200,26 @@ class TimerWindow {
         this.timerDisplay.textContent =
             `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
+
     /**
      * Updates the visual state of speaker buttons based on current speaker.
      * Adds 'active' class to the button of the currently speaking gender.
      * @returns {void}
      */
     updateButtonStates() {
-        this.menButton.classList.remove(CONFIG.CSS_CLASSES.ACTIVE);
-        this.womenButton.classList.remove(CONFIG.CSS_CLASSES.ACTIVE);
-        this.nonBinaryButton.classList.remove(CONFIG.CSS_CLASSES.ACTIVE);
+        if (this.menButton) this.menButton.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
+        if (this.womenButton) this.womenButton.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
+        if (this.nonBinaryButton) this.nonBinaryButton.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
 
         if (this.currentSpeaker === CONFIG.GENDERS.types[0]) {
-            this.menButton.classList.add(CONFIG.CSS_CLASSES.ACTIVE);
+            this.menButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         } else if (this.currentSpeaker === CONFIG.GENDERS.types[1]) {
-            this.womenButton.classList.add(CONFIG.CSS_CLASSES.ACTIVE);
+            this.womenButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         } else if (this.currentSpeaker === CONFIG.GENDERS.types[2]) {
-            this.nonBinaryButton.classList.add(CONFIG.CSS_CLASSES.ACTIVE);
+            this.nonBinaryButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         }
     }
+
     /**
      * Saves the current meeting data to localStorage.
      * Used for persistence and communication with the main window.
@@ -219,6 +228,7 @@ class TimerWindow {
     saveData() {
         localStorage.setItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING, JSON.stringify(this.meeting));
     }
+
     /**
      * Notifies the main window about actions and data changes.
      * Uses window.opener to communicate with the parent window.
@@ -239,6 +249,7 @@ class TimerWindow {
             }
         }
     }
+
     /**
      * Ends the current meeting, finalizes data, and notifies the main window.
      * Closes the timer window if communication with main window successful.
@@ -265,7 +276,8 @@ class TimerWindow {
             } catch (error) {
                 console.error(CONFIG.CONSOLE_MESSAGES.ERROR_END_MEETING, error);
             }
-        alert(CONFIG.MESSAGES.ALERT_MEETING_COMPLETED);
+            alert(CONFIG.MESSAGES.ALERT_MEETING_COMPLETED);
+        }
     }
 }
     /**
