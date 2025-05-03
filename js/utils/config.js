@@ -100,7 +100,14 @@ const CONFIG = {
                     position: 'bottom',
                 }
             }
-        }
+        },
+        COLORS: {
+            OVER: '#ff6666',  // For showing speaking over fair time
+            UNDER: '#66ff66'  // For showing speaking under fair time
+        },
+        TYPES: {
+            SPEAKING_TIME_DISTRIBUTION: 'pie'
+        },
     },
 
     //Messages:
@@ -188,10 +195,45 @@ const CONFIG = {
         }
     },
 
+    STATS: {
+        STRUCTURE: {
+            TOTAL_TIME: 'totalSpeakingTime',
+            GENDER_TIME: 'genderSpeakingTime',
+            STATEMENTS_COUNT: 'genderStatmentCount',
+            AVG_DURATION: 'genderStatmentDurationAverage',
+            TIME_PER_PARTICIPANT: 'genderSpeakingTimePerParticipant',
+            FAIR_DISTRIBUTION: 'fairDistribution'
+        },
+        DISPLAY: {
+            HEADER_CLASSES: 'stats-header',
+            GENDER_STAT_CLASS_PREFIX: 'stats-',
+            OVER_CLASS: 'over',
+            UNDER_CLASS: 'under'
+        },
+        LABELS: {
+            FAIR_DISTRIBUTION_HEADER: 'Rättvis fördelning',
+            SPEAKING_TIME: 'Talartid',
+            STATEMENTS_COUNT: 'Antal inlägg',
+            AVG_LENGTH: 'Genomsnittlig längd',
+            MORE_THAN_FAIR: 'mer än rättvist',
+            LESS_THAN_FAIR: 'mindre än rättvist',
+            FAIR_LABEL: 'rättvist'
+        },
+    },
+
     // URL settings:
     URLS: {
         TIMER_WINDOW: 'timer.html',
         TIMER_WINDOW_FEATURES: 'width=300,height=400,resizable=yes,status=no,location=no,menubar=no'
+    },
+
+    FORMATTING: {
+        TIME: {
+            DEFAULT_DISPLAY: '00:00',
+            TIME_SEPARATOR: ':',
+            PAD_CHAR: '0',
+            PAD_LENGTH: 2
+        }
     },
 
     // UI Theme configuration

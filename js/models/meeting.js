@@ -10,10 +10,10 @@ class Meeting {
         this.startTime = null;
     }
 
-    setParticipants(men, women, nonBinary) {
+    setParticipants(men, women, nonbinary) {
         this.participants.men = men;
         this.participants.women = women;
-        this.participants.nonBinary = nonBinary;
+        this.participants.nonBinary = nonbinary;
     }
     //Fler funktioner för möteshantering
 }
