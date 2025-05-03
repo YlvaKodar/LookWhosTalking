@@ -53,12 +53,12 @@ class SetupView {
      */
     validateForm() {
         if (!this.meetingNameInput || !this.meetingNameInput.value.trim()) {
-            alert(CONFIG.MESSAGES.ERROR_MEETING_NAME_REQUIRED);
+            alert(CONFIG.MESSAGES.ALERT.ERROR_MEETING_NAME_REQUIRED);
             return false;
         }
 
         if (!this.dateInput || !this.dateInput.value) {
-            alert(CONFIG.MESSAGES.ERROR_DATE_REQUIRED);
+            alert(CONFIG.MESSAGES.ALERT.ERROR_DATE_REQUIRED);
             return false;
         }
 
@@ -67,7 +67,7 @@ class SetupView {
         const nonBinaryCount = parseInt(this.nonBinaryCount?.value || 0);
 
         if (menCount + womenCount + nonBinaryCount < CONFIG.MEETING.MIN_PARTICIPANTS) {
-            alert(CONFIG.MESSAGES.ERROR_MIN_PARTICIPANTS);
+            alert(CONFIG.MESSAGES.ALERT.ERROR_MIN_PARTICIPANTS);
             return false;
         }
 
@@ -91,7 +91,7 @@ class SetupView {
         };
 
         // Save to temporary storage for transition to MeetingView
-        localStorage.setItem(CONFIG.STORAGE.SETUP_MEETING_DATA, JSON.stringify(meetingData));
+        localStorage.setItem(CONFIG.STORAGE.KEYS.SETUP_MEETING_DATA, JSON.stringify(meetingData));
 
         return true;
     }

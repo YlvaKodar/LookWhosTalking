@@ -32,7 +32,7 @@ class App {
                 this.navigateTo(screenId);
             });
         } else {
-            console.warn(CONFIG.CONSOLE_MESSAGES.ELEMENT_NOT_FOUND + elementId);
+            console.warn(CONFIG.MESSAGES.CONSOLE.ELEMENT_NOT_FOUND + elementId);
         }
 
     }
@@ -54,7 +54,7 @@ class App {
                 this.navigateTo(targetView);
             });
         }else {
-        console.warn(`Button '${buttonId}' not found for form navigation.`);
+        console.warn(CONFIG.MESSAGES.CONSOLE.ELEMENT_NOT_FOUND + buttonId);
         }
     }
     /**
@@ -71,7 +71,7 @@ class App {
         if (document.getElementById(`${screenId}`)) {
             document.getElementById(`${screenId}`).style.display = CONFIG.DOM.DISPLAY.BLOCK;
         } else {
-            console.error(`Screen '${screenId}' was not found in the DOM!`);;
+            console.error(CONFIG.MESSAGES.CONSOLE.ELEMENT_NOT_FOUND + screenId);
             return;
         }
         this.initializeView(screenId);
@@ -97,7 +97,7 @@ class App {
                 new StatsView();
                 break;
             default:
-                console.warn(`No view controller defined for ${screenId}`);
+                console.warn(CONFIG.MESSAGES.CONSOLE.VIEW_UNDEFINED + screenId);
         }
     }
     /**
@@ -110,7 +110,7 @@ class App {
         const completedMeetingData = localStorage.getItem(CONFIG.STORAGE.KEYS.COMPLETED_MEETING);
 
         if (completedMeetingData) {
-            if (confirm(CONFIG.MESSAGES.CONFIRM_VIEW_STATS)) {
+            if (confirm(CONFIG.MESSAGES.CONFIRM.VIEW_STATS)) {
                 try {
                     const meetingData = JSON.parse(completedMeetingData);
 
@@ -129,8 +129,8 @@ class App {
                     StorageManager.saveMeeting(meeting);
                     App.navigateTo(CONFIG.DOM.SCREENS.STATS);
                 } catch (error) {
-                    console.error('Error parsing completed meeting data:', error);
-                    alert(CONFIG.MESSAGES.ERROR_LOADING_MEETING);
+                    console.error(CONFIG.MESSAGES.CONSOLE.ERROR_PARSE_MEETING + error);
+                    alert(CONFIG.MESSAGES.ALERT.ERROR_LOADING_MEETING);
                 }
             }
 

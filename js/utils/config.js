@@ -105,26 +105,33 @@ const CONFIG = {
 
     //Messages:
     MESSAGES: {
-        get ERROR_MIN_PARTICIPANTS() {
-            return `Inget möte utan minst ${CONFIG.MEETING.MIN_PARTICIPANTS} deltagare.`;
+        CONSOLE: {
+            ELEMENT_NOT_FOUND: 'Error: The following element could not be found: ',
+            VIEW_UNDEFINED: 'No view controller defined for screen: ',
+            ERROR_PARSE_MEETING: 'Error parsing completed meeting data: ',
+            ERROR_OPENER_ACCESS: 'Error: Could not access window opener: ',
+            ERROR_LOCALSTORAGE: "Error: Could not load from localStorage: ",
+            ERROR_NOTIFY_MAIN: "Error: Could not notify main window: ",
+            ERROR_END_MEETING: "Error: Could not end meeting: ",
+            UPDATE_TIMER_WINDOW: "Received update from timer window: ",
+            ERROR_TIMER_COMMUNICATION: 'Could not communicate with timer window.',
+            ERROR_UPDATE_TIMER_WINDOW: "Error updating timer window: ",
         },
-        ERROR_MEETING_NAME_REQUIRED: 'Vad ska vi kalla mötet?',
-        ERROR_DATE_REQUIRED: 'Vilken dag är det?',
-        ERROR_POPUP_BLOCKED: 'Timer-fönstret blockerades. Kontrollera dina popup-inställningar.',
-        ERROR_TIMER_COMMUNICATION: 'Problem med kommunikationen mellan timer-fönster och huvudfönster.',
-        CONFIRM_VIEW_STATS: 'Det finns statistik från ett avslutat möte. Vill du se den?',
-        ALERT_MEETING_COMPLETED: "Meeting completed! Please open the main application to view statistics."
-    },
 
-    //Console output:
-    CONSOLE_MESSAGES: {
-        ELEMENT_NOT_FOUND: 'Error: The following element could not be found: ',
-        ERROR_OPENER_ACCESS: 'Error: Could not access window opener: ',
-        ERROR_LOCALSTORAGE: "Error: Could not load from localStorage: ",
-        ERROR_PARSE_MEETING: "Error: Could not parse meeting data: ",
-        ERROR_NOTIFY_MAIN: "Error: Could not notify main window: ",
-        ERROR_TIMER_COMMUNICATION: "Unknown action from timer window",
-        ERROR_END_MEETING: "Error: Could not end meeting: ",
+        CONFIRM: {
+            VIEW_STATS: 'Det finns statistik från ett avslutat möte. Vill du se den?',
+        },
+
+        ALERT: {
+            MEETING_COMPLETED: "Mötet avslutas. Återvänd till huvudfönstret för att se mötesstatistiken.",
+            ERROR_PARSE_MEETING: 'Mötet kan inte hittas.',
+            ERROR_POPUP_BLOCKED: 'Timer-fönstret blockerades. Kontrollera dina popup-inställningar.',
+            ERROR_MEETING_NAME_REQUIRED: 'Vad ska vi kalla mötet?',
+            ERROR_DATE_REQUIRED: 'Vilken dag är det?',
+            get ERROR_MIN_PARTICIPANTS() {
+                return `Inget möte utan minst ${CONFIG.MEETING.MIN_PARTICIPANTS} deltagare.`;
+            },
+        },
     },
 
     //Default values:

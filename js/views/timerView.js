@@ -49,7 +49,7 @@ class TimerWindow {
                     return;
                 }
             } catch (error) {
-                console.error(CONFIG.CONSOLE_MESSAGES.ERROR_OPENER_ACCESS, error);
+                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_OPENER_ACCESS, error);
             }
         }
         //Else fallback to localStorage
@@ -61,7 +61,7 @@ class TimerWindow {
                 return;
             }
         } catch (error) {
-            console.error(CONFIG.CONSOLE_MESSAGES.ERROR_LOCALSTORAGE, error);
+            console.error(CONFIG.MESSAGES.CONSOLE.ERROR_LOCALSTORAGE, error);
         }
         //If all else fails, create a basic meeting object.
         this.meeting = {
@@ -121,7 +121,7 @@ class TimerWindow {
                     this.meeting = JSON.parse(event.newValue);
                     this.updateMeetingInfo();
                 } catch (error) {
-                    console.error(CONFIG.CONSOLE_MESSAGES.ERROR_PARSE_MEETING, error);
+                    console.error(CONFIG.MESSAGES.CONSOLE.ERROR_PARSE_MEETING, error);
                 }
             }
         });
@@ -245,7 +245,7 @@ class TimerWindow {
                     meeting: this.meeting
                 });
             } catch (error) {
-                console.error(CONFIG.MESSAGES.ERROR_NOTIFY_MAIN, error);
+                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_NOTIFY_MAIN, error);
             }
         }
     }
@@ -274,9 +274,9 @@ class TimerWindow {
                 // Only close if main window acknowledged the end
                 window.close();
             } catch (error) {
-                console.error(CONFIG.CONSOLE_MESSAGES.ERROR_END_MEETING, error);
+                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_END_MEETING, error);
             }
-            alert(CONFIG.MESSAGES.ALERT_MEETING_COMPLETED);
+            alert(CONFIG.MESSAGES.ALERT.MEETING_COMPLETED);
         }
     }
 }

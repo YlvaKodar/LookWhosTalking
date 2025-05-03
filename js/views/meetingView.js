@@ -61,7 +61,7 @@ class MeetingView {
             CONFIG.URLS.TIMER_WINDOW_FEATURES);
 
         if (!this.timerWindow) {
-            alert(CONFIG.MESSAGES.ERROR_POPUP_BLOCKED);
+            alert(CONFIG.MESSAGES.ALERT.ERROR_POPUP_BLOCKED);
             return;
         }
 
@@ -85,20 +85,20 @@ class MeetingView {
      * @returns {void}
      */
     handleTimerWindowUpdate(action, data) {
-        console.log("Received update from timer window:", action, data);
+        console.log(CONFIG.MESSAGES.CONSOLE.UPDATE_TIMER_WINDOW, action, data);
 
         switch(action) {
-            case 'speakerChange':
+            case CONFIG.COMMUNICATION.ACTIONS.SPEAKER_CHANGE:
                 //Update the main UI to match the timer window
                 this.startSpeaking(data.gender, false); //false means don't update the timer window
                 break;
 
-            case 'speakerPaused':
+            case CONFIG.COMMUNICATION.ACTIONS.SPEAKER_PAUSED:
                 //Update the main UI
                 this.pauseSpeaking(false);
                 break;
 
-            case 'meetingEnded':
+            case CONFIG.COMMUNICATION.ACTIONS.MEETING_ENDED:
                 //Update our meeting object and navigate to stats
                 if (data.meeting) {
                     this.meeting = data.meeting;
@@ -107,7 +107,7 @@ class MeetingView {
                 }
                 break;
             default:
-                console.error(CONFIG.MESSAGES.ERROR_TIMER_COMMUNICATION);
+                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_TIMER_COMMUNICATION);
         }
     }
     /**
@@ -126,7 +126,7 @@ class MeetingView {
             try {
                 this.timerWindow.timerWindow.startSpeaking(gender);
             } catch (error) {
-                console.error("Error updating timer window:", error);
+                    console.error(CONFIG.MESSAGES.CONSOLE.ERROR_UPDATE_TIMER_WINDOW, error);
             }
         }
     }
@@ -145,7 +145,7 @@ class MeetingView {
             try {
                 this.timerWindow.timerWindow.pauseSpeaking();
             } catch (error) {
-                console.error("Error updating timer window:", error);
+                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_UPDATE_TIMER_WINDOW, error);
             }
         }
     }
