@@ -1,6 +1,7 @@
 /**
  * Main controller for the "Look Who's Talking" application.
  * Handles initialization, navigation between screens, and application lifecycle.
+ * Coordinates controllers for different application views.
  * @class
  */
 class App {
@@ -11,6 +12,9 @@ class App {
      * @returns {void}
      */
     static init() {
+        //Store active controllers for resource management
+        this.activeControllers = {};
+
         this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.NEW_MEETING, CONFIG.DOM.SCREENS.SETUP);
         this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.END_MEETING, CONFIG.DOM.SCREENS.STATS);
         this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.BACK_TO_START, CONFIG.DOM.SCREENS.START);
@@ -30,8 +34,8 @@ class App {
         if (document.getElementById(elementId)){
             document.getElementById(elementId).addEventListener('click', () => {
                 if (elementId === CONFIG.DOM.BUTTONS.BACK_TO_START) {
-                    StorageManager.clearMeetingData(); // Rensa alla mötesdata
-                    this.cleanupActiveProcesses();
+                    StorageManager.clearMeetingData(); // Clear all meeting data
+                    this.cleanupActiveControllers()
                 }
                 this.navigateTo(screenId);
             });
@@ -41,7 +45,7 @@ class App {
 
     }
     /**
-     * Sets up a buttons that requires form validation before navigation.
+     * Sets up button that requires form validation before navigation.
      * @static
      * @param {string} buttonId - ID for the button element that triggers navigation.
      * @param {string} targetScreenId - ID for the destination screen.
@@ -63,47 +67,101 @@ class App {
     }
     /**
      * Switches to the specified screen view.
+     * Cleans up previous controllers and initializes the correct controller for the new view.
      * @static
-     * @param {string} screenId - ID for the destination screen.
+     * @param {string} screenId - ID for the destination screen
      * @returns {void}
      */
     static navigateTo(screenId) {
+        //Special handling for the meeting screen
+        if (screenId === CONFIG.DOM.SCREENS.MEETING) {
+            //Check if we have valid meeting data
+            const setupData = StorageManager.getSetupMeetingData();
+            const currentMeeting = StorageManager.getCurrentMeeting();
+
+            if (!setupData && !currentMeeting) {
+                alert(CONFIG.MESSAGES.ALERT.ERROR_MEETING_DATA_REQUIRED);
+                return;
+            }
+
+            // If we have setup data but no active meeting, create a meeting from setup data
+            if (setupData && !currentMeeting) {
+                const meeting = new Meeting(setupData.name, setupData.date);
+                meeting.setParticipants(
+                    setupData.participants[CONFIG.GENDERS.types[0]] || 0,
+                    setupData.participants[CONFIG.GENDERS.types[1]] || 0,
+                    setupData.participants[CONFIG.GENDERS.types[2]] || 0
+                );
+                StorageManager.saveMeeting(meeting);
+            }
+        }
+
+        //Clean up any active controllers before changing screens
+        this.cleanupActiveControllers();
+
+        //Hide all screens
         document.querySelectorAll('.screen').forEach(element => {
             element.style.display = CONFIG.DOM.DISPLAY.NONE;
         });
 
-        if (document.getElementById(`${screenId}`)) {
-            document.getElementById(`${screenId}`).style.display = CONFIG.DOM.DISPLAY.BLOCK;
+        // Show the target screen
+        const targetScreen = document.getElementById(screenId);
+        if (targetScreen) {
+            targetScreen.style.display = CONFIG.DOM.DISPLAY.BLOCK;
         } else {
             console.error(CONFIG.MESSAGES.CONSOLE.ELEMENT_NOT_FOUND + screenId);
             return;
         }
-        this.initializeView(screenId);
+
+        //Initialize the appropriate controller for the screen
+        this.initializeController(screenId);
     }
+
     /**
-     * Initializes the appropriate view controller for the current screen.
+     * Initializes the appropriate controller for the current screen.
+     * Creates the associated view if needed and wires everything together.
      * @static
-     * @param {string} screenId - ID for the current screen.
+     * @param {string} screenId - ID for the current screen
      * @returns {void}
      */
-    static initializeView(screenId){
-        this.cleanupActiveProcesses();
+    static initializeController(screenId) {
         switch(screenId) {
             case CONFIG.DOM.SCREENS.START:
+                //Start screen doesn't need a controller
                 break;
+
             case CONFIG.DOM.SCREENS.SETUP:
-                new SetupView();
+                //Create SetupView and store its controller reference
+                const setupView = new SetupView();
+                //Store controller reference for cleanup
+                if (setupView.controller) {
+                    this.activeControllers.setup = setupView.controller;
+                }
                 break;
+
             case CONFIG.DOM.SCREENS.MEETING:
-                new MeetingView();
+                //Create MeetingView and store its controller reference
+                const meetingView = new MeetingView();
+                //Store controller reference for cleanup
+                if (meetingView.controller) {
+                    this.activeControllers.meeting = meetingView.controller;
+                }
                 break;
+
             case CONFIG.DOM.SCREENS.STATS:
-                new StatsView();
+                //Create StatsView and store its controller reference
+                const statsView = new StatsView();
+                //Store controller reference for cleanup
+                if (statsView.controller) {
+                    this.activeControllers.stats = statsView.controller;
+                }
                 break;
+
             default:
                 console.warn(CONFIG.MESSAGES.CONSOLE.VIEW_UNDEFINED + screenId);
         }
     }
+
     /**
      * Checks for previously completed meetings and handles them appropriately.
      * If found, asks user if they want to view statistics or delete the data.
@@ -118,18 +176,27 @@ class App {
                 try {
                     const meetingData = JSON.parse(completedMeetingData);
 
-                    const meeting = new Meeting(meetingData.name, meetingData.date);
+                    // Create a proper Meeting object
+                    const meeting = new Meeting(
+                        meetingData.name || CONFIG.DEFAULTS.MEETING_NAME,
+                        meetingData.date || new Date().toISOString().split('T')[0]
+                    );
+
+                    // Copy participant data
                     meeting.participants = meetingData.participants || {
-                        [CONFIG.GENDERS.types.MEN]: 0,
-                        [CONFIG.GENDERS.types.WOMEN]: 0,
-                        [CONFIG.GENDERS.types.NON_BINARY]: 0
-                    };
-                    meeting.speakingData = meetingData.speakingData || {
-                        [CONFIG.GENDERS.types.MEN]: [],
-                        [CONFIG.GENDERS.types.WOMEN]: [],
-                        [CONFIG.GENDERS.types.NON_BINARY]: []
+                        [CONFIG.GENDERS.types[0]]: 0,
+                        [CONFIG.GENDERS.types[1]]: 0,
+                        [CONFIG.GENDERS.types[2]]: 0
                     };
 
+                    // Copy speaking data
+                    meeting.speakingData = meetingData.speakingData || {
+                        [CONFIG.GENDERS.types[0]]: [],
+                        [CONFIG.GENDERS.types[1]]: [],
+                        [CONFIG.GENDERS.types[2]]: []
+                    };
+
+                    // Save the meeting and navigate to stats
                     StorageManager.saveMeeting(meeting);
                     App.navigateTo(CONFIG.DOM.SCREENS.STATS);
                 } catch (error) {
@@ -138,18 +205,28 @@ class App {
                 }
             }
 
-            //Clear the data regardless of user choice
+            //Clear the completed meeting data
             localStorage.removeItem(CONFIG.STORAGE.KEYS.COMPLETED_MEETING);
         }
     }
+
     /**
-     * Cleans up resources and saves data before changing views.
-     * Stops active timers and processes to prevent memory leaks.
+     * Cleans up all active controllers to prevent memory leaks.
      * @static
      * @returns {void}
      */
-    static cleanupActiveProcesses() {
-        //todo: clean up resources, save stuff, stop timers etc.
+    static cleanupActiveControllers() {
+        // Call cleanup methods on any active controllers
+        Object.values(this.activeControllers).forEach(controller => {
+            if (controller && typeof controller.cleanup === 'function') {
+                controller.cleanup();
+            }
+        });
+
+        // Reset the active controllers object
+        this.activeControllers = {};
+
+        //Clean up any Chart.js instances
         const chartIds = [CONFIG.DOM.CHARTS.SPEAKING_TIME];
         chartIds.forEach(id => {
             const chartInstance = Chart.getChart(id);
