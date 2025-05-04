@@ -1,5 +1,5 @@
 /**
- * Controller for the timer popup window.
+ * Controller for the timer popout window.
  * Handles timer functionality and communication with the main window.
  * @class
  */
