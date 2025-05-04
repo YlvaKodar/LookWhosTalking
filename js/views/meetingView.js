@@ -1,162 +1,69 @@
 /**
- * View controller for the active meeting screen.
- * Manages timer functionality, speaker tracking, and synchronization with popup timer window.
- * Uses configuration from CONFIG to ensure consistency across the application.
+ * View for the active meeting screen.
+ * Focuses on UI updates and user interactions.
+ * Delegates business logic to MeetingController.
  * @class
  */
 class MeetingView {
     /**
-     * Initializes the meeting view with all necessary DOM elements and event handlers.
-     * Sets up timer functionality and popup window communication.
+     * Initializes the meeting view with all necessary DOM elements.
      * @constructor
      */
     constructor() {
         this.menButton = document.getElementById(CONFIG.DOM.BUTTONS.MEN);
         this.womenButton = document.getElementById(CONFIG.DOM.BUTTONS.WOMEN);
-        this.nonBinaryButton = document.getElementById(CONFIG.DOM.BUTTONS.NON_BINARY);
+        this.nonbinaryButton = document.getElementById(CONFIG.DOM.BUTTONS.NON_BINARY);
         this.pauseButton = document.getElementById(CONFIG.DOM.BUTTONS.PAUSE);
         this.endButton = document.getElementById(CONFIG.DOM.BUTTONS.END_MEETING);
         this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.DISPLAY);
-
-        // Create pop-out timer button
         this.popOutButton = document.getElementById(CONFIG.DOM.BUTTONS.TIMER_POPUP);
-        if (this.popOutButton) {
+
+        if (!this.popOutButton) {
+            this.popOutButton = document.createElement('button');
+            this.popOutButton.id = CONFIG.DOM.BUTTONS.TIMER_POPUP;
             this.popOutButton.textContent = CONFIG.TIMER_POPUP.BUTTON_TEXT;
             this.popOutButton.className = CONFIG.TIMER_POPUP.BUTTON_CLASS;
-            this.popOutButton.addEventListener('click', () => this.openTimerWindow());
+            this.timerDisplay.parentNode.insertBefore(this.popOutButton, this.timerDisplay.nextSibling);
+        }
+        // Load meeting data with error handling
+        this.meeting = StorageManager.getCurrentMeeting();
+
+        if (!this.meeting) {
+            alert(CONFIG.MESSAGES.ALERT.ERROR_MEETING_DATA_REQUIRED);
+            App.navigateTo(CONFIG.DOM.SCREENS.SETUP);
+            return;
         }
 
-        this.timerDisplay.parentNode.insertBefore(this.popOutButton, this.timerDisplay.nextSibling);
-
-        this.meeting = StorageManager.getCurrentMeeting();
-        this.timer = new SpeakingTimer(this.meeting);
-        this.timerWindow = null;
+        this.controller = new MeetingController(this.meeting, this);
 
         this.initEventListeners();
+
         this.updateUI();
-
-        window.getCurrentMeeting = () => this.meeting;
-
-        //Set up to receive updates from timer window
-        window.updateFromTimerWindow = (action, data) => this.handleTimerWindowUpdate(action, data);
     }
-
     /**
      * Initializes all event listeners for the meeting view buttons.
      * @returns {void}
      */
     initEventListeners() {
-        this.menButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.types[0]));
-        this.womenButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.types[1]));
-        this.nonBinaryButton.addEventListener('click', () => this.startSpeaking(CONFIG.GENDERS.types[2]));
-        this.pauseButton.addEventListener('click', () => this.pauseSpeaking());
-        this.endButton.addEventListener('click', () => this.endMeeting());
+        this.menButton.addEventListener('click', () => this.controller.startSpeaking(CONFIG.GENDERS.types[0]));
+        this.womenButton.addEventListener('click', () => this.controller.startSpeaking(CONFIG.GENDERS.types[1]));
+        this.nonbinaryButton.addEventListener('click', () => this.controller.startSpeaking(CONFIG.GENDERS.types[2]));
+        this.pauseButton.addEventListener('click', () => this.controller.pauseSpeaking());
+        this.endButton.addEventListener('click', () => this.controller.endMeeting());
+        this.popOutButton.addEventListener('click', () => this.controller.openTimerWindow());
     }
     /**
-     * Opens timerWindow.
+     * Updates the user interface with current meeting data.
      * @returns {void}
      */
-    openTimerWindow() {
-        this.timerWindow = window.open(CONFIG.URLS.TIMER_WINDOW, 'MeetingTimer',
-            CONFIG.URLS.TIMER_WINDOW_FEATURES);
-
-        if (!this.timerWindow) {
-            alert(CONFIG.MESSAGES.ALERT.ERROR_POPUP_BLOCKED);
-            return;
-        }
-
-        //Wait for window to load before comunication
-        this.timerWindow.onload = () => {
-            if (this.timer.currentSpeaker) {
-                this.timerWindow.timerWindow.startSpeaking(this.timer.currentSpeaker);
-            }
-        };
-
-        //Listener for window closing
-        this.timerWindow.addEventListener('beforeunload', () => {
-            this.timerWindow = null;
-        });
-
-    }
-    /**
-     * Handels updates from timerWindow.
-     * @param {string} action - determines action for update.
-     * @param {Object} data - data associated with the action
-     * @returns {void}
-     */
-    handleTimerWindowUpdate(action, data) {
-        console.log(CONFIG.MESSAGES.CONSOLE.UPDATE_TIMER_WINDOW, action, data);
-
-        switch(action) {
-            case CONFIG.COMMUNICATION.ACTIONS.SPEAKER_CHANGE:
-                //Update the main UI to match the timer window
-                this.startSpeaking(data.gender, false); //false means don't update the timer window
-                break;
-
-            case CONFIG.COMMUNICATION.ACTIONS.SPEAKER_PAUSED:
-                //Update the main UI
-                this.pauseSpeaking(false);
-                break;
-
-            case CONFIG.COMMUNICATION.ACTIONS.MEETING_ENDED:
-                //Update our meeting object and navigate to stats
-                if (data.meeting) {
-                    this.meeting = data.meeting;
-                    StorageManager.saveMeeting(this.meeting);
-                    App.navigateTo(CONFIG.DOM.SCREENS.STATS);
-                }
-                break;
-            default:
-                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_TIMER_COMMUNICATION);
-        }
-    }
-    /**
-     * Starts the timer for the specified gender and updates UI accordingly.
-     * Optionally synchronizes the timer window if it's open.
-     * @param {string} gender - The gender of the current speaker (from CONFIG.GENDERS.types)
-     * @param {boolean} updateTimerWindow - Whether to update the timer popup window
-     * @returns {void}
-     */
-    startSpeaking(gender, updateTimerWindow = true) {
-        this.timer.startTimer(gender);
-        this.updateButtonStates(gender);
-
-        //Also update the timer window if it's open
-        if (updateTimerWindow && this.timerWindow && !this.timerWindow.closed) {
-            try {
-                this.timerWindow.timerWindow.startSpeaking(gender);
-            } catch (error) {
-                    console.error(CONFIG.MESSAGES.CONSOLE.ERROR_UPDATE_TIMER_WINDOW, error);
+    updateUI() {
+        // Update meeting title
+        if (this.meeting && this.meeting.name) {
+            const meetingTitle = document.getElementById('meeting-title');
+            if (meetingTitle) {
+                meetingTitle.textContent = this.meeting.name;
             }
         }
-    }
-    /**
-     * Pauses the timer and updates UI accordingly.
-     * Optionally synchronizes the timer window if it's open.
-     * @param {boolean} updateTimerWindow - Whether to update the timer popup window
-     * @returns {void}
-     */
-    pauseSpeaking(updateTimerWindow = true) {
-        this.timer.stopTimer();
-        this.updateButtonStates(null);
-
-        // Also update the timer window if it's open
-        if (updateTimerWindow && this.timerWindow && !this.timerWindow.closed) {
-            try {
-                this.timerWindow.timerWindow.pauseSpeaking();
-            } catch (error) {
-                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_UPDATE_TIMER_WINDOW, error);
-            }
-        }
-    }
-    /**
-     * Ends the current meeting, saves data, and navigates to statistics screen.
-     * @returns {void}
-     */
-    endMeeting() {
-        this.timer.stopTimer();
-        StorageManager.saveMeeting(this.meeting);
-        App.navigateTo(CONFIG.DOM.SCREENS.STATS);
     }
     /**
      * Updates the visual state of speaker buttons based on which gender is currently active.
@@ -164,27 +71,60 @@ class MeetingView {
      * @returns {void}
      */
     updateButtonStates(activeGender) {
-        //Remove active class from all buttons
-        if (this.menButton) this.menButton.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
-        if (this.womenButton) this.womenButton.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
-        if (this.nonBinaryButton) this.nonBinaryButton.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
+        // Remove active class from all buttons
+        [this.menButton, this.womenButton, this.nonbinaryButton].forEach(button => {
+            if (button) button.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
+        });
 
-        //Add active class to the button for the currently speaking gender
+        // Add active class to the button for the currently speaking gender
         if (activeGender === CONFIG.GENDERS.types[0] && this.menButton) {
             this.menButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         } else if (activeGender === CONFIG.GENDERS.types[1] && this.womenButton) {
             this.womenButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
-        } else if (activeGender === CONFIG.GENDERS.types[2] && this.nonBinaryButton) {
-            this.nonBinaryButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
+        } else if (activeGender === CONFIG.GENDERS.types[2] && this.nonbinaryButton) {
+            this.nonbinaryButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
+        }
+    }
+
+    /**
+     * Sets the visibility of gender buttons based on participant counts.
+     * Only shows buttons for genders that have participants.
+     * @param {boolean} showMen - Whether to show the men button
+     * @param {boolean} showWomen - Whether to show the women button
+     * @param {boolean} showNonbinary - Whether to show the non-binary button
+     * @returns {void}
+     */
+    setButtonVisibility(showMen, showWomen, showNonbinary) {
+        if (this.menButton) {
+            this.menButton.style.display = showMen ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
+        }
+
+        if (this.womenButton) {
+            this.womenButton.style.display = showWomen ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
+        }
+
+        if (this.nonbinaryButton) {
+            this.nonbinaryButton.style.display = showNonbinary ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
+        }
+
+        //Add class container on element to adjust layout
+        const speakerButtonsContainer = document.querySelector('.speaker-buttons');
+        if (speakerButtonsContainer) {
+            const visibleCount = [showMen, showWomen, showNonbinary].filter(Boolean).length;
+
+            //remove earlier classes
+            speakerButtonsContainer.classList.remove('one-button', 'two-buttons', 'three-buttons');
+
+            //add classes for visible buttons
+            speakerButtonsContainer.classList.add(`${visibleCount}-buttons`);
         }
     }
     /**
-     * Updates the user interface with current meeting data.
+     * Shows an error message to the user.
+     * @param {string} message - The error message to display
      * @returns {void}
      */
-    updateUI() {
-        if (this.meeting && this.meeting.name) {
-            document.getElementById('meeting-title').textContent = this.meeting.name;
-        }
+    showError(message) {
+        alert(message);
     }
 }

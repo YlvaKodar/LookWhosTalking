@@ -62,6 +62,26 @@ const CONFIG = {
             SPEAKER_CHANGE: 'speakerChange',
             SPEAKER_PAUSED: 'speakerPaused',
             MEETING_ENDED: 'meetingEnded'
+        },
+        WINDOW: {
+            TIMER: {
+                SPEAKER_CHANGE: 'timerWindow.speakerChange',
+                SPEAKER_PAUSED: 'timerWindow.speakerPaused',
+                MEETING_ENDED: 'timerWindow.meetingEnded'
+            },
+            MAIN: {
+                SPEAKER_CHANGE: 'mainWindow.speakerChange',
+                SPEAKER_PAUSED: 'mainWindow.speakerPaused',
+                MEETING_ENDED: 'mainWindow.meetingEnded'
+            }
+        },
+        MESSAGE_TYPES: {
+            EVENT: 'event',
+            INIT: 'init'
+        },
+        INIT_DATA: {
+            MEETING: 'meeting',
+            VISIBLE_BUTTONS: 'visibleButtons'
         }
     },
 
@@ -136,6 +156,7 @@ const CONFIG = {
             ERROR_POPUP_BLOCKED: 'Timer-fönstret blockerades. Kontrollera dina popup-inställningar.',
             ERROR_MEETING_NAME_REQUIRED: 'Vad ska vi kalla mötet?',
             ERROR_DATE_REQUIRED: 'Vilken dag är det?',
+            ERROR_MEETING_DATA_REQUIRED: 'Inget giltigt möte hittades. Du behöver konfigurera ett nytt möte först.',
             get ERROR_MIN_PARTICIPANTS() {
                 return `Inget möte utan minst ${CONFIG.MEETING.MIN_PARTICIPANTS} deltagare.`;
             },

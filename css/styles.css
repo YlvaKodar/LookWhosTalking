@@ -142,7 +142,24 @@ input[type="number"] {
     max-width: 300px;
     margin-bottom: var(--element-gap);
 }
+/* Change witdh depending on number of buttons. */
+.speaker-buttons.one-button {
+    max-width: 250px;
+}
 
+.speaker-buttons.two-buttons {
+    max-width: 275px;
+}
+
+.speaker-buttons.three-buttons {
+    max-width: 300px; /* Samma som standard */
+}
+
+.speaker-buttons.one-button .speaker-btn,
+.speaker-buttons.two-buttons .speaker-btn {
+    padding: 20px; /* Lite större knappar när det finns färre */
+    font-size: calc(var(--speaker-button-font-size) * 1.1); /* Lite större text */
+}
 /* Speaker button styles */
 .speaker-btn {
     padding: 15px;
