@@ -201,5 +201,5 @@ class TimerPopOutView {
 
 // Initialize the timer window when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new TimerView();
+    new TimerPopOutView();
 });

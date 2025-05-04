@@ -73,14 +73,14 @@ class App {
      * @returns {void}
      */
     static navigateTo(screenId) {
-        //Special handling for the meeting screen
         if (screenId === CONFIG.DOM.SCREENS.MEETING) {
-            //Check if we have valid meeting data
+            //Check if there's valid meeting data
             const setupData = StorageManager.getSetupMeetingData();
             const currentMeeting = StorageManager.getCurrentMeeting();
 
             if (!setupData && !currentMeeting) {
                 alert(CONFIG.MESSAGES.ALERT.ERROR_MEETING_DATA_REQUIRED);
+                screenId = CONFIG.DOM.SCREENS.SETUP; // Redirect to setup instead
                 return;
             }
 
@@ -99,7 +99,7 @@ class App {
         //Clean up any active controllers before changing screens
         this.cleanupActiveControllers();
 
-        //Hide all screens
+
         document.querySelectorAll('.screen').forEach(element => {
             element.style.display = CONFIG.DOM.DISPLAY.NONE;
         });

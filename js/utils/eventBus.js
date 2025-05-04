@@ -49,7 +49,7 @@ class EventBus {
             try {
                 callback(data);
             } catch (error) {
-                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_EVENT_SUBSCRIBER + event ', ' error);
+                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_EVENT_SUBSCRIBER + event  + ', ' +  error);
             }
         });
     }

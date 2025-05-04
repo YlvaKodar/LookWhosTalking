@@ -21,12 +21,33 @@ class StorageManager {
      * @returns {Meeting|null} The retrieved meeting object or null if not found
      */
     static getCurrentMeeting() {
-        const data = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
-        if (!data) return null;
-
         try {
+            const data = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
+            if (!data) {
+                // Try to get setup data as an alternative
+                const setupData = this.getSetupMeetingData();
+                if (setupData) {
+                    const meeting = new Meeting(setupData.name, setupData.date);
+                    meeting.setParticipants(
+                        setupData.participants[CONFIG.GENDERS.types[0]] || 0,
+                        setupData.participants[CONFIG.GENDERS.types[1]] || 0,
+                        setupData.participants[CONFIG.GENDERS.types[2]] || 0
+                    );
+                    return meeting;
+                }
+                return null;
+            }
+
             const parsed = JSON.parse(data);
-            const meeting = new Meeting(parsed.name, parsed.date);
+            if (!parsed || typeof parsed !== 'object') {
+                return null;
+            }
+
+            //Make sure there's valid meeting data with defaults for missing fields
+            const meeting = new Meeting(
+                parsed.name || CONFIG.DEFAULTS.MEETING_NAME,
+                parsed.date || new Date().toISOString().split('T')[0]
+            );
 
             meeting.participants = parsed.participants || {
                 [CONFIG.GENDERS.types[0]]: 0,
