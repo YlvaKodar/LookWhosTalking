@@ -89,6 +89,11 @@ class StatsView {
     renderCharts() {
         const ctx = document.getElementById(CONFIG.DOM.CHARTS.SPEAKING_TIME).getContext('2d');
 
+        const chartInstance = Chart.getChart(CONFIG.DOM.CHARTS.SPEAKING_TIME);
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
         const labels = CONFIG.GENDERS.types.map(gender => CONFIG.GENDERS.labels[gender]);
         const data = CONFIG.GENDERS.types.map(gender =>
             this.stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender]);

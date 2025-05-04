@@ -29,6 +29,10 @@ class App {
     static setupGlobalNavigationListener(elementId, screenId){
         if (document.getElementById(elementId)){
             document.getElementById(elementId).addEventListener('click', () => {
+                if (elementId === CONFIG.DOM.BUTTONS.BACK_TO_START) {
+                    StorageManager.clearMeetingData(); // Rensa alla mötesdata
+                    this.cleanupActiveProcesses();
+                }
                 this.navigateTo(screenId);
             });
         } else {
@@ -146,6 +150,13 @@ class App {
      */
     static cleanupActiveProcesses() {
         //todo: clean up resources, save stuff, stop timers etc.
+        const chartIds = [CONFIG.DOM.CHARTS.SPEAKING_TIME];
+        chartIds.forEach(id => {
+            const chartInstance = Chart.getChart(id);
+            if (chartInstance) {
+                chartInstance.destroy();
+            }
+        });
     }
 }
 // Initializes the app when the DOM is fully loaded
