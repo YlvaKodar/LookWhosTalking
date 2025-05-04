@@ -7,7 +7,7 @@ class TimerPopOutController {
     /**
      * Initializes the timer controller with a view and meeting data.
      * @param {Meeting} meeting - The meeting model object
-     * @param {TimerView} view - The associated view for UI updates
+     * @param {TimerPopOutView} view - The associated view for UI updates
      * @constructor
      */
     constructor(meeting, view) {

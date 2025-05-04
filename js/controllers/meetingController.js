@@ -1,7 +1,7 @@
 /**
  * Controller for active meeting functionality.
  * Handles business logic for meeting timing, speaker tracking, and coordination
- * between the main view and timer popup.
+ * between the main view and timer popout.
  * @class
  */
 class MeetingController {
@@ -113,7 +113,7 @@ class MeetingController {
         });
     }
     /**
-     * Opens a timer popup window and establishes communication.
+     * Opens a timer popout window and establishes communication.
      * @returns {Window|null} Reference to the opened window or null if blocked
      */
     openTimerWindow() {
