@@ -123,6 +123,7 @@ const CONFIG = {
             UPDATE_TIMER_WINDOW: "Received update from timer window: ",
             ERROR_TIMER_COMMUNICATION: 'Could not communicate with timer window.',
             ERROR_UPDATE_TIMER_WINDOW: "Error updating timer window: ",
+            ERROR_EVENT_SUBSCRIBER: 'Error in event subscriber for this event: ';
         },
 
         CONFIRM: {

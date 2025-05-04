@@ -5,18 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Look Who's Talking</title>
     <link rel="stylesheet" href="css/styles.css">
-    <!-- Chart.js från CDN -->
+    <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-<!-- Startskärm -->
+<!-- Start screen -->
 <div id="start-screen" class="screen">
     <h1>Look Who's Talking</h1>
     <p>Prototyp: Vilka får höras på era möten? Tajma och se.</p>
     <button id="new-meeting-btn">Nytt möte</button>
 </div>
 
-<!-- Setup-skärm -->
+<!-- Setup screen -->
 <div id="setup-screen" class="screen" style="display: none;">
     <h1>Vad är det här för möte egentligen?</h1>
     <form id="meeting-form">
@@ -53,7 +53,7 @@
     </form>
 </div>
 
-<!-- Aktiv mötesskärm -->
+<!-- Meeting screen -->
 <div id="meeting-screen" class="screen" style="display: none;">
     <h1 id="meeting-title">Mötesnamn</h1>
     <div id="timer-display">00:00</div>
@@ -72,7 +72,7 @@
     </div>
 </div>
 
-<!-- Statistikskärm -->
+<!-- Stats screen -->
 <div id="stats-screen" class="screen" style="display: none;">
     <h1>Mötesstatistik</h1>
 
@@ -92,14 +92,27 @@
 </div>
 
 <!-- JavaScript -->
+<!-- Utils -->
 <script src="js/utils/config.js"></script>
 <script src="js/utils/themeManager.js"></script>
+<script src="js/utils/storage.js"></script>
+<script src="js/utils/eventBus.js"></script>
+
+<!-- Models -->
 <script src="js/models/meeting.js"></script>
 <script src="js/models/timer.js"></script>
-<script src="js/utils/storage.js"></script>
+
+<!-- Controllers -->
+<script src="js/controllers/setupController.js"></script>
+<script src="js/controllers/meetingController.js"></script>
+<script src="js/controllers/statsController.js"></script>
+
+<!-- Views -->
 <script src="js/views/setupView.js"></script>
 <script src="js/views/meetingView.js"></script>
 <script src="js/views/statsView.js"></script>
+
+<!-- App -->
 <script src="js/app.js"></script>
 
 </body>

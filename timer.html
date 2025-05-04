@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meeting Timer</title>
     <link rel="stylesheet" href="css/styles.css">
-    <!-- Lägg till config och themeManager -->
+    <!-- Utils -->
     <script src="js/utils/config.js"></script>
     <script src="js/utils/themeManager.js"></script>
+    <script src="js/utils/eventBus.js"></script>
 </head>
 <body class="timer-popup-body">
 <h2 id="timer-popup-title">Meeting Timer</h2>
@@ -31,6 +32,13 @@
         applyThemeFromConfig();
     });
 </script>
+<!-- Models -->
+<script src="js/models/timer.js"></script>
+
+<!-- Controllers -->
+<script src="js/controllers/timerController.js"></script>
+
+<!-- Views -->
 <script src="js/views/timerView.js"></script>
 </body>
 </html>
