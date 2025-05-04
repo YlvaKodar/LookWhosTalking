@@ -135,7 +135,7 @@ class App {
             }
 
             //Clear the data regardless of user choice
-            localStorage.removeItem(CONFIG.STORAGE.KEY.COMPLETED_MEETING);
+            localStorage.removeItem(CONFIG.STORAGE.KEYS.COMPLETED_MEETING);
         }
     }
     /**
