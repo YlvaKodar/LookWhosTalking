@@ -28,77 +28,12 @@ body {
     padding: var(--container-padding);
 }
 
-/* Popup window styling */
-.popup {
-    position: fixed;
-    z-index: 1000;
-    width: 300px;
-    background-color: white;
-    border: 1px solid var(--popup-border-color);
-    border-radius: var(--popup-border-radius);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    resize: both;
-    min-width: var(--popup-min-width);
-    min-height: var(--popup-min-height);
-    display: none; /* Hidden by default */
-}
-
-.popup-header {
-    padding: 8px 12px;
-    background-color: var(--header-bg-color);
-    border-bottom: 1px solid var(--border-color);
-    cursor: move; /* Shows this part can be used for dragging */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.popup-header h3 {
-    margin: 0;
-    font-size: var(--popup-font-size);
-}
-
-.popup-controls {
-    display: flex;
-}
-
-.popup-control {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: var(--button-font-size);
-    padding: 0 5px;
-}
-
-.popup-content {
-    padding: 10px;
-}
-
-/* Styling for minimized popup window */
-.popup.minimized .popup-content {
-    display: none;
-}
-
-.popup.minimized {
-    height: auto !important;
-    width: 200px !important;
-    resize: none;
-}
-
 /* Timer display styles for popup */
 #popup-timer-display {
     font-size: var(--popup-timer-font-size);
     font-weight: bold;
     text-align: center;
     margin: 10px 0;
-}
-
-/* Button sizing for popup */
-.popup .speaker-btn {
-    padding: 8px;
-    font-size: var(--popup-font-size);
-    margin-bottom: 8px;
 }
 
 /* Popup button styling */
@@ -140,7 +75,6 @@ body {
     margin-bottom: var(--element-gap);
     text-align: center;
 }
-
 
 /* Text styles */
 h1 {
