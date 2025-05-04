@@ -1,21 +1,91 @@
+/**
+ * Storage manager for the "Look Who's Talking" application.
+ * Handles saving and retrieving meeting data using localStorage.
+ * @class
+ */
 class StorageManager {
+    /**
+     * Saves a meeting object to localStorage.
+     * Uses the current meeting key from CONFIG.
+     * @static
+     * @param {Meeting} meeting - The meeting object to save
+     * @returns {void}
+     */
     static saveMeeting(meeting) {
-        localStorage.setItem(CONFIG.STORAGE.CURRENT_MEETING, JSON.stringify(meeting));
+        localStorage.setItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING, JSON.stringify(meeting));
     }
-
+    /**
+     * Retrieves the current meeting from localStorage.
+     * Creates a properly instantiated Meeting object with data from storage.
+     * @static
+     * @returns {Meeting|null} The retrieved meeting object or null if not found
+     */
     static getCurrentMeeting() {
-        const data = localStorage.getItem(CONFIG.STORAGE.CURRENT_MEETING);
+        const data = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
         if (!data) return null;
 
-        const parsed = JSON.parse(data);
-        const meeting = new Meeting(parsed.name, parsed.date);
+        try {
+            const parsed = JSON.parse(data);
+            const meeting = new Meeting(parsed.name, parsed.date);
 
-        meeting.participants = parsed.participants || { men: 0, women: 0, nonbinary: 0 };
-        meeting.speakingData = parsed.speakingData || { men: [], women: [], nonbinary: [] };
-        meeting.active = parsed.active || false;
-        meeting.currentSpeaker = parsed.currentSpeaker || null;
-        meeting.startTime = parsed.startTime || null;
+            meeting.participants = parsed.participants || {
+                [CONFIG.GENDERS.types[0]]: 0,
+                [CONFIG.GENDERS.types[1]]: 0,
+                [CONFIG.GENDERS.types[2]]: 0
+            };
 
-        return meeting;
+            meeting.speakingData = parsed.speakingData || {
+                [CONFIG.GENDERS.types[0]]: [],
+                [CONFIG.GENDERS.types[1]]: [],
+                [CONFIG.GENDERS.types[2]]: []
+            };
+
+            meeting.active = parsed.active || false;
+            meeting.currentSpeaker = parsed.currentSpeaker || null;
+            meeting.startTime = parsed.startTime || null;
+
+            return meeting;
+        } catch (error) {
+            console.error(CONFIG.MESSAGES.CONSOLE.ERROR_PARSE_MEETING, error);
+            return null;
+        }
+    }
+    /**
+     * Saves a completed meeting to localStorage.
+     * Uses the completed meeting key from CONFIG.
+     * @static
+     * @param {Meeting} meeting - The completed meeting to save
+     * @returns {void}
+     */
+    static saveCompletedMeeting(meeting) {
+        localStorage.setItem(CONFIG.STORAGE.KEYS.COMPLETED_MEETING, JSON.stringify(meeting));
+    }
+    /**
+     * Clears all meeting data from localStorage.
+     * Useful when starting fresh or after processing completed meetings.
+     * @static
+     * @returns {void}
+     */
+    static clearMeetingData() {
+        localStorage.removeItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
+        localStorage.removeItem(CONFIG.STORAGE.KEYS.COMPLETED_MEETING);
+        localStorage.removeItem(CONFIG.STORAGE.KEYS.SETUP_MEETING_DATA);
+    }
+    /**
+     * Retrieves setup meeting data from localStorage.
+     * Used when transitioning from setup to active meeting screens.
+     * @static
+     * @returns {Object|null} The setup meeting data or null if not found
+     */
+    static getSetupMeetingData() {
+        const data = localStorage.getItem(CONFIG.STORAGE.KEYS.SETUP_MEETING_DATA);
+        if (!data) return null;
+
+        try {
+            return JSON.parse(data);
+        } catch (error) {
+            console.error(CONFIG.MESSAGES.CONSOLE.ERROR_PARSE_MEETING, error);
+            return null;
+        }
     }
 }
