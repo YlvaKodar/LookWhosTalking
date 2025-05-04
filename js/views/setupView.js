@@ -14,7 +14,7 @@ class SetupView {
         this.dateInput = document.getElementById(CONFIG.DOM.FORM.MEETING_DATE);
         this.menCount = document.getElementById(CONFIG.DOM.FORM.MEN_COUNT);
         this.womenCount = document.getElementById(CONFIG.DOM.FORM.WOMEN_COUNT);
-        this.nonBinaryCount = document.getElementById(CONFIG.DOM.FORM.NONBINARY_COUNT);
+        this.nonbinaryCount = document.getElementById(CONFIG.DOM.FORM.NONBINARY_COUNT);
 
         App.registerFormNavigation(
             CONFIG.DOM.FORM.START_BUTTON,
@@ -64,9 +64,9 @@ class SetupView {
 
         const menCount = parseInt(this.menCount?.value || 0);
         const womenCount = parseInt(this.womenCount?.value || 0);
-        const nonBinaryCount = parseInt(this.nonBinaryCount?.value || 0);
+        const nonbinaryCount = parseInt(this.nonbinaryCount?.value || 0);
 
-        if (menCount + womenCount + nonBinaryCount < CONFIG.MEETING.MIN_PARTICIPANTS) {
+        if (menCount + womenCount + nonbinaryCount < CONFIG.MEETING.MIN_PARTICIPANTS) {
             alert(CONFIG.MESSAGES.ALERT.ERROR_MIN_PARTICIPANTS);
             return false;
         }
@@ -86,7 +86,7 @@ class SetupView {
             participants: {
                 [CONFIG.GENDERS.types[0]]: parseInt(this.menCount.value || 0),
                 [CONFIG.GENDERS.types[1]]: parseInt(this.womenCount.value || 0),
-                [CONFIG.GENDERS.types[2]]: parseInt(this.nonBinaryCount.value || 0)
+                [CONFIG.GENDERS.types[2]]: parseInt(this.nonbinaryCount.value || 0)
             }
         };
 
