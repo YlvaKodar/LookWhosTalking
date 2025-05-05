@@ -1,27 +1,26 @@
 /**
- * Controller for the timer popout window.
- * Handles timer functionality and communication with the main window.
+ * Controller for the timer popup window.
+ * Handles communication with the main window and local timing.
+ * Does NOT maintain its own meeting data - relies on main window.
  * @class
  */
 class TimerPopOutController {
     /**
-     * Initializes the timer controller with a view and meeting data.
-     * @param {Meeting} meeting - The meeting model object
+     * Initializes the timer controller with a view reference.
      * @param {TimerPopOutView} view - The associated view for UI updates
      * @constructor
      */
-    constructor(meeting, view) {
-        this.meeting = meeting;
+    constructor(view) {
         this.view = view;
         this.startTime = null;
         this.interval = null;
         this.currentSpeaker = null;
 
-        //Setup messaging with parent window
+        // Setup messaging with parent window
         this.setupWindowCommunication();
 
-        //Set initial button visibility based on participants
-        this.updateVisibleButtons();
+        // Request initial data from main window
+        this.requestInitialData();
     }
 
     /**
@@ -29,15 +28,19 @@ class TimerPopOutController {
      * @returns {void}
      */
     setupWindowCommunication() {
-        //Listen for messages from main window
+        // Listen for messages from main window
         window.addEventListener('message', this.handleMainWindowMessage.bind(this));
+    }
 
-        //Notify main window that we're ready
+    /**
+     * Requests initial meeting data from the main window.
+     * @returns {void}
+     */
+    requestInitialData() {
         if (window.opener && !window.opener.closed) {
             window.opener.postMessage({
                 type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
-                eventName: CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_PAUSED,
-                data: {}
+                eventName: 'timerWindow.requestData'
             }, window.location.origin);
         }
     }
@@ -48,20 +51,19 @@ class TimerPopOutController {
      * @returns {void}
      */
     handleMainWindowMessage(event) {
-        //Verify message origin for security
+        // Verify message origin for security
         if (event.origin !== window.location.origin) return;
 
         const { type, eventName, data } = event.data;
 
-        //Handle initialization message
+        // Handle initialization message
         if (type === CONFIG.COMMUNICATION.MESSAGE_TYPES.INIT) {
-            //Update meeting data
-            if (data.meeting) {
-                this.meeting = data.meeting;
-                this.view.updateMeetingInfo();
+            // Update meeting info
+            if (data.meetingName && data.totalParticipants) {
+                this.view.updateMeetingInfo(data.meetingName, data.totalParticipants);
             }
 
-            //Update button visibility if info provided
+            // Update button visibility
             if (data.visibleButtons) {
                 this.view.setButtonVisibility(
                     data.visibleButtons.men,
@@ -69,10 +71,15 @@ class TimerPopOutController {
                     data.visibleButtons.nonbinary
                 );
             }
+
+            // Update active speaker if any
+            if (data.currentSpeaker) {
+                this.startSpeaking(data.currentSpeaker, false);
+            }
             return;
         }
 
-        //Handle event messages
+        // Handle event messages
         if (type === CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT) {
             switch(eventName) {
                 case CONFIG.COMMUNICATION.WINDOW.MAIN.SPEAKER_CHANGE:
@@ -93,105 +100,69 @@ class TimerPopOutController {
     }
 
     /**
-     * Updates which gender buttons are visible based on participation.
-     * Only shows buttons for genders that have participants.
-     * @returns {void}
-     */
-    updateVisibleButtons() {
-        //Get participant counts
-        const menCount = this.meeting.participants[CONFIG.GENDERS.types[0]];
-        const womenCount = this.meeting.participants[CONFIG.GENDERS.types[1]];
-        const nonbinaryCount = this.meeting.participants[CONFIG.GENDERS.types[2]];
-
-        // Tell view to update button visibility
-        this.view.setButtonVisibility(
-            menCount > 0,
-            womenCount > 0,
-            nonbinaryCount > 0
-        );
-    }
-
-    /**
      * Starts timing for a specified gender.
-     * Updates model, timer and UI elements.
+     * Updates UI and notifies main window.
      * @param {string} gender - The gender of the current speaker
      * @param {boolean} notifyMainWindow - Whether to notify the main window
      * @returns {void}
      */
     startSpeaking(gender, notifyMainWindow = true) {
-        //Stop any current timing
+        // Stop any current timing
         if (this.interval) {
             this.pauseSpeaking(false);
         }
 
-        //Start new timing
+        // Start new timing
         this.currentSpeaker = gender;
         this.startTime = Date.now();
         this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
 
-        //Update button states in view
+        // Update button states in view
         this.view.updateButtonStates(gender);
 
-        //Notify main window if requested
+        // Notify main window if requested
         if (notifyMainWindow && window.opener && !window.opener.closed) {
             try {
                 window.opener.postMessage({
                     type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
                     eventName: CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_CHANGE,
-                    data: {
-                        gender: gender,
-                        meeting: this.meeting
-                    }
+                    data: { gender: gender }
                 }, window.location.origin);
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_NOTIFY_MAIN, error);
-                // Fallback to localStorage communication if postMessage fails
-                localStorage.setItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING, JSON.stringify(this.meeting));
             }
         }
     }
 
     /**
      * Pauses the active speaker timer.
-     * Updates model, timer and UI elements.
+     * Updates UI and notifies main window.
      * @param {boolean} notifyMainWindow - Whether to notify the main window
      * @returns {void}
      */
     pauseSpeaking(notifyMainWindow = true) {
         if (!this.startTime || !this.currentSpeaker) return;
 
-        //Calculate duration and add to meeting data
+        // Calculate duration
         const duration = (Date.now() - this.startTime) / 1000;
 
-        //Add to meeting data
-        if (!this.meeting.speakingData[this.currentSpeaker]) {
-            this.meeting.speakingData[this.currentSpeaker] = [];
-        }
-        this.meeting.speakingData[this.currentSpeaker].push(duration);
-
-        //Reset timer state
+        // Reset timer state
         clearInterval(this.interval);
         this.interval = null;
         this.startTime = null;
         this.currentSpeaker = null;
 
-        //Update UI
+        // Update UI
         this.view.updateButtonStates(null);
         this.view.updateTimerDisplay(CONFIG.TIMER.DEFAULT_DISPLAY);
 
-        //Save data to localStorage as fallback
-        localStorage.setItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING, JSON.stringify(this.meeting));
-
-        //Notify main window if requested
+        // Notify main window if requested
         if (notifyMainWindow && window.opener && !window.opener.closed) {
             try {
                 window.opener.postMessage({
                     type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
                     eventName: CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_PAUSED,
-                    data: {
-                        duration: duration,
-                        meeting: this.meeting
-                    }
+                    data: { duration: duration, gender: this.currentSpeaker }
                 }, window.location.origin);
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_NOTIFY_MAIN, error);
@@ -219,26 +190,21 @@ class TimerPopOutController {
      * @returns {void}
      */
     endMeeting() {
-        //Pause ongoing speaking
+        // First pause any ongoing speaking
         if (this.interval) {
-            this.pauseSpeaking(false);
+            this.pauseSpeaking(true);  // Notify main window
         }
 
-        //Mark meeting as complete
-        localStorage.setItem(CONFIG.STORAGE.KEYS.COMPLETED_MEETING, JSON.stringify(this.meeting));
-
-        //Notify main window if open
+        // Notify main window if open
         if (window.opener && !window.opener.closed) {
             try {
                 window.opener.postMessage({
                     type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
                     eventName: CONFIG.COMMUNICATION.WINDOW.TIMER.MEETING_ENDED,
-                    data: {
-                        meeting: this.meeting
-                    }
+                    data: {}
                 }, window.location.origin);
 
-                //Wait a moment before closing to ensure message is sent
+                // Wait a moment before closing to ensure message is sent
                 setTimeout(() => window.close(), 100);
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_END_MEETING, error);

@@ -33,50 +33,24 @@ class TimerPopOutView {
     }
 
     /**
-     * Loads meeting data from the opener window or local storage.
+     * Loads meeting data from localStorage.
+     * Important: Uses the same meeting instance as the main window by getting
+     * the raw data and reconstructing with Meeting class.
      * @returns {Meeting} The meeting data object
      */
     loadMeetingData() {
-        // First try to get meeting data from the opener window
-        if (window.opener && !window.opener.closed) {
-            try {
-                const openerMeetingData = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
-                if (openerMeetingData) {
-                    const parsedData = JSON.parse(openerMeetingData);
-                    const meeting = new Meeting(
-                        parsedData.name || CONFIG.DEFAULTS.MEETING_NAME,
-                        parsedData.date || new Date().toISOString().split('T')[0]
-                    );
-
-                    meeting.participants = parsedData.participants || {
-                        [CONFIG.GENDERS.types[0]]: 0,
-                        [CONFIG.GENDERS.types[1]]: 0,
-                        [CONFIG.GENDERS.types[2]]: 0
-                    };
-
-                    meeting.speakingData = parsedData.speakingData || {
-                        [CONFIG.GENDERS.types[0]]: [],
-                        [CONFIG.GENDERS.types[1]]: [],
-                        [CONFIG.GENDERS.types[2]]: []
-                    };
-
-                    return meeting;
-                }
-            } catch (error) {
-                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_OPENER_ACCESS, error);
-            }
-        }
-
-        //Fallback to localStorage
         try {
-            const savedMeeting = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
-            if (savedMeeting) {
-                const parsedData = JSON.parse(savedMeeting);
+            const savedMeetingData = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
+            if (savedMeetingData) {
+                const parsedData = JSON.parse(savedMeetingData);
+
+                //Create a proper Meeting instance from the data
                 const meeting = new Meeting(
                     parsedData.name || CONFIG.DEFAULTS.MEETING_NAME,
                     parsedData.date || new Date().toISOString().split('T')[0]
                 );
 
+                //Copy all the important properties to maintain the same state
                 meeting.participants = parsedData.participants || {
                     [CONFIG.GENDERS.types[0]]: 0,
                     [CONFIG.GENDERS.types[1]]: 0,
@@ -89,13 +63,17 @@ class TimerPopOutView {
                     [CONFIG.GENDERS.types[2]]: []
                 };
 
+                meeting.active = parsedData.active || false;
+                meeting.currentSpeaker = parsedData.currentSpeaker || null;
+                meeting.startTime = parsedData.startTime || null;
+
                 return meeting;
             }
         } catch (error) {
             console.error(CONFIG.MESSAGES.CONSOLE.ERROR_LOCALSTORAGE, error);
         }
 
-        //If all else fails, create a basic meeting object
+        // If all else fails, create a basic meeting object
         return new Meeting(CONFIG.DEFAULTS.MEETING_NAME, new Date().toISOString().split('T')[0]);
     }
 
@@ -159,7 +137,7 @@ class TimerPopOutView {
             this.menButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         } else if (activeGender === CONFIG.GENDERS.types[1] && this.womenButton) {
             this.womenButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
-        } else if (activeGender === CONFIG.GENDERS.types[2] && this.nonBinaryButton) {
+        } else if (activeGender === CONFIG.GENDERS.types[2] && this.nonbinaryButton) {
             this.nonbinaryButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         }
     }
@@ -169,7 +147,7 @@ class TimerPopOutView {
      * Only shows buttons for genders that have participants.
      * @param {boolean} showMen - Whether to show the men button
      * @param {boolean} showWomen - Whether to show the women button
-     * @param {boolean} showNonBinary - Whether to show the non-binary button
+     * @param {boolean} showNonbinary - Whether to show the non-binary button
      * @returns {void}
      */
     setButtonVisibility(showMen, showWomen, showNonbinary) {

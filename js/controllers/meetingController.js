@@ -169,23 +169,66 @@ class MeetingController {
         if (type === CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT) {
             switch(eventName) {
                 case CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_CHANGE:
-                    this.startSpeaking(data.gender, false);
+                    if (data.gender) {
+                        if (data.meeting) {
+
+                            this.meeting.speakingData = data.meeting.speakingData;
+                            this.meeting.currentSpeaker = data.gender;
+                        }
+                        this.startSpeaking(data.gender, false);
+                    }
                     break;
 
                 case  CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_PAUSED:
+                    if (data.meeting) {
+                        this.meeting.speakingData = data.meeting.speakingData;
+                        this.meeting.currentSpeaker = null;
+                    }
                     this.pauseSpeaking(false);
                     break;
 
                 case CONFIG.COMMUNICATION.WINDOW.TIMER.MEETING_ENDED:
                     if (data.meeting) {
-                        this.meeting = data.meeting;
+
+                        this.meeting.speakingData = data.meeting.speakingData;
+                        this.meeting.currentSpeaker = null;
+
                         StorageManager.saveMeeting(this.meeting);
+
                         App.navigateTo(CONFIG.DOM.SCREENS.STATS);
                     }
                     break;
+
+                case 'timerWindow.requestData':
+                    // Popup-fönstret begär initial data
+                    this.sendDataToTimerWindow();
+                    break;
             }
+
         }
     }
+
+    sendDataToTimerWindow() {
+        if (this.timerWindow && !this.timerWindow.closed) {
+            const totalParticipants =
+                this.meeting.participants[CONFIG.GENDERS.types[0]] +
+                this.meeting.participants[CONFIG.GENDERS.types[1]] +
+                this.meeting.participants[CONFIG.GENDERS.types[2]];
+
+            this.timerWindow.postMessage({
+                type: CONFIG.COMMUNICATION.MESSAGE_TYPES.INIT,
+                meetingName: this.meeting.name,
+                totalParticipants: totalParticipants,
+                currentSpeaker: this.timer.currentSpeaker,
+                visibleButtons: {
+                    men: this.meeting.participants[CONFIG.GENDERS.types[0]] > 0,
+                    women: this.meeting.participants[CONFIG.GENDERS.types[1]] > 0,
+                    nonbinary: this.meeting.participants[CONFIG.GENDERS.types[2]] > 0
+                }
+            }, window.location.origin);
+        }
+    }
+
     /**
      * Ends the current meeting and transitions to statistics view.
      * @returns {void}
@@ -239,8 +282,6 @@ class MeetingController {
             this.timerWindow.close();
             this.timerWindow = null;
         }
-
-        // Remove message listener
-        window.removeEventListener('message', this.handleTimerWindowMessage);
+        // Remove message listener        window.removeEventListener('message', this.handleTimerWindowMessage);
     }
 }
