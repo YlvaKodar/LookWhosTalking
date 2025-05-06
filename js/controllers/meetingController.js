@@ -105,8 +105,15 @@ class MeetingController {
             return null;
         }
 
-        // Setup communication when window loads
-        this.timerWindow.onload = () => {
+        this.timerWindow.addEventListener('beforeunload', () => {
+            this.timerWindow = null;
+        });
+
+        return this.timerWindow;
+    }
+
+    initializeTimerWindow() {
+        if (this.timerWindow && !this.timerWindow.closed) {
             this.timerWindow.postMessage({
                 type: CONFIG.COMMUNICATION.WINDOW.TO_TIMER.INIT,
                 data: {
@@ -125,15 +132,10 @@ class MeetingController {
                     data: { gender: this.timer.currentSpeaker }
                 }, window.location.origin);
             }
-        };
-
-        // Listen for window closing
-        this.timerWindow.addEventListener('beforeunload', () => {
-            this.timerWindow = null;
-        });
-
-        return this.timerWindow;
+        }
     }
+
+
     /**
      * Handles messages from the timer popup window.
      * @param {MessageEvent} event - The message event from the popup
@@ -146,6 +148,10 @@ class MeetingController {
         const { type, data } = event.data;
 
         switch(type) {
+            case CONFIG.COMMUNICATION.WINDOW.TO_MAIN.WINDOW_READY:
+                this.initializeTimerWindow();
+                break;
+
             case CONFIG.COMMUNICATION.WINDOW.TO_MAIN.SPEAKER_CHANGE:
                 if (data.gender) {
                     this.startSpeaking(data.gender, false);

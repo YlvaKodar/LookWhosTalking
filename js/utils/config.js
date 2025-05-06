@@ -72,7 +72,8 @@ const CONFIG = {
             TO_MAIN: {
                 SPEAKER_CHANGE: 'toMainWindow.speakerChanged',
                 SPEAKER_PAUSED: 'toMainWindow.speakerPaused',
-                MEETING_ENDED: 'toMainWindow.meetingEnded'
+                MEETING_ENDED: 'toMainWindow.meetingEnded',
+                WINDOW_READY: 'timerWindow.ready',
             }
         },
         MESSAGE_TYPES: {
