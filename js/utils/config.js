@@ -65,7 +65,7 @@ const CONFIG = {
         },
         WINDOW: {
             TO_TIMER: {
-                INIT: 'timerWindow.init'
+                INIT: 'timerWindow.init',
                 SPEAKER_CHANGE: 'toTimerWindow.speakerChanged',
                 SPEAKER_PAUSED: 'toTimerWindow.speakerPaused',
             },

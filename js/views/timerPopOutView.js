@@ -19,69 +19,18 @@ class TimerPopOutView {
         this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.POPUP_DISPLAY);
         this.meetingInfo = document.getElementById(CONFIG.TIMER_POPUP.DOM.MEETING_INFO);
 
-        // Load meeting data
-        this.meeting = this.loadMeetingData();
-
         // Create controller
-        this.controller = new TimerPopOutController(this.meeting, this);
+        this.controller = new TimerPopOutController(this);
 
         // Set up event listeners
         this.initEventListeners();
-
-        // Update meeting info
-        this.updateMeetingInfo();
     }
 
     /**
-     * Loads meeting data from localStorage.
-     * Important: Uses the same meeting instance as the main window by getting
-     * the raw data and reconstructing with Meeting class.
-     * @returns {Meeting} The meeting data object
-     */
-    loadMeetingData() {
-        try {
-            const savedMeetingData = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
-            if (savedMeetingData) {
-                const parsedData = JSON.parse(savedMeetingData);
-
-                //Create a proper Meeting instance from the data
-                const meeting = new Meeting(
-                    parsedData.name || CONFIG.DEFAULTS.MEETING_NAME,
-                    parsedData.date || new Date().toISOString().split('T')[0]
-                );
-
-                //Copy all the important properties to maintain the same state
-                meeting.participants = parsedData.participants || {
-                    [CONFIG.GENDERS.types[0]]: 0,
-                    [CONFIG.GENDERS.types[1]]: 0,
-                    [CONFIG.GENDERS.types[2]]: 0
-                };
-
-                meeting.speakingData = parsedData.speakingData || {
-                    [CONFIG.GENDERS.types[0]]: [],
-                    [CONFIG.GENDERS.types[1]]: [],
-                    [CONFIG.GENDERS.types[2]]: []
-                };
-
-                meeting.active = parsedData.active || false;
-                meeting.currentSpeaker = parsedData.currentSpeaker || null;
-                meeting.startTime = parsedData.startTime || null;
-
-                return meeting;
-            }
-        } catch (error) {
-            console.error(CONFIG.MESSAGES.CONSOLE.ERROR_LOCALSTORAGE, error);
-        }
-
-        // If all else fails, create a basic meeting object
-        return new Meeting(CONFIG.DEFAULTS.MEETING_NAME, new Date().toISOString().split('T')[0]);
-    }
-
-    /**
-     * Updates the meeting info display with current meeting name and participant count.
+     * Updates the meeting info display with current meeting name.
      * @returns {void}
      */
-    updateMeetingInfo(meetingName) {
+    updateMeetingName(meetingName) {
         if (meetingName) {
             this.meetingInfo.textContent = meetingName;
         }

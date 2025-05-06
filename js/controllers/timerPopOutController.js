@@ -41,7 +41,7 @@ class TimerPopOutController {
             switch (type) {
                 case CONFIG.COMMUNICATION.WINDOW.TO_TIMER.INIT:
                     if (data.meetingName) {
-                        this.view.updateMeetingInfo(data.meetingName);
+                        this.view.updateMeetingName(data.meetingName);
                     }
                     if (data.visibleButtons) {
                         this.view.setButtonVisibility(
