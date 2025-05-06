@@ -64,15 +64,15 @@ const CONFIG = {
             MEETING_ENDED: 'meetingEnded'
         },
         WINDOW: {
-            TIMER: {
-                INIT: 'timerWindow.init',
-                SPEAKER_CHANGE: 'timerWindow.speakerChange',
-                SPEAKER_PAUSED: 'timerWindow.speakerPaused',
+            TO_TIMER: {
+                INIT: 'timerWindow.init'
+                SPEAKER_CHANGE: 'toTimerWindow.speakerChanged',
+                SPEAKER_PAUSED: 'toTimerWindow.speakerPaused',
             },
-            MAIN: {
-                SPEAKER_CHANGE: 'mainWindow.speakerChange',
-                SPEAKER_PAUSED: 'mainWindow.speakerPaused',
-                MEETING_ENDED: 'mainWindow.meetingEnded'
+            TO_MAIN: {
+                SPEAKER_CHANGE: 'toMainWindow.speakerChanged',
+                SPEAKER_PAUSED: 'toMainWindow.speakerPaused',
+                MEETING_ENDED: 'toMainWindow.meetingEnded'
             }
         },
         MESSAGE_TYPES: {

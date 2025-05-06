@@ -32,22 +32,6 @@ class MeetingController {
      * @returns {void}
      */
     initEventSubscriptions() {
-        //Listen for timer window events
-        eventBus.subscribe(CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_CHANGE, (data) => {
-            this.startSpeaking(data.gender, false); // false = don't update timer window
-        });
-
-        eventBus.subscribe(CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_PAUSED, () => {
-            this.pauseSpeaking(false); // false = don't update timer window
-        });
-
-        eventBus.subscribe(CONFIG.COMMUNICATION.WINDOW.TIMER.MEETING_ENDED, (data) => {
-            if (data.meeting) {
-                this.meeting = data.meeting;
-                StorageManager.saveMeeting(this.meeting);
-                App.navigateTo(CONFIG.DOM.SCREENS.STATS);
-            }
-        });
         // Setup window message listener for communication with popup
         window.addEventListener('message', this.handleTimerWindowMessage.bind(this));
     }
@@ -65,9 +49,9 @@ class MeetingController {
         //Update popout timer
         if (updateTimerWindow && this.timerWindow && !this.timerWindow.closed) {
             try {
-                timerWindow.postMessage({
-                    type: CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_CHANGE,
-                    data: { gender: activeGender }
+                this.timerWindow.postMessage({
+                    type: CONFIG.COMMUNICATION.WINDOW.TO_TIMER.SPEAKER_CHANGE,
+                    data: { gender: gender }
                 }, window.location.origin);
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_UPDATE_TIMER_WINDOW, error);
@@ -95,8 +79,8 @@ class MeetingController {
         //Update popout timer
         if (updateTimerWindow && this.timerWindow && !this.timerWindow.closed) {
             try {
-                timerWindow.postMessage({
-                    type: CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_PAUSED,
+                this.timerWindow.postMessage({
+                    type: CONFIG.COMMUNICATION.WINDOW.TO_TIMER.SPEAKER_PAUSED,
                     data: {}
                 }, window.location.origin);
             } catch (error) {
@@ -123,22 +107,21 @@ class MeetingController {
 
         // Setup communication when window loads
         this.timerWindow.onload = () => {
-            // Send initial meeting data and visible button info
             this.timerWindow.postMessage({
-                type: CONFIG.COMMUNICATION.MESSAGE_TYPES.INIT,
-                meeting: this.meeting,
-                visibleButtons: {
-                    men: this.meeting.participants[CONFIG.GENDERS.types[0]] > 0,
-                    women: this.meeting.participants[CONFIG.GENDERS.types[1]] > 0,
-                    nonbinary: this.meeting.participants[CONFIG.GENDERS.types[2]] > 0
+                type: CONFIG.COMMUNICATION.WINDOW.TO_TIMER.INIT,
+                data: {
+                    meetingName: this.meeting.name,
+                    visibleButtons: {
+                        men: this.meeting.participants[CONFIG.GENDERS.types[0]] > 0,
+                        women: this.meeting.participants[CONFIG.GENDERS.types[1]] > 0,
+                        nonbinary: this.meeting.participants[CONFIG.GENDERS.types[2]] > 0
+                    },
                 }
             }, window.location.origin);
 
-            // If there's an active speaker, sync it
             if (this.timer.currentSpeaker) {
                 this.timerWindow.postMessage({
-                    type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
-                    eventName: CONFIG.COMMUNICATION.WINDOW.MAIN.SPEAKER_CHANGE,
+                    type: CONFIG.COMMUNICATION.WINDOW.TO_TIMER.SPEAKER_CHANGE,
                     data: { gender: this.timer.currentSpeaker }
                 }, window.location.origin);
             }
@@ -160,66 +143,26 @@ class MeetingController {
         //Verify origin for security
         if (event.origin !== window.location.origin) return;
 
-        const { type, eventName, data } = event.data;
+        const { type, data } = event.data;
 
-        if (type === CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT) {
-            switch(eventName) {
-                case CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_CHANGE:
-                    if (data.gender) {
-                        if (data.meeting) {
-
-                            this.meeting.speakingData = data.meeting.speakingData;
-                            this.meeting.currentSpeaker = data.gender;
-                        }
-                        this.startSpeaking(data.gender, false);
-                    }
-                    break;
-
-                case  CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_PAUSED:
-                    if (data.meeting) {
-                        this.meeting.speakingData = data.meeting.speakingData;
-                        this.meeting.currentSpeaker = null;
-                    }
-                    this.pauseSpeaking(false);
-                    break;
-
-                case CONFIG.COMMUNICATION.WINDOW.TIMER.MEETING_ENDED:
-                    if (data.meeting) {
-
-                        this.meeting.speakingData = data.meeting.speakingData;
-                        this.meeting.currentSpeaker = null;
-
-                        StorageManager.saveMeeting(this.meeting);
-
-                        App.navigateTo(CONFIG.DOM.SCREENS.STATS);
-                    }
-                    break;
-
-                case 'timerWindow.requestData':
-                    // Popup-fönstret begär initial data
-                    this.sendDataToTimerWindow();
-                    break;
-            }
-
-        }
-    }
-
-    sendDataToTimerWindow() {
-        if (this.timerWindow && !this.timerWindow.closed) {
-            this.timerWindow.postMessage({
-                type: CONFIG.COMMUNICATION.WINDOW.TIMER.INIT,
-                data: {
-                    meetingName: this.meeting.name,
-                    visibleButtons: {
-                        men: this.meeting.participants[CONFIG.GENDERS.types[0]] > 0,
-                        women: this.meeting.participants[CONFIG.GENDERS.types[1]] > 0,
-                        nonbinary: this.meeting.participants[CONFIG.GENDERS.types[2]] > 0
-                    },
-                    currentSpeaker: this.meeting.currentSpeaker
+        switch(type) {
+            case CONFIG.COMMUNICATION.WINDOW.TO_MAIN.SPEAKER_CHANGE:
+                if (data.gender) {
+                    this.startSpeaking(data.gender, false);
                 }
-            }, window.location.origin);
+                break;
+
+            case  CONFIG.COMMUNICATION.WINDOW.TO_MAIN.SPEAKER_PAUSED:
+                this.pauseSpeaking(false);
+                break;
+
+            case CONFIG.COMMUNICATION.WINDOW.TO_MAIN.MEETING_ENDED:
+                this.endMeeting()
+                break;
+
         }
     }
+
     /**
      * Ends the current meeting and transitions to statistics view.
      * @returns {void}
@@ -236,8 +179,6 @@ class MeetingController {
         eventBus.publish(CONFIG.COMMUNICATION.ACTIONS.MEETING_ENDED, {
             meeting: this.meeting
         });
-
-        App.navigateTo(CONFIG.DOM.SCREENS.STATS);
     }
     /**
      * Updates which gender buttons are visible based on participation.

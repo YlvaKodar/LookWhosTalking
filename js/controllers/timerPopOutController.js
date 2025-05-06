@@ -52,12 +52,10 @@ class TimerPopOutController {
      */
     handleMainWindowMessage(event) {
         if (event.origin !== window.location.origin) return;
-
         const {type, data} = event.data;
-
         try{
             switch (type) {
-                case CONFIG.COMMUNICATION.WINDOW.TIMER.INIT:
+                case CONFIG.COMMUNICATION.WINDOW.TO_TIMER.INIT:
                     if (data.meetingName) {
                         this.view.updateMeetingInfo(data.meetingName);
                     }
@@ -68,18 +66,15 @@ class TimerPopOutController {
                             data.visibleButtons.nonbinary
                         );
                     }
-                    if (data.currentSpeaker) {
-                        this.startSpeaking(data.currentSpeaker, false);
-                    }
                     break;
 
-                case CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_CHANGE:
+                case CONFIG.COMMUNICATION.WINDOW.TO_TIMER.SPEAKER_CHANGE:
                     if (data.gender) {
                         this.startSpeaking(data.gender, false);
                     }
                     break;
 
-                case CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_PAUSED:
+                case CONFIG.COMMUNICATION.WINDOW.TO_TIMER.SPEAKER_PAUSED:
                     this.pauseSpeaking(false);
                     break;
 
@@ -99,25 +94,23 @@ class TimerPopOutController {
      * @returns {void}
      */
     startSpeaking(gender, notifyMainWindow = true) {
-        // Stop any current timing
+        //Stop any current timing
         if (this.interval) {
             this.pauseSpeaking(false);
         }
-
-        // Start new timing
+        //Start new timing
         this.currentSpeaker = gender;
         this.startTime = Date.now();
         this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
 
-        // Update button states in view
+        //Update button states in view
         this.view.updateButtonStates(gender);
 
-        // Notify main window if requested
+        //Notify main window if requested
         if (notifyMainWindow && window.opener && !window.opener.closed) {
             try {
                 window.opener.postMessage({
-                    type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
-                    eventName: CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_CHANGE,
+                    type: CONFIG.COMMUNICATION.WINDOW.TO_MAIN.SPEAKER_CHANGE,
                     data: { gender: gender }
                 }, window.location.origin);
             } catch (error) {
@@ -152,9 +145,8 @@ class TimerPopOutController {
         if (notifyMainWindow && window.opener && !window.opener.closed) {
             try {
                 window.opener.postMessage({
-                    type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
-                    eventName: CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_PAUSED,
-                    data: { duration: duration, gender: this.currentSpeaker }
+                    type: CONFIG.COMMUNICATION.WINDOW.TO_MAIN.SPEAKER_PAUSED,
+                    data: {}
                 }, window.location.origin);
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_NOTIFY_MAIN, error);
@@ -191,8 +183,7 @@ class TimerPopOutController {
         if (window.opener && !window.opener.closed) {
             try {
                 window.opener.postMessage({
-                    type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
-                    eventName: CONFIG.COMMUNICATION.WINDOW.TIMER.MEETING_ENDED,
+                    type: CONFIG.COMMUNICATION.WINDOW.TO_MAIN.MEETING_ENDED,
                     data: {}
                 }, window.location.origin);
 
