@@ -1,12 +1,12 @@
 /**
- * Controller for the timer popup window.
+ * Controller for the timer popout window.
  * Handles communication with the main window and local timing.
  * Does NOT maintain its own meeting data - relies on main window.
  * @class
  */
 class TimerPopOutController {
     /**
-     * Initializes the timer controller with a view reference.
+     * Initializes the timer popout controller with a view reference.
      * @param {TimerPopOutView} view - The associated view for UI updates
      * @constructor
      */
@@ -18,9 +18,6 @@ class TimerPopOutController {
 
         // Setup messaging with parent window
         this.setupWindowCommunication();
-
-        // Request initial data from main window
-        this.requestInitialData();
     }
 
     /**
@@ -30,19 +27,6 @@ class TimerPopOutController {
     setupWindowCommunication() {
         // Listen for messages from main window
         window.addEventListener('message', this.handleMainWindowMessage.bind(this));
-    }
-
-    /**
-     * Requests initial meeting data from the main window.
-     * @returns {void}
-     */
-    requestInitialData() {
-        if (window.opener && !window.opener.closed) {
-            window.opener.postMessage({
-                type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
-                eventName: 'timerWindow.requestData'
-            }, window.location.origin);
-        }
     }
 
     /**
