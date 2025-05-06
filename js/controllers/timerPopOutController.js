@@ -51,51 +51,43 @@ class TimerPopOutController {
      * @returns {void}
      */
     handleMainWindowMessage(event) {
-        // Verify message origin for security
         if (event.origin !== window.location.origin) return;
 
-        const { type, eventName, data } = event.data;
+        const {type, data} = event.data;
 
-        // Handle initialization message
-        if (type === CONFIG.COMMUNICATION.MESSAGE_TYPES.INIT) {
-            // Update meeting info
-            if (data.meetingName && data.totalParticipants) {
-                this.view.updateMeetingInfo(data.meetingName, data.totalParticipants);
-            }
+        try{
+            switch (type) {
+                case CONFIG.COMMUNICATION.WINDOW.TIMER.INIT:
+                    if (data.meetingName) {
+                        this.view.updateMeetingInfo(data.meetingName);
+                    }
+                    if (data.visibleButtons) {
+                        this.view.setButtonVisibility(
+                            data.visibleButtons.men,
+                            data.visibleButtons.women,
+                            data.visibleButtons.nonbinary
+                        );
+                    }
+                    if (data.currentSpeaker) {
+                        this.startSpeaking(data.currentSpeaker, false);
+                    }
+                    break;
 
-            // Update button visibility
-            if (data.visibleButtons) {
-                this.view.setButtonVisibility(
-                    data.visibleButtons.men,
-                    data.visibleButtons.women,
-                    data.visibleButtons.nonbinary
-                );
-            }
-
-            // Update active speaker if any
-            if (data.currentSpeaker) {
-                this.startSpeaking(data.currentSpeaker, false);
-            }
-            return;
-        }
-
-        // Handle event messages
-        if (type === CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT) {
-            switch(eventName) {
-                case CONFIG.COMMUNICATION.WINDOW.MAIN.SPEAKER_CHANGE:
+                case CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_CHANGE:
                     if (data.gender) {
                         this.startSpeaking(data.gender, false);
                     }
                     break;
 
-                case CONFIG.COMMUNICATION.WINDOW.MAIN.SPEAKER_PAUSED:
+                case CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_PAUSED:
                     this.pauseSpeaking(false);
                     break;
 
-                case CONFIG.COMMUNICATION.WINDOW.MAIN.MEETING_ENDED:
-                    this.endMeeting();
-                    break;
+                default:
+                    console.warn(CONFIG.MESSAGES.CONSOLE.ERROR_UNKNOWN_TYPE, type);
             }
+        } catch (error) {
+            console.error(CONFIG.MESSAGES.CONSOLE.ERROR_POST_MESSAGE, error);
         }
     }
 

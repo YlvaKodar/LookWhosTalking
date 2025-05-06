@@ -62,20 +62,18 @@ class MeetingController {
         this.timer.startTimer(gender);
         this.view.updateButtonStates(gender);
 
-        // Update timer window if open and if requested
+        //Update popout timer
         if (updateTimerWindow && this.timerWindow && !this.timerWindow.closed) {
             try {
-                // Use postMessage for communication
-                this.timerWindow.postMessage({
-                    type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
-                    eventName: CONFIG.COMMUNICATION.WINDOW.MAIN.SPEAKER_CHANGE,
-                    data: { gender: gender }
+                timerWindow.postMessage({
+                    type: CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_CHANGE,
+                    data: { gender: activeGender }
                 }, window.location.origin);
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_UPDATE_TIMER_WINDOW, error);
             }
         }
-        // Notify other components about the speaker change
+        //Notify other subscribers
         eventBus.publish(CONFIG.COMMUNICATION.ACTIONS.SPEAKER_CHANGE, {
             gender: gender,
             meeting: this.meeting
@@ -94,20 +92,18 @@ class MeetingController {
         // Save current state
         StorageManager.saveMeeting(this.meeting);
 
-        // Update timer window if open and if requested
+        //Update popout timer
         if (updateTimerWindow && this.timerWindow && !this.timerWindow.closed) {
             try {
-                this.timerWindow.postMessage({
-                    type: CONFIG.COMMUNICATION.MESSAGE_TYPES.EVENT,
-                    eventName: CONFIG.COMMUNICATION.WINDOW.MAIN.SPEAKER_CHANGE,
+                timerWindow.postMessage({
+                    type: CONFIG.COMMUNICATION.WINDOW.TIMER.SPEAKER_PAUSED,
                     data: {}
                 }, window.location.origin);
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_UPDATE_TIMER_WINDOW, error);
             }
         }
-
-        // Notify other components
+        //Notify other subscribers
         eventBus.publish(CONFIG.COMMUNICATION.ACTIONS.SPEAKER_CHANGE, {
             meeting: this.meeting
         });
@@ -210,25 +206,20 @@ class MeetingController {
 
     sendDataToTimerWindow() {
         if (this.timerWindow && !this.timerWindow.closed) {
-            const totalParticipants =
-                this.meeting.participants[CONFIG.GENDERS.types[0]] +
-                this.meeting.participants[CONFIG.GENDERS.types[1]] +
-                this.meeting.participants[CONFIG.GENDERS.types[2]];
-
             this.timerWindow.postMessage({
-                type: CONFIG.COMMUNICATION.MESSAGE_TYPES.INIT,
-                meetingName: this.meeting.name,
-                totalParticipants: totalParticipants,
-                currentSpeaker: this.timer.currentSpeaker,
-                visibleButtons: {
-                    men: this.meeting.participants[CONFIG.GENDERS.types[0]] > 0,
-                    women: this.meeting.participants[CONFIG.GENDERS.types[1]] > 0,
-                    nonbinary: this.meeting.participants[CONFIG.GENDERS.types[2]] > 0
+                type: CONFIG.COMMUNICATION.WINDOW.TIMER.INIT,
+                data: {
+                    meetingName: this.meeting.name,
+                    visibleButtons: {
+                        men: this.meeting.participants[CONFIG.GENDERS.types[0]] > 0,
+                        women: this.meeting.participants[CONFIG.GENDERS.types[1]] > 0,
+                        nonbinary: this.meeting.participants[CONFIG.GENDERS.types[2]] > 0
+                    },
+                    currentSpeaker: this.meeting.currentSpeaker
                 }
             }, window.location.origin);
         }
     }
-
     /**
      * Ends the current meeting and transitions to statistics view.
      * @returns {void}

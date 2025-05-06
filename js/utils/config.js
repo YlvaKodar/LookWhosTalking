@@ -65,9 +65,9 @@ const CONFIG = {
         },
         WINDOW: {
             TIMER: {
+                INIT: 'timerWindow.init',
                 SPEAKER_CHANGE: 'timerWindow.speakerChange',
                 SPEAKER_PAUSED: 'timerWindow.speakerPaused',
-                MEETING_ENDED: 'timerWindow.meetingEnded'
             },
             MAIN: {
                 SPEAKER_CHANGE: 'mainWindow.speakerChange',
@@ -144,6 +144,8 @@ const CONFIG = {
             ERROR_TIMER_COMMUNICATION: 'Could not communicate with timer window.',
             ERROR_UPDATE_TIMER_WINDOW: "Error updating timer window: ",
             ERROR_EVENT_SUBSCRIBER: 'Error in event subscriber for this event: ',
+            ERROR_UNKNOWN_TYPE: 'Error: Unknown message type: ',
+            ERROR_POST_MESSAGE:'Error: Could not handle posted message: ',
         },
 
         CONFIRM: {

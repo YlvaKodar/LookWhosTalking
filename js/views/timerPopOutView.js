@@ -81,13 +81,9 @@ class TimerPopOutView {
      * Updates the meeting info display with current meeting name and participant count.
      * @returns {void}
      */
-    updateMeetingInfo() {
-        if (this.meeting) {
-            const total = this.meeting.participants[CONFIG.GENDERS.types[0]] +
-                this.meeting.participants[CONFIG.GENDERS.types[1]] +
-                this.meeting.participants[CONFIG.GENDERS.types[2]];
-
-            this.meetingInfo.textContent = `${this.meeting.name} | ${total} ${CONFIG.LABELS.PARTICIPANTS}`;
+    updateMeetingInfo(meetingName) {
+        if (meetingName) {
+            this.meetingInfo.textContent = meetingName;
         }
     }
 
