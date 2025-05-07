@@ -50,6 +50,11 @@ class TimerPopOutController {
                             data.visibleButtons.nonbinary
                         );
                     }
+
+                    if (data.currentSpeaker && data.elapsedTime > 0) {
+                        this.startSpeakingWithOffset(data.currentSpeaker, data.elapsedTime);
+                    }
+
                     break;
 
                 case CONFIG.COMMUNICATION.WINDOW.TO_TIMER.SPEAKER_CHANGE:
@@ -68,6 +73,19 @@ class TimerPopOutController {
         } catch (error) {
             console.error(CONFIG.MESSAGES.CONSOLE.ERROR_POST_MESSAGE, error);
         }
+    }
+
+    startSpeakingWithOffset(gender, elapsedSeconds) {
+        // Start timing but adjust the startTime to account for already elapsed time
+        this.currentSpeaker = gender;
+        this.startTime = Date.now() - (elapsedSeconds * 1000); // Subtract elapsed milliseconds
+        this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
+
+        // Update button states in view
+        this.view.updateButtonStates(gender);
+
+        // Update timer display immediately to show correct time
+        this.updateTimer();
     }
 
     /**

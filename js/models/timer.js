@@ -33,16 +33,12 @@ class SpeakingTimer {
         this.meeting.currentSpeaker = gender;
         this.startTime = Date.now();
 
+
         //Update interval
-        if (CONFIG.TIMER.UPDATE_ANIMATION_FRAME) {
-            //Use requestAnimationFrame for better performance if configured
-            this.animationFrameId = requestAnimationFrame(() => this.updateTimerWithAnimationFrame());
-        } else {
-            //Otherwise use traditional interval
-            this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
-        }
+        this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
     }
     /**
+     * NOT USED RIGHT NOW. DELETE?
      * Updates the timer using requestAnimationFrame for smoother updates.
      * Only used if CONFIG.TIMER.UPDATE_ANIMATION_FRAME is true.
      * @returns {void}

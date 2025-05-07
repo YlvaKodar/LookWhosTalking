@@ -54,7 +54,7 @@ const CONFIG = {
         UPDATE_INTERVAL: 100,
         SAVE_INTERVAL: 1000,
         DEFAULT_DISPLAY: "00:00",
-        UPDATE_ANIMATION_FRAME: true,
+        UPDATE_ANIMATION_FRAME: false,
     },
 
     COMMUNICATION: {

@@ -114,6 +114,12 @@ class MeetingController {
 
     initializeTimerWindow() {
         if (this.timerWindow && !this.timerWindow.closed) {
+
+            let currentDuration = 0;
+            if (this.timer.currentSpeaker) {
+                currentDuration = this.timer.getCurrentDuration() || 0;
+            }
+
             this.timerWindow.postMessage({
                 type: CONFIG.COMMUNICATION.WINDOW.TO_TIMER.INIT,
                 data: {
@@ -123,15 +129,11 @@ class MeetingController {
                         women: this.meeting.participants[CONFIG.GENDERS.types[1]] > 0,
                         nonbinary: this.meeting.participants[CONFIG.GENDERS.types[2]] > 0
                     },
+
+                    currentSpeaker: this.timer.currentSpeaker,
+                    elapsedTime: currentDuration
                 }
             }, window.location.origin);
-
-            if (this.timer.currentSpeaker) {
-                this.timerWindow.postMessage({
-                    type: CONFIG.COMMUNICATION.WINDOW.TO_TIMER.SPEAKER_CHANGE,
-                    data: { gender: this.timer.currentSpeaker }
-                }, window.location.origin);
-            }
         }
     }
 
