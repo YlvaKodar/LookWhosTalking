@@ -139,6 +139,7 @@ const CONFIG = {
             ERROR_PARSE_MEETING: 'Error parsing completed meeting data: ',
             ERROR_OPENER_ACCESS: 'Error: Could not access window opener: ',
             ERROR_LOCALSTORAGE: "Error: Could not load from localStorage: ",
+            ERROR_SAVE_TO_LOCAL: "Error: Could not save to localStorage: ",
             ERROR_NOTIFY_MAIN: "Error: Could not notify main window: ",
             ERROR_END_MEETING: "Error: Could not end meeting: ",
             UPDATE_TIMER_WINDOW: "Received update from timer window: ",
@@ -159,7 +160,8 @@ const CONFIG = {
             ERROR_POPUP_BLOCKED: 'Timer-fönstret blockerades. Kontrollera dina popup-inställningar.',
             ERROR_MEETING_NAME_REQUIRED: 'Vad ska vi kalla mötet?',
             ERROR_DATE_REQUIRED: 'Vilken dag är det?',
-            ERROR_MEETING_DATA_REQUIRED: 'Inget giltigt möte hittades. Du behöver konfigurera ett nytt möte först.',
+            ERROR_MEETING_DATA_REQUIRED: 'Inget giltigt möte hittat. Prova att fylla i mötesformuläret igen.',
+            ERROR_SAVE_TO_LOCAL: 'Sorry! Mötet kunde inte sparas i webbläsarens minne ...',
             get ERROR_MIN_PARTICIPANTS() {
                 return `Inget möte utan minst ${CONFIG.MEETING.MIN_PARTICIPANTS} deltagare.`;
             },

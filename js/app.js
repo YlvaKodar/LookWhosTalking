@@ -80,11 +80,11 @@ class App {
 
             if (!setupData && !currentMeeting) {
                 alert(CONFIG.MESSAGES.ALERT.ERROR_MEETING_DATA_REQUIRED);
-                screenId = CONFIG.DOM.SCREENS.SETUP; // Redirect to setup instead
+                screenId = CONFIG.DOM.SCREENS.SETUP; //Redirect to setup instead
                 return;
             }
 
-            // If we have setup data but no active meeting, create a meeting from setup data
+            //If we have setup data but no active meeting, create a meeting from setup data
             if (setupData && !currentMeeting) {
                 const meeting = new Meeting(setupData.name, setupData.date);
                 meeting.setParticipants(
@@ -104,7 +104,7 @@ class App {
             element.style.display = CONFIG.DOM.DISPLAY.NONE;
         });
 
-        // Show the target screen
+        //Show the target screen
         const targetScreen = document.getElementById(screenId);
         if (targetScreen) {
             targetScreen.style.display = CONFIG.DOM.DISPLAY.BLOCK;
