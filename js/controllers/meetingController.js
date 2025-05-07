@@ -20,10 +20,23 @@ class MeetingController {
         this.view = view;
         this.timer = new SpeakingTimer(meeting);
         this.timerWindow = null;
+        this.meeting.active = true;
+        StorageManager.saveMeeting(this.meeting);
+
+        window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
 
         this.initEventSubscriptions();
 
         this.updateVisibleButtons();
+    }
+
+    handleBeforeUnload(event) {
+        //Warning before closing window
+        if (this.meeting.active) {
+            event.preventDefault();
+            event.returnValue = CONFIG.MESSAGES.CONFIRM.CLOSE_WINDOW;
+            return CONFIG.MESSAGES.CONFIRM.CLOSE_WINDOW;
+        }
     }
 
     /**
@@ -177,6 +190,7 @@ class MeetingController {
      */
     endMeeting() {
         this.timer.stopTimer();
+        this.meeting.active = false;
         StorageManager.saveMeeting(this.meeting);
 
         // Close timer window if open
@@ -222,6 +236,8 @@ class MeetingController {
             this.timerWindow.close();
             this.timerWindow = null;
         }
+
+        window.removeEventListener('beforeunload', this.handleBeforeUnload.bind(this));
         // Remove message listener        window.removeEventListener('message', this.handleTimerWindowMessage);
     }
 }

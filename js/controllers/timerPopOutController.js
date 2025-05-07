@@ -176,10 +176,12 @@ class TimerPopOutController {
      * @returns {void}
      */
     endMeeting() {
-        // First pause any ongoing speaking
         if (this.interval) {
-            this.pauseSpeaking(true);  // Notify main window
+            this.pauseSpeaking(true);
         }
+
+        //This a good place ..?
+        this.cleanup();
 
         // Notify main window if open
         if (window.opener && !window.opener.closed) {
@@ -189,8 +191,6 @@ class TimerPopOutController {
                     data: {}
                 }, window.location.origin);
 
-                // Wait a moment before closing to ensure message is sent
-                setTimeout(() => window.close(), 100);
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_END_MEETING, error);
                 alert(CONFIG.MESSAGES.ALERT.MEETING_COMPLETED);

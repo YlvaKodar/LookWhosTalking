@@ -19,9 +19,9 @@ class App {
         this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.END_MEETING, CONFIG.DOM.SCREENS.STATS);
         this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.BACK_TO_START, CONFIG.DOM.SCREENS.START);
 
-        this.checkForCompletedMeetings();
-
         this.navigateTo(CONFIG.DOM.SCREENS.START);
+
+        this.checkForCurrentMeeting();
     }
     /**
      * Sets up navigation for elements that don't require validation.
@@ -163,50 +163,30 @@ class App {
     }
 
     /**
-     * Checks for previously completed meetings and handles them appropriately.
-     * If found, asks user if they want to view statistics or delete the data.
+     * Checks for active current meetings and handles them appropriately.
+     * If found, asks user if they want to continue meeting, else delete the data.
      * @static
      * @returns {void}
      */
-    static checkForCompletedMeetings() {
-        const completedMeetingData = localStorage.getItem(CONFIG.STORAGE.KEYS.COMPLETED_MEETING);
+    static checkForCurrentMeeting() {
 
-        if (completedMeetingData) {
-            if (confirm(CONFIG.MESSAGES.CONFIRM.VIEW_STATS)) {
-                try {
-                    const meetingData = JSON.parse(completedMeetingData);
+        const data = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
 
-                    // Create a proper Meeting object
-                    const meeting = new Meeting(
-                        meetingData.name || CONFIG.DEFAULTS.MEETING_NAME,
-                        meetingData.date || new Date().toISOString().split('T')[0]
-                    );
+        if (data){
+            try {
+                const meeting = JSON.parse(data);
 
-                    // Copy participant data
-                    meeting.participants = meetingData.participants || {
-                        [CONFIG.GENDERS.types[0]]: 0,
-                        [CONFIG.GENDERS.types[1]]: 0,
-                        [CONFIG.GENDERS.types[2]]: 0
-                    };
-
-                    // Copy speaking data
-                    meeting.speakingData = meetingData.speakingData || {
-                        [CONFIG.GENDERS.types[0]]: [],
-                        [CONFIG.GENDERS.types[1]]: [],
-                        [CONFIG.GENDERS.types[2]]: []
-                    };
-
-                    // Save the meeting and navigate to stats
-                    StorageManager.saveMeeting(meeting);
-                    App.navigateTo(CONFIG.DOM.SCREENS.STATS);
-                } catch (error) {
-                    console.error(CONFIG.MESSAGES.CONSOLE.ERROR_PARSE_MEETING + error);
-                    alert(CONFIG.MESSAGES.ALERT.ERROR_LOADING_MEETING);
+                if (meeting && meeting.active && confirm(CONFIG.MESSAGES.CONFIRM.CONTINUE_MEETING)) {
+                    this.navigateTo(CONFIG.DOM.SCREENS.MEETING);
+                } else if (meeting) {
+                    StorageManager.clearMeetingData();
                 }
-            }
 
-            //Clear the completed meeting data
-            localStorage.removeItem(CONFIG.STORAGE.KEYS.COMPLETED_MEETING);
+            } catch (error) {
+                console.error(CONFIG.MESSAGES.CONSOLE.ERROR_PARSE_MEETING, error);
+                alert(CONFIG.MESSAGES.ALERT.ERROR_LOADING_MEETING);
+                StorageManager.clearMeetingData();
+            }
         }
     }
 

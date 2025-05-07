@@ -44,7 +44,6 @@ const CONFIG = {
     STORAGE: {
         KEYS: {
             CURRENT_MEETING: 'currentMeeting',
-            COMPLETED_MEETING: 'completedMeeting',
             SETUP_MEETING_DATA: 'setupMeetingData'
         }
     },
@@ -151,19 +150,20 @@ const CONFIG = {
         },
 
         CONFIRM: {
-            VIEW_STATS: 'Det finns statistik från ett avslutat möte. Vill du se den?',
+            CONTINUE_MEETING: 'Oh dear, looks like we have data from an interrupded meeting. Wanna pick up where you left off?',
+            CLOSE_WINDOW: 'If you close this window, you might loose all data from this meeting. Is it really worth it?',
         },
 
         ALERT: {
-            MEETING_COMPLETED: "Mötet avslutas. Återvänd till huvudfönstret för att se mötesstatistiken.",
-            ERROR_PARSE_MEETING: 'Mötet kan inte hittas.',
-            ERROR_POPUP_BLOCKED: 'Timer-fönstret blockerades. Kontrollera dina popup-inställningar.',
-            ERROR_MEETING_NAME_REQUIRED: 'Vad ska vi kalla mötet?',
-            ERROR_DATE_REQUIRED: 'Vilken dag är det?',
-            ERROR_MEETING_DATA_REQUIRED: 'Inget giltigt möte hittat. Prova att fylla i mötesformuläret igen.',
-            ERROR_SAVE_TO_LOCAL: 'Sorry! Mötet kunde inte sparas i webbläsarens minne ...',
+            MEETING_COMPLETED: "Meeting completed. Head back to the main window to see meeting statistics.",
+            ERROR_PARSE_MEETING: 'Sorry, we can\'t find your meeting.',
+            ERROR_POPUP_BLOCKED: 'Tiny timer tool is blocked. Please check your browser settings or use the main window timer.',
+            ERROR_MEETING_NAME_REQUIRED: 'Your meeting needs a name.',
+            ERROR_DATE_REQUIRED: 'What day is it?',
+            ERROR_MEETING_DATA_REQUIRED: 'No meeting find ... Please fill out the form.',
+            ERROR_SAVE_TO_LOCAL: 'We\' re sorry but we fail to save to the local storage ... Maybe check your browser settings or try another browser.',
             get ERROR_MIN_PARTICIPANTS() {
-                return `Inget möte utan minst ${CONFIG.MEETING.MIN_PARTICIPANTS} deltagare.`;
+                return `No meeting without at least ${CONFIG.MEETING.MIN_PARTICIPANTS} meeters.`;
             },
         },
     },

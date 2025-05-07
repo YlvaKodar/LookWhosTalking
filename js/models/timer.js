@@ -57,6 +57,8 @@ class SpeakingTimer {
     stopTimer() {
         if (!this.startTime) return;
 
+        StorageManager.saveMeeting(this.meeting);
+
         //Calculate duration
         const duration = (Date.now() - this.startTime) / 1000;
         const gender = this.meeting.currentSpeaker;
