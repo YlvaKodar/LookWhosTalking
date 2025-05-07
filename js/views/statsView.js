@@ -1,94 +1,47 @@
 /**
- * Controller for the statistics view screen.
- * Calculates and displays meeting statistics including speaking time distribution.
+ * View for the statistics screen.
+ * Responsible for rendering charts and displaying statistics.
+ * Delegates business logic to StatsController.
  * @class
  */
 class StatsView {
     /**
-     * Initializes the statistics view with data from completed meeting.
-     * Calculates statistics and renders visualizations.
+     * Initializes the statistics view with necessary DOM elements.
+     * Creates associated controller and sets up event handling.
      * @constructor
      */
     constructor() {
         this.meeting = StorageManager.getCurrentMeeting();
-        this.stats = this.calculateStats();
 
-        this.renderCharts();
-        this.displayTextStats();
-    }
-    /**
-     * Calculates comprehensive meeting statistics based on speaking data.
-     * Processes raw speaking time data to provide insights about gender distribution,
-     * speaking patterns, and fairness analysis of participation.
-     *
-     * @returns {Object} Statistics object containing various metrics defined in CONFIG.STATS.STRUCTURE
-     */
-    calculateStats() {
-        const stats = {};
-        //Initialize stats object structure using CONFIG
-        stats[CONFIG.STATS.STRUCTURE.TOTAL_TIME] = 0;
-        stats[CONFIG.STATS.STRUCTURE.GENDER_TIME] = {};
-        stats[CONFIG.STATS.STRUCTURE.STATEMENTS_COUNT] = {};
-        stats[CONFIG.STATS.STRUCTURE.AVG_DURATION] = {};
-        stats[CONFIG.STATS.STRUCTURE.TIME_PER_PARTICIPANT] = {};
-        stats[CONFIG.STATS.STRUCTURE.FAIR_DISTRIBUTION] = {};
-
-        //Initialize with gender types from config
-        CONFIG.GENDERS.types.forEach(gender => {
-            stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender] = 0;
-            stats[CONFIG.STATS.STRUCTURE.STATEMENTS_COUNT][gender] = 0;
-            stats[CONFIG.STATS.STRUCTURE.AVG_DURATION][gender] = 0;
-            stats[CONFIG.STATS.STRUCTURE.TIME_PER_PARTICIPANT][gender] = 0;
-            stats[CONFIG.STATS.STRUCTURE.FAIR_DISTRIBUTION][gender] = 0;
-        });
-
-        //Calculate statistics for each gender
-        CONFIG.GENDERS.types.forEach(gender => {
-            const times = this.meeting.speakingData[gender];
-            stats[CONFIG.STATS.STRUCTURE.STATEMENTS_COUNT][gender] = times.length;
-            stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender] = times.reduce((sum, time) => sum + time, 0);
-            stats[CONFIG.STATS.STRUCTURE.TOTAL_TIME] += stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender];
-        });
-
-        //Calculate average statement duration for each gender (per statement and per participant)
-        CONFIG.GENDERS.types.forEach(gender => {
-            //speaking time / number of statements = avrg. statement duration
-            if (stats[CONFIG.STATS.STRUCTURE.STATEMENTS_COUNT][gender] > 0) {
-                stats[CONFIG.STATS.STRUCTURE.AVG_DURATION][gender] =
-                    stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender] /
-                    stats[CONFIG.STATS.STRUCTURE.STATEMENTS_COUNT][gender];
-            }
-
-            //speaking time / number of participants = avrg. speaking time per participant
-            const participantCount = this.meeting.participants[gender];
-            if (participantCount > 0) {
-                stats[CONFIG.STATS.STRUCTURE.TIME_PER_PARTICIPANT][gender] =
-                    stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender] / participantCount;
-            }
-        });
-
-        //Calculate fair distribution based on participant counts (for comparison)
-        const totalParticipants = CONFIG.GENDERS.types.reduce(
-            (sum, gender) => sum + this.meeting.participants[gender], 0);
-
-        if (totalParticipants > 0) {
-            CONFIG.GENDERS.types.forEach(gender => {
-                const fairPercentage = this.meeting.participants[gender] / totalParticipants;
-                stats[CONFIG.STATS.STRUCTURE.FAIR_DISTRIBUTION][gender] =
-                    stats[CONFIG.STATS.STRUCTURE.TOTAL_TIME] * fairPercentage;
-            });
+        if (!this.meeting) {
+            alert(CONFIG.MESSAGES.ALERT.ERROR_MEETING_DATA_REQUIRED);
+            App.navigateTo(CONFIG.DOM.SCREENS.START);
+            return;
         }
-        return stats;
+
+        this.totalTimeElement = document.getElementById(CONFIG.DOM.STATS.TOTAL_TIME);
+        this.genderStatsElement = document.getElementById(CONFIG.DOM.STATS.GENDER_STATS);
+        this.fairDistElement = document.getElementById(CONFIG.DOM.STATS.FAIR_DISTRIBUTION);
+        this.chartCanvas = document.getElementById(CONFIG.DOM.CHARTS.SPEAKING_TIME);
+
+        this.controller = new StatsController(this.meeting, this);
     }
 
     /**
      * Renders pie chart visualization of speaking time distribution.
      * Uses Chart.js with configuration options from CONFIG.
+     * @param {Object} stats - Statistics object calculated by controller
      * @returns {void}
      */
-    renderCharts() {
-        const ctx = document.getElementById(CONFIG.DOM.CHARTS.SPEAKING_TIME).getContext('2d');
+    renderCharts(stats) {
+        if (!this.chartCanvas) {
+            console.error(CONFIG.MESSAGES.CONSOLE.ELEMENT_NOT_FOUND + CONFIG.DOM.CHARTS.SPEAKING_TIME);
+            return;
+        }
 
+        const ctx = this.chartCanvas.getContext('2d');
+
+        //Clean up any existing chart
         const chartInstance = Chart.getChart(CONFIG.DOM.CHARTS.SPEAKING_TIME);
         if (chartInstance) {
             chartInstance.destroy();
@@ -96,7 +49,7 @@ class StatsView {
 
         const labels = CONFIG.GENDERS.types.map(gender => CONFIG.GENDERS.labels[gender]);
         const data = CONFIG.GENDERS.types.map(gender =>
-            this.stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender]);
+            stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender]);
         const backgroundColor = CONFIG.GENDERS.types.map(gender => CONFIG.GENDERS.colors[gender]);
 
         new Chart(ctx, {
@@ -111,30 +64,34 @@ class StatsView {
             options: CONFIG.CHART.pieOptions
         });
 
-        //Todo: more visualization
+        //TODO: More visualizations
     }
 
     /**
      * Displays text-based statistics on the page.
      * Shows total time, per-gender stats, and fair distribution analysis.
+     * @param {Object} stats - Statistics object calculated by controller
      * @returns {void}
      */
-    displayTextStats() {
-        // Display total meeting time
-        document.getElementById(CONFIG.DOM.STATS.TOTAL_TIME).textContent =
-            this.formatTime(this.stats[CONFIG.STATS.STRUCTURE.TOTAL_TIME]);
+    displayTextStats(stats) {
+        if (!this.totalTimeElement || !this.genderStatsElement || !this.fairDistElement) {
+            console.error(CONFIG.MESSAGES.CONSOLE.ELEMENT_NOT_FOUND + 'statistics elements');
+            return;
+        }
 
-        // Display per-gender statistics
-        const genderStatsElement = document.getElementById(CONFIG.DOM.STATS.GENDER_STATS);
-        genderStatsElement.innerHTML = '';
+        //Total meeting time
+        this.totalTimeElement.textContent = this.formatTime(stats[CONFIG.STATS.STRUCTURE.TOTAL_TIME]);
+
+        //Per-gender statistics
+        this.genderStatsElement.innerHTML = '';
 
         CONFIG.GENDERS.types.forEach(gender => {
             const statsDiv = document.createElement('div');
             statsDiv.className = `${CONFIG.STATS.DISPLAY.GENDER_STAT_CLASS_PREFIX}${gender}`;
 
-            const totalTime = this.formatTime(this.stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender]);
-            const interventions = this.stats[CONFIG.STATS.STRUCTURE.STATEMENTS_COUNT][gender];
-            const avgTime = this.formatTime(this.stats[CONFIG.STATS.STRUCTURE.AVG_DURATION][gender]);
+            const totalTime = this.formatTime(stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender]);
+            const interventions = stats[CONFIG.STATS.STRUCTURE.STATEMENTS_COUNT][gender];
+            const avgTime = this.formatTime(stats[CONFIG.STATS.STRUCTURE.AVG_DURATION][gender]);
 
             statsDiv.innerHTML = `
                 <h3>${CONFIG.GENDERS.labels[gender]}</h3>
@@ -143,16 +100,15 @@ class StatsView {
                 <p>${CONFIG.STATS.LABELS.AVG_LENGTH}: ${avgTime}</p>
             `;
 
-            genderStatsElement.appendChild(statsDiv);
+            this.genderStatsElement.appendChild(statsDiv);
         });
 
-        // Display fair distribution analysis
-        const fairDistElement = document.getElementById(CONFIG.DOM.STATS.FAIR_DISTRIBUTION);
-        fairDistElement.innerHTML = `<h3>${CONFIG.STATS.LABELS.FAIR_DISTRIBUTION_HEADER}</h3>`;
+        //Fair distribution analysis
+        this.fairDistElement.innerHTML = `<h3>${CONFIG.STATS.LABELS.FAIR_DISTRIBUTION_HEADER}</h3>`;
 
         CONFIG.GENDERS.types.forEach(gender => {
-            const actual = this.stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender];
-            const fair = this.stats[CONFIG.STATS.STRUCTURE.FAIR_DISTRIBUTION][gender];
+            const actual = stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender];
+            const fair = stats[CONFIG.STATS.STRUCTURE.FAIR_DISTRIBUTION][gender];
             const diff = actual - fair;
 
             const diffText = diff > 0
@@ -163,13 +119,13 @@ class StatsView {
             p.innerHTML = `${CONFIG.GENDERS.labels[gender]}: ${this.formatTime(actual)} (${CONFIG.STATS.LABELS.FAIR_LABEL}: ${this.formatTime(fair)})<br>
                            <span class="${diff > 0 ? CONFIG.STATS.DISPLAY.OVER_CLASS : CONFIG.STATS.DISPLAY.UNDER_CLASS}">${diffText}</span>`;
 
-            fairDistElement.appendChild(p);
+            this.fairDistElement.appendChild(p);
         });
     }
 
     /**
      * Formats time in seconds to human-readable MM:SS format.
-     * Uses configuration settings for consistent formatting.
+     * Helper method for display purposes only.
      * @param {number} seconds - Time duration in seconds
      * @returns {string} Formatted time string (MM:SS)
      */
