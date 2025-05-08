@@ -8,8 +8,8 @@ const COLOR_PALETTE = {
     SECONDARY: '#183b48',
     SECONDARY_HOVER: '#296d85',
 
-    TERTIARY: '#481818',
-    TERTIARY_HOVER: '#8f2b2b',
+    TERTIARY: '#483018',
+    TERTIARY_HOVER: '#80552b',
 
     // Secondary/UI colors
     HEADER_BG: '#a82b05',
