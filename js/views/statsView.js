@@ -36,7 +36,7 @@ class StatsView {
     renderCharts(stats) {
         this.renderParticipantsChart(stats);
         this.renderSpeakingTimeChart(stats);
-        //this.renderInterventionsChart(stats);
+        this.renderInterventionsChart(stats);
     }
 
     /**
@@ -98,6 +98,42 @@ class StatsView {
             stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender]);
         const backgroundColor = CONFIG.GENDERS.types.map(gender => CONFIG.GENDERS.colors[gender]);
 
+
+        new Chart(canvas.getContext('2d'), {
+            type: CONFIG.CHART.TYPES.SPEAKING_TIME_DISTRIBUTION,
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColor
+                }]
+            },
+            options: CONFIG.CHART.pieOptions
+        });
+    }
+
+    /**
+     * Renders pie chart for intervention count distribution by gender.
+     * @param {Object} stats - Statistics object calculated by controller
+     * @returns {void}
+     */
+    renderInterventionsChart(stats) {
+        const canvas = document.getElementById(CONFIG.DOM.CHARTS.INTERVENTIONS);
+        if (!canvas) {
+            console.error(CONFIG.MESSAGES.CONSOLE.ELEMENT_NOT_FOUND + CONFIG.DOM.CHARTS.INTERVENTIONS);
+            return;
+        }
+
+        // Clean up any existing chart
+        const chartInstance = Chart.getChart(CONFIG.DOM.CHARTS.INTERVENTIONS);
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        const labels = CONFIG.GENDERS.types.map(gender => CONFIG.GENDERS.labels[gender]);
+        const data = CONFIG.GENDERS.types.map(gender =>
+            stats[CONFIG.STATS.STRUCTURE.STATEMENTS_COUNT][gender]);
+        const backgroundColor = CONFIG.GENDERS.types.map(gender => CONFIG.GENDERS.colors[gender]);
 
         new Chart(canvas.getContext('2d'), {
             type: CONFIG.CHART.TYPES.SPEAKING_TIME_DISTRIBUTION,

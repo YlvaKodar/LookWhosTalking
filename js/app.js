@@ -235,7 +235,7 @@ class App {
         const chartIds = [
             CONFIG.DOM.CHARTS.PARTICIPANTS,
             CONFIG.DOM.CHARTS.SPEAKING_TIME,
-            //CONFIG.DOM.CHARTS.INTERVENTIONS
+            CONFIG.DOM.CHARTS.INTERVENTIONS
         ];
         chartIds.forEach(id => {
             const chartInstance = Chart.getChart(id);

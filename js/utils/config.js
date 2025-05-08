@@ -263,11 +263,13 @@ const CONFIG = {
         },
         CHARTS: {
                 TITLES: {
-                    PARTICIPANTS: 'Fördelning av mötesdeltagare',
-                    SPEAKING_TIME: 'Fördelning av talartid',
+                    PARTICIPANTS: 'Meeting participants:',
+                    SPEAKING_TIME: 'Speaking time distribution:',
+                    INTERVENTIONS: 'Statement distribution:',
                 },
             PARTICIPANTS: 'participants-chart',
             SPEAKING_TIME: 'speaking-time-chart',
+            INTERVENTIONS: 'interventions-chart',
         },
         STATS: {
             TOTAL_TIME: 'total-time',
