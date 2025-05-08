@@ -19,10 +19,29 @@ class App {
         this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.END_MEETING, CONFIG.DOM.SCREENS.STATS);
         this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.BACK_TO_START, CONFIG.DOM.SCREENS.START);
 
-        this.navigateTo(CONFIG.DOM.SCREENS.START);
+        this.setUpStartScreenButtons();
 
+        this.navigateTo(CONFIG.DOM.SCREENS.START);
         this.checkForCurrentMeeting();
     }
+
+    /**
+     * Sets up navigation for elements that don't require validation.
+     * @static
+     * @param {string} elementId - ID for the navigation triggering element.
+     * @param {string} screenId - ID for the destination screen.
+     * @returns {void}
+     */
+    static setUpStartScreenButtons(){
+        document.getElementById(CONFIG.DOM.BUTTONS.ABOUT).addEventListener('click', () => {
+            AlertManager.showAlert(CONFIG.MESSAGES.ALERT.ABOUT.CONTENT);
+        })
+
+        document.getElementById(CONFIG.DOM.BUTTONS.HOW_TO_USE).addEventListener('click', () => {
+            AlertManager.showAlert(CONFIG.MESSAGES.ALERT.HOW_TO_USE.CONTENT);
+        });
+    }
+
     /**
      * Sets up navigation for elements that don't require validation.
      * @static

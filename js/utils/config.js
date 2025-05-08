@@ -42,10 +42,14 @@ const CONFIG = {
     LABELS: {
         PARTICIPANTS: "participants",
 
+        NEW_MEETING_BUTTON: "New meeting",
+        ABOUT_BUTTON: "About",
+        HOW_TO_USE_BUTTON: "How to use",
+
         TIMER_POPOUT_BUTTON: "Open popout timer tool",
         PAUSE_MEETING_BUTTON: "Pause",
         END_MEETING_BUTTON: "Meeting ended",
-        NEW_MEETING_BUTTON: "New meeting",
+
         BACK_TO_START: "Back to start",
         START_BUTTON: "Start meeting",
 
@@ -196,6 +200,21 @@ const CONFIG = {
             get ERROR_MIN_PARTICIPANTS() {
                 return `No meeting without at least ${CONFIG.MEETING.MIN_PARTICIPANTS} meeters.`;
             },
+
+            ABOUT: {
+                TITLE: "About Look Who's Talking",
+                CONTENT: "This web app is a prototype timing tool intended to help you see how speaking time " +
+                "is distributed in your meetings. It is free to use, but please remember that this is a prototype " +
+                "app, and still under evaluation.",
+            },
+            HOW_TO_USE: {
+                TITLE: "How to use this app",
+                CONTENT: "To use this app, just click the \"New meeting\" button and fill in the details. " +
+                " (Don't worry, you won't be asked to leave any personal information or create an account.)"  +
+                    "Then click \"Start meeting\" and use the timer or the tiny popout tool as instructed. " +
+                    "Note: Do not close the main window while using the app. \n When the meeting is over, " +
+                    "click the \"End meeting\" button to see the statistics.",
+            },
         },
     },
 
@@ -223,7 +242,9 @@ const CONFIG = {
             WOMEN: 'women-speaking',
             NON_BINARY: 'nonbinary-speaking',
             PAUSE: 'pause-meeting',
-            TIMER_POPOUT: 'timer-popup-btn'
+            TIMER_POPOUT: 'timer-popup-btn',
+            ABOUT: 'about-btn',
+            HOW_TO_USE: 'how-to-use-btn',
         },
         LABELS: {
 
