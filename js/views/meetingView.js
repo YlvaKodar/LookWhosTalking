@@ -17,6 +17,7 @@ class MeetingView {
         this.endButton = document.getElementById(CONFIG.DOM.BUTTONS.END_MEETING);
         this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.DISPLAY);
         this.popOutButton = document.getElementById(CONFIG.DOM.BUTTONS.TIMER_POPOUT);
+        this.howToUseButton = document.getElementById(CONFIG.DOM.BUTTONS.HOW_TO_USE_TIMER);
 
         if (!this.popOutButton) {
             this.popOutButton = document.createElement('button');
@@ -51,6 +52,7 @@ class MeetingView {
         this.pauseButton.addEventListener('click', () => this.controller.pauseSpeaking());
         this.endButton.addEventListener('click', () => this.controller.endMeeting());
         this.popOutButton.addEventListener('click', () => this.controller.openTimerWindow());
+        this.howToUseButton.addEventListener('click', () => { AlertManager.showAlert(CONFIG.MESSAGES.ALERT.HOW_TO_USE_TIMER.CONTENT) })
     }
     /**
      * Updates the user interface with current meeting data.
