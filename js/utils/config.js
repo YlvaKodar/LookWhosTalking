@@ -230,13 +230,13 @@ const CONFIG = {
             UNDER_CLASS: 'under'
         },
         LABELS: {
-            FAIR_DISTRIBUTION_HEADER: 'Rättvis fördelning',
-            SPEAKING_TIME: 'Talartid',
-            STATEMENTS_COUNT: 'Antal inlägg',
-            AVG_LENGTH: 'Genomsnittlig längd',
-            MORE_THAN_FAIR: 'mer än rättvist',
-            LESS_THAN_FAIR: 'mindre än rättvist',
-            FAIR_LABEL: 'rättvist'
+            FAIR_DISTRIBUTION_HEADER: 'Fair speaking time distribution',
+            SPEAKING_TIME: 'Speaking time',
+            STATEMENTS_COUNT: 'Number of statements',
+            AVG_LENGTH: 'Average length of statement',
+            MORE_THAN_FAIR: 'More than fair share',
+            LESS_THAN_FAIR: 'Less than fair share',
+            FAIR_LABEL: 'Fair share'
         },
     },
 
