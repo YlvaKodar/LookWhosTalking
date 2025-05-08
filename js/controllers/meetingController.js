@@ -114,7 +114,7 @@ class MeetingController {
             CONFIG.URLS.TIMER_WINDOW_FEATURES);
 
         if (!this.timerWindow) {
-            this.view.showError(CONFIG.MESSAGES.ALERT.ERROR_POPOUT_BLOCKED);
+            this.view.showAlert(CONFIG.MESSAGES.ALERT.ERROR_POPOUT_BLOCKED);
             return null;
         }
 

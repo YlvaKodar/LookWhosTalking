@@ -120,6 +120,14 @@ class TimerPopOutView {
             speakerButtonsContainer.classList.add(`${visibleCount}-buttons`);
         }
     }
+    /**
+     * Shows an alert message to the user using the custom alert.
+     * @param {string} message - The message to display
+     * @returns {void}
+     */
+    showAlert(message) {
+        AlertManager.showAlert(message);
+    }
 }
 
 // Initialize the timer window when the DOM is fully loaded

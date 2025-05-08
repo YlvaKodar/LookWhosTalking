@@ -193,10 +193,10 @@ class TimerPopOutController {
 
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_END_MEETING, error);
-                alert(CONFIG.MESSAGES.ALERT.MEETING_COMPLETED);
+                this.view.showAlert(CONFIG.MESSAGES.ALERT.MEETING_COMPLETED);
             }
         } else {
-            alert(CONFIG.MESSAGES.ALERT.MEETING_COMPLETED);
+            this.view.showAlert(CONFIG.MESSAGES.ALERT.MEETING_COMPLETED);
         }
     }
 

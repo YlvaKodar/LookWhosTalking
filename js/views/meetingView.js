@@ -120,11 +120,19 @@ class MeetingView {
         }
     }
     /**
-     * Shows an error message to the user.
-     * @param {string} message - The error message to display
+     * Shows an alert message to the user using the custom alert.
+     * @param {string} message - The message to display
      * @returns {void}
      */
-    showError(message) {
-        alert(message);
+    showAlert(message) {
+        AlertManager.showAlert(message);
+    }
+    /**
+     * Shows a confirm message to the user using the custom alert.
+     * @param {string} message - The message to display
+     * @returns {void}
+     */
+    showConfirm(message) {
+        AlertManager.showAlert(message);
     }
 }

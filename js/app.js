@@ -176,15 +176,21 @@ class App {
             try {
                 const meeting = JSON.parse(data);
 
-                if (meeting && meeting.active && confirm(CONFIG.MESSAGES.CONFIRM.CONTINUE_MEETING)) {
-                    this.navigateTo(CONFIG.DOM.SCREENS.MEETING);
+                if (meeting && meeting.active){
+                    AlertManager.showConfirm(CONFIG.MESSAGES.CONFIRM.CONTINUE_MEETING, (confirmed) => {
+                        if (confirmed) {
+                            this.navigateTo(CONFIG.DOM.SCREENS.MEETING);
+                        } else {
+                            StorageManager.clearMeetingData();
+                        }
+                    });
                 } else if (meeting) {
                     StorageManager.clearMeetingData();
                 }
 
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_PARSE_MEETING, error);
-                alert(CONFIG.MESSAGES.ALERT.ERROR_LOADING_MEETING);
+                AlertManager.showAlert(CONFIG.MESSAGES.ALERT.ERROR_LOADING_MEETING);
                 StorageManager.clearMeetingData();
             }
         }

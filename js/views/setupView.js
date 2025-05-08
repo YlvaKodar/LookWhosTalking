@@ -18,7 +18,12 @@ class SetupView {
 
         this.controller = new SetupController(this);
     }
-    showError(message) {
-        alert(message);
+    /**
+     * Shows an alert message to the user using the custom alert.
+     * @param {string} message - The message to display
+     * @returns {void}
+     */
+    showAlert(message) {
+        AlertManager.showAlert(message);
     }
 }
