@@ -63,14 +63,9 @@ class SpeakingTimer {
         const duration = (Date.now() - this.startTime) / 1000;
         const gender = this.meeting.currentSpeaker;
 
-        //Debugging ...
-        console.log("Stopping timer for gender: ", gender);
-        console.log("Current speaking data:", JSON.stringify(this.meeting.speakingData));
-
         //Save speaking data
         if (gender && this.meeting.speakingData && this.meeting.speakingData[gender]) {
             this.meeting.speakingData[gender].push(duration);
-            console.log("After push:", JSON.stringify(this.meeting.speakingData));
         } else {
             console.log("Failed to record speaking data - conditions not met");
         }
