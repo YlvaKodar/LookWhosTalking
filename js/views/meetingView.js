@@ -16,13 +16,13 @@ class MeetingView {
         this.pauseButton = document.getElementById(CONFIG.DOM.BUTTONS.PAUSE);
         this.endButton = document.getElementById(CONFIG.DOM.BUTTONS.END_MEETING);
         this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.DISPLAY);
-        this.popOutButton = document.getElementById(CONFIG.DOM.BUTTONS.TIMER_POPUP);
+        this.popOutButton = document.getElementById(CONFIG.DOM.BUTTONS.TIMER_POPOUT);
 
         if (!this.popOutButton) {
             this.popOutButton = document.createElement('button');
-            this.popOutButton.id = CONFIG.DOM.BUTTONS.TIMER_POPUP;
-            this.popOutButton.textContent = CONFIG.TIMER_POPUP.BUTTON_TEXT;
-            this.popOutButton.className = CONFIG.TIMER_POPUP.BUTTON_CLASS;
+            this.popOutButton.id = CONFIG.DOM.BUTTONS.TIMER_POPOUT;
+            this.popOutButton.textContent = CONFIG.LABELS.TIMER_POPOUT_BUTTON;
+            this.popOutButton.className = CONFIG.TIMER_POPOUT_DOM.BUTTON_CLASS;
             this.timerDisplay.parentNode.insertBefore(this.popOutButton, this.timerDisplay.nextSibling);
         }
         // Load meeting data with error handling

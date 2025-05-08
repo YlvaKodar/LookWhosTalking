@@ -12,58 +12,62 @@
 <!-- Start screen -->
 <div id="start-screen" class="screen">
     <h1>Look Who's Talking</h1>
-    <p>Prototyp: Vilka får höras på era möten? Tajma och se.</p>
-    <button id="new-meeting-btn">Nytt möte</button>
+    <h2>Timing tool for mixed-gender conversations</h2>
+    <p>This web app is a prototype timing tool intended to help you see how speaking time
+    is distributed in your meetings. To use it, just click the "New meeting" button and fill in
+    the details. (Don't worry, you won't be asked to leave any personal information.) </p>
+    <button id="new-meeting-btn">New meeting</button>
 </div>
 
 <!-- Setup screen -->
 <div id="setup-screen" class="screen" style="display: none;">
-    <h1>Vad är det här för möte egentligen?</h1>
+    <h1>About this meeting:</h1>
     <form id="meeting-form">
         <div class="form-group">
-            <label for="meeting-name">Mötesnamn:</label>
+            <label for="meeting-name">What shall we call it?</label>
             <input type="text" id="meeting-name" required>
         </div>
 
         <div class="form-group">
-            <label for="meeting-date">Datum:</label>
+            <label for="meeting-date">Meeting date?</label>
             <input type="date" id="meeting-date" required>
         </div>
 
         <div class="form-group">
-            <h2>Antal deltagare</h2>
+            <h2>We need a participant count:</h2>
 
             <div class="participant-input">
-                <label for="men-count">Män:</label>
-                <input type="number" id="men-count" min="0" value="0">
-            </div>
-
-            <div class="participant-input">
-                <label for="women-count">Kvinnor:</label>
+                <label for="women-count">Women:</label>
                 <input type="number" id="women-count" min="0" value="0">
             </div>
 
             <div class="participant-input">
-                <label for="nonbinary-count">Icke-binära:</label>
+                <label for="nonbinary-count">Non-binary:</label>
                 <input type="number" id="nonbinary-count" min="0" value="0">
             </div>
+
+            <div class="participant-input">
+                <label for="men-count">Men:</label>
+                <input type="number" id="men-count" min="0" value="0">
+            </div>
+
         </div>
 
-        <button type="button" id="start-meeting">Starta möte</button>
+        <button type="button" id="start-meeting">Start meeting</button>
     </form>
 </div>
 
 <!-- Meeting screen -->
 <div id="meeting-screen" class="screen" style="display: none;">
-    <h1 id="meeting-title">Mötesnamn</h1>
+    <h1 id="meeting-title">Meeting name</h1>
     <div id="timer-display">00:00</div>
 
     <button id="timer-popup-btn" class="pop-out-btn">Pop Out Timer</button>
 
     <div class="speaker-buttons">
-        <button id="men-speaking" class="speaker-btn men">Man talar</button>
-        <button id="women-speaking" class="speaker-btn women">Kvinna talar</button>
-        <button id="nonbinary-speaking" class="speaker-btn nonbinary">Icke-binär talar</button>
+        <button id="women-speaking" class="speaker-btn women">Woman</button>
+        <button id="nonbinary-speaking" class="speaker-btn nonbinary">Non-binary</button>
+        <button id="men-speaking" class="speaker-btn men">Man</button>
     </div>
 
     <div class="control-buttons">

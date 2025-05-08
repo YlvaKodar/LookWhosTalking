@@ -8,7 +8,16 @@ const CONFIG = {
     APP_VERSION: "1.0.0",
 
     LABELS: {
-        PARTICIPANTS: "deltagare",
+        PARTICIPANTS: "participants",
+
+        TIMER_POPOUT_BUTTON: "Open popout timer tool",
+        PAUSE_MEETING_BUTTON: "Pause",
+        END_MEETING_BUTTON: "Meeting ended",
+        NEW_MEETING_BUTTON: "New meeting",
+        BACK_TO_START: "Back to start",
+        START_BUTTON: "Start meeting",
+
+
     },
 
     //Genders:
@@ -25,15 +34,10 @@ const CONFIG = {
             nonbinary: '#420407',
         },
         buttonLabels: {
-            men: 'Man talar',
-            women: 'Kvinna talar',
-            nonbinary: 'Icke-binär talar'
+            men: 'Man speaking',
+            women: 'Woman speaking',
+            nonbinary: 'Non-binary speaking',
         },
-        popupButtonLabels: {
-            men: 'Man',
-            women: 'Kvinna',
-            nonbinary: 'Icke-binär'
-        }
     },
     //Meeting settings
     MEETING: {
@@ -85,29 +89,22 @@ const CONFIG = {
         }
     },
 
-    //Popup
-    TIMER_POPUP: {
-        TITLE: 'Tiny timer tool',
+    //Popout
+    TIMER_POPOUT_DOM: {
+        TITLE: 'timer-popup-title',
+        TITLE_LABEL: 'TINY TIMER TOOL',
         BUTTON_TEXT: 'Pop Out Timer',
         BUTTON_CLASS: 'pop-out-btn',
-        DOM: {
-            TITLE: 'timer-popup-title',
-            MEETING_INFO: 'meeting-info',
-            BODY_CLASS: 'timer-popup-body'
+        MEETING_INFO: 'meeting-info',
+        BODY_CLASS: 'timer-popup-body',
+        DISPLAY: 'popup-timer-display',
+        BUTTONS: {
+            MEN: 'popup-men-speaking',
+            WOMEN: 'popup-women-speaking',
+            NON_BINARY: 'popup-nonbinary-speaking',
+            PAUSE: 'popup-pause-meeting',
+            END: 'popup-end-meeting',
         },
-        LABELS: {
-            get MEN_BUTTON() {
-              return `${CONFIG.GENDERS.buttonLabels.men}`;
-            },
-            get WOMEN_BUTTON() {
-                return `${CONFIG.GENDERS.buttonLabels.women}`;
-            },
-            get NONBINARY_BUTTON() {
-                return `${CONFIG.GENDERS.buttonLabels.nonbinary}`;
-            },
-            PAUSE_BUTTON: "Paus",
-            END_BUTTON: "Avsluta möte"
-        }
     },
 
     // Chart.js settings:
@@ -183,7 +180,6 @@ const CONFIG = {
         },
         TIMER: {
             DISPLAY: 'timer-display',
-            POPUP_DISPLAY: 'popup-timer-display'
         },
         BUTTONS: {
             NEW_MEETING: 'new-meeting-btn',
@@ -193,12 +189,10 @@ const CONFIG = {
             WOMEN: 'women-speaking',
             NON_BINARY: 'nonbinary-speaking',
             PAUSE: 'pause-meeting',
-            POPUP_MEN: 'popup-men-speaking',
-            POPUP_WOMEN: 'popup-women-speaking',
-            POPUP_NON_BINARY: 'popup-nonbinary-speaking',
-            POPUP_PAUSE: 'popup-pause-meeting',
-            POPUP_END: 'popup-end-meeting',
-            TIMER_POPUP: 'timer-popup-btn'
+            TIMER_POPOUT: 'timer-popup-btn'
+        },
+        LABELS: {
+
         },
         CHARTS: {
             SPEAKING_TIME: 'speaking-time-chart'

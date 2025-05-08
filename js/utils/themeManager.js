@@ -43,6 +43,24 @@ function applyThemeFromConfig() {
     // Apply breakpoints
     root.style.setProperty('--mobile-breakpoint', CONFIG.THEME.BREAKPOINTS.MOBILE);
 
+    //Buttons
+    if (document.getElementById(CONFIG.DOM.BUTTONS.WOMEN)) {
+        document.getElementById(CONFIG.DOM.BUTTONS.WOMEN).textContent = CONFIG.GENDERS.buttonLabels.women;
+        document.getElementById(CONFIG.DOM.BUTTONS.NON_BINARY).textContent = CONFIG.GENDERS.buttonLabels.nonbinary;
+        document.getElementById(CONFIG.DOM.BUTTONS.MEN).textContent = CONFIG.GENDERS.buttonLabels.men;
+        document.getElementById(CONFIG.DOM.BUTTONS.PAUSE).textContent = CONFIG.LABELS.PAUSE_MEETING_BUTTON;
+        document.getElementById(CONFIG.DOM.BUTTONS.END_MEETING).textContent = CONFIG.LABELS.END_MEETING_BUTTON;
+        document.getElementById(CONFIG.DOM.BUTTONS.TIMER_POPOUT).textContent = CONFIG.LABELS.TIMER_POPOUT_BUTTON;
+
+        document.getElementById(CONFIG.DOM.BUTTONS.NEW_MEETING).textContent = CONFIG.LABELS.NEW_MEETING_BUTTON;
+
+        document.getElementById(CONFIG.DOM.BUTTONS.BACK_TO_START).textContent = CONFIG.LABELS.BACK_TO_START;
+
+        document.getElementById(CONFIG.DOM.FORM.START_BUTTON).textContent = CONFIG.LABELS.START_BUTTON;
+
+    }
+
+
     //POPUP STYLING
     root.style.setProperty('--popup-bg-color', CONFIG.THEME.POPUP.BG_COLOR);
     root.style.setProperty('--popup-text-color', CONFIG.THEME.POPUP.TEXT_COLOR);
@@ -52,16 +70,14 @@ function applyThemeFromConfig() {
     root.style.setProperty('--popup-title-font-size', CONFIG.THEME.POPUP.TITLE_FONT_SIZE);
     root.style.setProperty('--popup-info-font-size', CONFIG.THEME.POPUP.INFO_FONT_SIZE);
 
-    if (document.getElementById(CONFIG.TIMER_POPUP.DOM.TITLE)) {
-        document.getElementById(CONFIG.TIMER_POPUP.DOM.TITLE).textContent = CONFIG.TIMER_POPUP.TITLE;
-    }
+    if (document.getElementById(CONFIG.TIMER_POPOUT_DOM.TITLE)) {
+        document.getElementById(CONFIG.TIMER_POPOUT_DOM.TITLE).textContent = CONFIG.TIMER_POPOUT_DOM.TITLE_LABEL;
 
-    if (document.getElementById(CONFIG.DOM.BUTTONS.POPUP_MEN)) {
-        document.getElementById(CONFIG.DOM.BUTTONS.POPUP_MEN).textContent = CONFIG.TIMER_POPUP.LABELS.MEN_BUTTON;
-        document.getElementById(CONFIG.DOM.BUTTONS.POPUP_WOMEN).textContent = CONFIG.TIMER_POPUP.LABELS.WOMEN_BUTTON;
-        document.getElementById(CONFIG.DOM.BUTTONS.POPUP_NON_BINARY).textContent = CONFIG.TIMER_POPUP.LABELS.NONBINARY_BUTTON;
-        document.getElementById(CONFIG.DOM.BUTTONS.POPUP_PAUSE).textContent = CONFIG.TIMER_POPUP.LABELS.PAUSE_BUTTON;
-        document.getElementById(CONFIG.DOM.BUTTONS.POPUP_END).textContent = CONFIG.TIMER_POPUP.LABELS.END_BUTTON;
+        document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.MEN).textContent = CONFIG.GENDERS.buttonLabels.men;
+        document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.WOMEN).textContent = CONFIG.GENDERS.buttonLabels.women;
+        document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.NON_BINARY).textContent = CONFIG.GENDERS.buttonLabels.nonbinary;
+        document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.PAUSE).textContent = CONFIG.LABELS.PAUSE_MEETING_BUTTON;
+        document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.END).textContent = CONFIG.LABELS.END_MEETING_BUTTON;
     }
 
     console.log('Theme applied from configuration');

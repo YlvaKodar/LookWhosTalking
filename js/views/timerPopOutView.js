@@ -11,13 +11,13 @@ class TimerPopOutView {
      */
     constructor() {
         // Get DOM elements
-        this.menButton = document.getElementById(CONFIG.DOM.BUTTONS.POPUP_MEN);
-        this.womenButton = document.getElementById(CONFIG.DOM.BUTTONS.POPUP_WOMEN);
-        this.nonbinaryButton = document.getElementById(CONFIG.DOM.BUTTONS.POPUP_NON_BINARY);
-        this.pauseButton = document.getElementById(CONFIG.DOM.BUTTONS.POPUP_PAUSE);
-        this.endButton = document.getElementById(CONFIG.DOM.BUTTONS.POPUP_END);
-        this.timerDisplay = document.getElementById(CONFIG.DOM.TIMER.POPUP_DISPLAY);
-        this.meetingInfo = document.getElementById(CONFIG.TIMER_POPUP.DOM.MEETING_INFO);
+        this.menButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.MEN);
+        this.womenButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.WOMEN);
+        this.nonbinaryButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.NON_BINARY);
+        this.pauseButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.PAUSE);
+        this.endButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.END);
+        this.timerDisplay = document.getElementById(CONFIG.TIMER_POPOUT_DOM.DISPLAY);
+        this.meetingInfo = document.getElementById(CONFIG.TIMER_POPOUT_DOM.MEETING_INFO);
 
         // Create controller
         this.controller = new TimerPopOutController(this);
