@@ -34,9 +34,44 @@ class StatsView {
      * @returns {void}
      */
     renderCharts(stats) {
-        //this.renderParticipantsChart(stats);
+        this.renderParticipantsChart(stats);
         this.renderSpeakingTimeChart(stats);
         //this.renderInterventionsChart(stats);
+    }
+
+    /**
+     * Renders pie chart for participant distribution by gender.
+     * @param {Object} stats - Statistics object calculated by controller
+     * @returns {void}
+     */
+    renderParticipantsChart(stats) {
+        const canvas = document.getElementById(CONFIG.DOM.CHARTS.PARTICIPANTS);
+        if (!canvas) {
+            console.error(CONFIG.MESSAGES.CONSOLE.ELEMENT_NOT_FOUND + CONFIG.DOM.CHARTS.PARTICIPANTS);
+            return;
+        }
+
+        // Clean up any existing chart
+        const chartInstance = Chart.getChart(CONFIG.DOM.CHARTS.PARTICIPANTS);
+        if (chartInstance) {
+            chartInstance.destroy();
+        }
+
+        const labels = CONFIG.GENDERS.types.map(gender => CONFIG.GENDERS.labels[gender]);
+        const data = CONFIG.GENDERS.types.map(gender => this.meeting.participants[gender]);
+        const backgroundColor = CONFIG.GENDERS.types.map(gender => CONFIG.GENDERS.colors[gender]);
+
+        new Chart(canvas.getContext('2d'), {
+            type: CONFIG.CHART.TYPES.SPEAKING_TIME_DISTRIBUTION,
+            data: {
+                labels: labels,
+                datasets: [{
+                    data: data,
+                    backgroundColor: backgroundColor
+                }]
+            },
+            options: CONFIG.CHART.pieOptions
+        });
     }
 
     /**

@@ -232,7 +232,11 @@ class App {
         this.activeControllers = {};
 
         //Clean up any Chart.js instances
-        const chartIds = [CONFIG.DOM.CHARTS.SPEAKING_TIME];
+        const chartIds = [
+            CONFIG.DOM.CHARTS.PARTICIPANTS,
+            CONFIG.DOM.CHARTS.SPEAKING_TIME,
+            //CONFIG.DOM.CHARTS.INTERVENTIONS
+        ];
         chartIds.forEach(id => {
             const chartInstance = Chart.getChart(id);
             if (chartInstance) {
