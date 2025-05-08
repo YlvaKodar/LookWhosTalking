@@ -27,7 +27,7 @@ class AlertManager {
         //Create OK button
         const okButton = document.createElement('button');
         okButton.className = 'alert-button';
-        okButton.textContent = 'OK';
+        okButton.textContent = CONFIG.LABELS.ALERT_OK_BUTTON;
 
         //Add elements to DOM
         alertBox.appendChild(messageElement);
@@ -86,13 +86,13 @@ class AlertManager {
 
         // Create OK button
         const okButton = document.createElement('button');
-        okButton.className = 'alert-button ok-button';
-        okButton.textContent = 'Yes, please';
+        okButton.className = 'alert-button';
+        okButton.textContent = CONFIG.LABELS.ALERT_OK_BUTTON_CONFIRM;
 
         // Create Cancel button
         const cancelButton = document.createElement('button');
         cancelButton.className = 'alert-button cancel-button';
-        cancelButton.textContent = 'Cancel';
+        cancelButton.textContent = CONFIG.LABELS.ALERT_CANCEL_BUTTON;
 
         // Add elements to DOM
         buttonContainer.appendChild(okButton);

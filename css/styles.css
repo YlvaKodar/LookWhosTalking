@@ -221,8 +221,8 @@ input[type="number"] {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 9999;
+    background-color: var(--alert-overlay-color);
+    z-index: var(--alert-z-index-overlay);
 }
 
 .alert-box {
@@ -230,19 +230,21 @@ input[type="number"] {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: white;
-    padding: 20px;
+    background-color: var(--alert-bg-color);
+    padding: var(--alert-padding);
     border-radius: var(--border-radius);
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    z-index: 10000;
-    min-width: 300px;
-    max-width: 90%;
+    box-shadow: var(--alert-shadow);
+    z-index: var(--alert-z-index-alert);
+    min-width: var(--alert-min-width);
+    max-width: var(--alert-max-width);
     text-align: center;
+    border: var(--alert-border-width) var(--alert-border-style) var(--alert-border-color);
 }
 
 .alert-message {
-    margin-bottom: 20px;
-    font-size: 16px;
+    margin-bottom: var(--alert-margin-bottom);
+    font-size: var(--alert-font-size);
+    color: var(--alert-text-color);
 }
 
 .alert-button {
@@ -253,7 +255,7 @@ input[type="number"] {
     border-radius: var(--border-radius);
     cursor: pointer;
     font-size: var(--button-font-size);
-    min-width: 80px;
+    min-width: var(--alert-button-min-width);
 }
 
 .alert-button:hover {
@@ -263,19 +265,23 @@ input[type="number"] {
 .alert-buttons {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: var(--alert-button-gap);
 }
 
 .ok-button {
-    background-color: var(--primary-color);
+    background-color: var(--alert-ok-bg-color);
+}
+
+.ok-button:hover {
+    background-color: var(--alert-ok-hover-color);
 }
 
 .cancel-button {
-    background-color: #7a7a7a;
+    background-color: var(--alert-cancel-bg-color);
 }
 
 .cancel-button:hover {
-    background-color: #929292;
+    background-color: var(--alert-cancel-hover-color);
 }
 
 /* Responsive styles */

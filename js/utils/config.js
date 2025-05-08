@@ -1,6 +1,38 @@
 /**
  * Head config for Look Who's Talking app
  */
+const COLOR_PALETTE = {
+    // Primary colors
+    PRIMARY: '#385b13',
+    PRIMARY_HOVER: '#5a9120',
+
+    //Secondary colors
+    SECONDARY: '#2e2356',
+    SECONDARY_HOVER: '#56488a',
+
+    // Secondary/UI colors
+    HEADER_BG: '#2f0402',
+    BORDER: '#1f0b0a',
+    POPUP_BORDER: '#2f0402',
+    POPUP_BUTTON: '#882b07',
+    ACTIVE_BORDER: '#442d6b',
+
+    // Gender-specific colors
+    MEN: '#D68D0A',
+    WOMEN: '#a82b05',
+    NONBINARY: '#420407',
+
+    // Text colors
+    TEXT_DARK: '#333333',
+    TEXT_LIGHT: '#ffffff',
+
+    // Background and overlay colors
+    BG_LIGHT: '#ffffff',
+    OVERLAY: 'rgba(0, 0, 0, 0.5)',
+
+    // Shadows
+    SHADOW_MEDIUM: '0 0 10px rgba(0, 0, 0, 0.3)'
+};
 
 const CONFIG = {
     //App info:
@@ -16,6 +48,10 @@ const CONFIG = {
         NEW_MEETING_BUTTON: "New meeting",
         BACK_TO_START: "Back to start",
         START_BUTTON: "Start meeting",
+
+        ALERT_OK_BUTTON: "OK",
+        ALERT_OK_BUTTON_CONFIRM: "Yes please",
+        ALERT_CANCEL_BUTTON: "Cancel",
     },
 
     //Genders:
@@ -27,9 +63,9 @@ const CONFIG = {
             nonbinary: 'Icke-binära',
         },
         colors: {
-            men: '#D68D0A',
-            women: '#a82b05',
-            nonbinary: '#420407',
+            men: COLOR_PALETTE.MEN,
+            women: COLOR_PALETTE.WOMEN,
+            nonbinary: COLOR_PALETTE.NONBINARY,
         },
         buttonLabels: {
             men: 'Man speaking',
@@ -259,13 +295,13 @@ const CONFIG = {
     THEME: {
         // Colors
         COLORS: {
-            PRIMARY: '#385b13',
-            PRIMARY_HOVER: '#5a9120',
-            HEADER_BG: '#2f0402',
-            BORDER: '#1f0b0a',
-            POPUP_BORDER: '#2f0402',
-            POPUP_BUTTON: '#882b07',
-            ACTIVE_BORDER: '#442d6b'
+            PRIMARY: COLOR_PALETTE.PRIMARY,
+            PRIMARY_HOVER: COLOR_PALETTE.PRIMARY_HOVER,
+            HEADER_BG: COLOR_PALETTE.HEADER_BG,
+            BORDER: COLOR_PALETTE.BORDER,
+            POPUP_BORDER: COLOR_PALETTE.POPUP_BORDER,
+            POPUP_BUTTON: COLOR_PALETTE.POPUP_BUTTON,
+            ACTIVE_BORDER: COLOR_PALETTE.ACTIVE_BORDER,
         },
 
         // Sizing and dimensions
@@ -282,10 +318,10 @@ const CONFIG = {
         // Typography
         TYPOGRAPHY: {
             TIMER_FONT_SIZE: '48px',
-            POPUP_TIMER_FONT_SIZE: '28px',
+            POPOUT_TIMER_FONT_SIZE: '28px',
             BUTTON_FONT_SIZE: '16px',
             SPEAKER_BUTTON_FONT_SIZE: '18px',
-            POPUP_FONT_SIZE: '14px'
+            POPOUT_FONT_SIZE: '14px'
         },
 
         // Border styling
@@ -295,7 +331,7 @@ const CONFIG = {
             ACTIVE_BORDER_WIDTH: '3px'
         },
 
-        // Responsive breakpoints
+        //Responsive breakpoints
         BREAKPOINTS: {
             MOBILE: '600px'
         },
@@ -304,14 +340,37 @@ const CONFIG = {
             ACTIVE: 'active',
         },
 
-        POPUP: {
-            BG_COLOR: '#ffffff',
-            TEXT_COLOR: '#333333',
-            TITLE_COLOR: '#2f0402',
+        POPOUT: {
+            BG_COLOR: COLOR_PALETTE.BG_LIGHT,
+            TEXT_COLOR: COLOR_PALETTE.TEXT_DARK,
+            TITLE_COLOR: COLOR_PALETTE.HEADER_BG,
             PADDING: '15px',
             MAX_WIDTH: '300px',
             TITLE_FONT_SIZE: '18px',
             INFO_FONT_SIZE: '14px'
-        }
+        },
+
+        ALERTS: {
+            BG_COLOR: COLOR_PALETTE.BG_LIGHT,
+            TEXT_COLOR: COLOR_PALETTE.TEXT_DARK,
+            OVERLAY_COLOR: COLOR_PALETTE.OVERLAY,
+            SHADOW: COLOR_PALETTE.SHADOW_MEDIUM,
+            MIN_WIDTH: '300px',
+            MAX_WIDTH: '90%',
+            PADDING: '20px',
+            FONT_SIZE: '16px',
+            MARGIN_BOTTOM: '20px',
+            OK_BG_COLOR: COLOR_PALETTE.PRIMARY,
+            OK_HOVER_COLOR: COLOR_PALETTE.PRIMARY_HOVER,
+            CANCEL_BG_COLOR: COLOR_PALETTE.SECONDARY,
+            CANCEL_HOVER_COLOR: COLOR_PALETTE.SECONDARY_HOVER,
+            BUTTON_MIN_WIDTH: '80px',
+            BUTTON_GAP: '10px',
+            BORDER_COLOR: COLOR_PALETTE.PRIMARY,
+            BORDER_WIDTH: '4px',
+            BORDER_STYLE: 'solid',
+            Z_INDEX_OVERLAY: 9999,
+            Z_INDEX_ALERT: 10000,
+        },
     }
 };
