@@ -262,6 +262,9 @@ const CONFIG = {
 
         },
         CHARTS: {
+                TITLES: {
+                    SPEAKING_TIME: 'Fördelning av talartid',
+                },
             SPEAKING_TIME: 'speaking-time-chart'
         },
         STATS: {

@@ -28,18 +28,29 @@ class StatsView {
     }
 
     /**
-     * Renders pie chart visualization of speaking time distribution.
-     * Uses Chart.js with configuration options from CONFIG.
+     * Renders chart visualizations of meeting statistics.
+     * Creates three pie charts for participants, speaking time, and interventions.
      * @param {Object} stats - Statistics object calculated by controller
      * @returns {void}
      */
     renderCharts(stats) {
-        if (!this.chartCanvas) {
+        //this.renderParticipantsChart(stats);
+        this.renderSpeakingTimeChart(stats);
+        //this.renderInterventionsChart(stats);
+    }
+
+    /**
+     * Renders pie chart for speaking time distribution by gender.
+     * @param {Object} stats - Statistics object calculated by controller
+     * @returns {void}
+     */
+    renderSpeakingTimeChart(stats) {
+
+        const canvas = document.getElementById(CONFIG.DOM.CHARTS.SPEAKING_TIME);
+        if (!canvas) {
             console.error(CONFIG.MESSAGES.CONSOLE.ELEMENT_NOT_FOUND + CONFIG.DOM.CHARTS.SPEAKING_TIME);
             return;
         }
-
-        const ctx = this.chartCanvas.getContext('2d');
 
         //Clean up any existing chart
         const chartInstance = Chart.getChart(CONFIG.DOM.CHARTS.SPEAKING_TIME);
@@ -52,7 +63,8 @@ class StatsView {
             stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender]);
         const backgroundColor = CONFIG.GENDERS.types.map(gender => CONFIG.GENDERS.colors[gender]);
 
-        new Chart(ctx, {
+
+        new Chart(canvas.getContext('2d'), {
             type: CONFIG.CHART.TYPES.SPEAKING_TIME_DISTRIBUTION,
             data: {
                 labels: labels,
@@ -63,8 +75,6 @@ class StatsView {
             },
             options: CONFIG.CHART.pieOptions
         });
-
-        //TODO: More visualizations
     }
 
     /**
