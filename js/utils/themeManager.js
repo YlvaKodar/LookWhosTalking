@@ -13,6 +13,10 @@ function applyThemeFromConfig() {
     // Apply theme colors
     root.style.setProperty('--primary-color', CONFIG.THEME.COLORS.PRIMARY);
     root.style.setProperty('--primary-hover-color', CONFIG.THEME.COLORS.PRIMARY_HOVER);
+    root.style.setProperty('--secondary-color', CONFIG.THEME.COLORS.SECONDARY);
+    root.style.setProperty('--secondary-hover-color', CONFIG.THEME.COLORS.SECONDARY_HOVER);
+    root.style.setProperty('--tertiary-color', CONFIG.THEME.COLORS.TERTIARY);
+    root.style.setProperty('--tertiary-hover-color', CONFIG.THEME.COLORS.TERTIARY_HOVER);
     root.style.setProperty('--header-bg-color', CONFIG.THEME.COLORS.HEADER_BG);
     root.style.setProperty('--border-color', CONFIG.THEME.COLORS.BORDER);
     root.style.setProperty('--popup-border-color', CONFIG.THEME.COLORS.POPUP_BORDER);

@@ -35,10 +35,6 @@ class AlertManager {
         document.body.appendChild(overlay);
         document.body.appendChild(alertBox);
 
-        // Center the alert box
-        alertBox.style.marginLeft = `-${alertBox.offsetWidth / 2}px`;
-        alertBox.style.marginTop = `-${alertBox.offsetHeight / 2}px`;
-
         // Event handler for OK button
         const dismissAlert = () => {
             document.body.removeChild(overlay);
@@ -101,10 +97,6 @@ class AlertManager {
         confirmBox.appendChild(buttonContainer);
         document.body.appendChild(overlay);
         document.body.appendChild(confirmBox);
-
-        // Center the confirm box
-        confirmBox.style.marginLeft = `-${confirmBox.offsetWidth / 2}px`;
-        confirmBox.style.marginTop = `-${confirmBox.offsetHeight / 2}px`;
 
         // Event handlers
         const handleResponse = (result) => {

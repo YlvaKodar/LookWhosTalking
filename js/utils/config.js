@@ -2,23 +2,22 @@
  * Head config for Look Who's Talking app
  */
 const COLOR_PALETTE = {
-    // Primary colors
-    PRIMARY: '#385b13',
-    PRIMARY_HOVER: '#5a9120',
+    PRIMARY: '#281848',
+    PRIMARY_HOVER: '#42277c',
 
-    //Secondary colors
-    SECONDARY: '#2e2356',
-    SECONDARY_HOVER: '#56488a',
+    SECONDARY: '#183b48',
+    SECONDARY_HOVER: '#296d85',
+
+    TERTIARY: '#481818',
+    TERTIARY_HOVER: '#8f2b2b',
 
     // Secondary/UI colors
-    HEADER_BG: '#2f0402',
-    BORDER: '#1f0b0a',
-    POPUP_BORDER: '#2f0402',
-    POPUP_BUTTON: '#882b07',
-    ACTIVE_BORDER: '#442d6b',
+    HEADER_BG: '#a82b05',
+    BORDER: '#420407',
+    ACTIVE_BORDER: '#2f1848',
 
     // Gender-specific colors
-    MEN: '#D68D0A',
+    MEN: '#be7e0a',
     WOMEN: '#a82b05',
     NONBINARY: '#420407',
 
@@ -318,6 +317,10 @@ const CONFIG = {
         COLORS: {
             PRIMARY: COLOR_PALETTE.PRIMARY,
             PRIMARY_HOVER: COLOR_PALETTE.PRIMARY_HOVER,
+            SECONDARY: COLOR_PALETTE.SECONDARY,
+            SECONDARY_HOVER: COLOR_PALETTE.SECONDARY_HOVER,
+            TERTIARY: COLOR_PALETTE.TERTIARY,
+            TERTIARY_HOVER: COLOR_PALETTE.TERTIARY_HOVER,
             HEADER_BG: COLOR_PALETTE.HEADER_BG,
             BORDER: COLOR_PALETTE.BORDER,
             POPUP_BORDER: COLOR_PALETTE.POPUP_BORDER,
