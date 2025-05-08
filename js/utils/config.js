@@ -56,15 +56,22 @@ const CONFIG = {
         ALERT_OK_BUTTON: "OK",
         ALERT_OK_BUTTON_CONFIRM: "Yes please",
         ALERT_CANCEL_BUTTON: "Cancel",
+
+
+        CHART_TITLES: {
+            PARTICIPANTS: 'Meeting participants:',
+            SPEAKING_TIME: 'Speaking time distribution:',
+            INTERVENTIONS: 'Statement distribution:',
+        },
     },
 
     //Genders:
     GENDERS: {
         types: ['men', 'women', 'nonbinary'],
         labels: {
-            men: 'Män',
-            women: 'Kvinnor',
-            nonbinary: 'Icke-binära',
+            men: 'Men',
+            women: 'Women',
+            nonbinary: 'Non-binary',
         },
         colors: {
             men: COLOR_PALETTE.MEN,
@@ -262,11 +269,6 @@ const CONFIG = {
 
         },
         CHARTS: {
-                TITLES: {
-                    PARTICIPANTS: 'Meeting participants:',
-                    SPEAKING_TIME: 'Speaking time distribution:',
-                    INTERVENTIONS: 'Statement distribution:',
-                },
             PARTICIPANTS: 'participants-chart',
             SPEAKING_TIME: 'speaking-time-chart',
             INTERVENTIONS: 'interventions-chart',
@@ -306,7 +308,7 @@ const CONFIG = {
             UNDER_CLASS: 'under'
         },
         LABELS: {
-            FAIR_DISTRIBUTION_HEADER: 'Fair speaking time distribution',
+            FAIR_DISTRIBUTION_HEADER: 'Who got there fair share of speaky speaks?',
             SPEAKING_TIME: 'Speaking time',
             STATEMENTS_COUNT: 'Number of statements',
             AVG_LENGTH: 'Average length of statement',

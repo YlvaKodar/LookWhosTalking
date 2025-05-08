@@ -78,24 +78,24 @@
 
 <!-- Stats screen -->
 <div id="stats-screen" class="screen" style="display: none;">
-    <h1>Mötesstatistik</h1>
+    <h1>Meeting statistics</h1>
 
     <div class="stats-container">
         <div class="chart-container">
 
-            <h3>Mötesdeltagare</h3>
+            <h3 id="participants-chart-title">Participants</h3>
             <canvas id="participants-chart"></canvas>
 
-            <h3>Talartid</h3>
+            <h3 id="speaking-time-chart-title">Speaking time</h3>
             <canvas id="speaking-time-chart"></canvas>
 
-            <h3>Antal inlägg</h3>
+            <h3 id="interventions-chart-title">Intervention count</h3>
             <canvas id="interventions-chart"></canvas>
 
         </div>
 
         <div class="text-stats">
-            <p>Total talartid: <span id="total-time">00:00</span></p>
+            <p>Total speaking time: <span id="total-time">00:00</span></p>
             <div id="gender-stats"></div>
             <div id="fair-distribution"></div>
         </div>

@@ -106,5 +106,20 @@ function applyThemeFromConfig() {
         document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.END).textContent = CONFIG.LABELS.END_MEETING_BUTTON;
     }
 
+    if (document.getElementById(CONFIG.DOM.SCREENS.STATS)) {
+        const chartTitles = {
+            'participants-chart-title': CONFIG.LABELS.CHART_TITLES.PARTICIPANTS,
+            'speaking-time-chart-title': CONFIG.LABELS.CHART_TITLES.SPEAKING_TIME,
+            'interventions-chart-title': CONFIG.LABELS.CHART_TITLES.INTERVENTIONS
+        };
+
+        Object.entries(chartTitles).forEach(([id, text]) => {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = text;
+            }
+        });
+    }
+
     console.log('Theme applied from configuration');
 }
