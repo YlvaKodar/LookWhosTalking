@@ -49,12 +49,12 @@ class SetupController {
      */
     validateForm() {
         if (!this.view.meetingNameInput || !this.view.meetingNameInput.value.trim()) {
-            this.showError(CONFIG.MESSAGES.ALERT.ERROR_MEETING_NAME_REQUIRED);
+            this.view.showError(CONFIG.MESSAGES.ALERT.ERROR_MEETING_NAME_REQUIRED);
             return false;
         }
 
         if (!this.view.dateInput || !this.view.dateInput.value) {
-            this.showError(CONFIG.MESSAGES.ALERT.ERROR_DATE_REQUIRED);
+            this.view.showError(CONFIG.MESSAGES.ALERT.ERROR_DATE_REQUIRED);
             return false;
         }
 
@@ -63,7 +63,7 @@ class SetupController {
         const nonbinaryCount = parseInt(this.view.nonbinaryCount?.value || 0);
 
         if (menCount + womenCount + nonbinaryCount < CONFIG.MEETING.MIN_PARTICIPANTS) {
-            alert(CONFIG.MESSAGES.ALERT.ERROR_MIN_PARTICIPANTS);
+            this.view.showError(CONFIG.MESSAGES.ALERT.ERROR_MIN_PARTICIPANTS);
             return false;
         }
         return this.saveMeetingData();

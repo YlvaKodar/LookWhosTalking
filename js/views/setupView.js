@@ -18,4 +18,7 @@ class SetupView {
 
         this.controller = new SetupController(this);
     }
+    showError(message) {
+        alert(message);
+    }
 }

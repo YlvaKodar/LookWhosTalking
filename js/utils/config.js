@@ -16,8 +16,6 @@ const CONFIG = {
         NEW_MEETING_BUTTON: "New meeting",
         BACK_TO_START: "Back to start",
         START_BUTTON: "Start meeting",
-
-
     },
 
     //Genders:
@@ -154,7 +152,7 @@ const CONFIG = {
         ALERT: {
             MEETING_COMPLETED: "Meeting completed. Head back to the main window to see meeting statistics.",
             ERROR_PARSE_MEETING: 'Sorry, we can\'t find your meeting.',
-            ERROR_POPUP_BLOCKED: 'Tiny timer tool is blocked. Please check your browser settings or use the main window timer.',
+            ERROR_POPOUT_BLOCKED: 'Tiny timer tool is blocked. Please check your browser settings or use the main window timer.',
             ERROR_MEETING_NAME_REQUIRED: 'Your meeting needs a name.',
             ERROR_DATE_REQUIRED: 'What day is it?',
             ERROR_MEETING_DATA_REQUIRED: 'No meeting find ... Please fill out the form.',
