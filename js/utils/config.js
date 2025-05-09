@@ -408,13 +408,9 @@ const CONFIG = {
         },
 
         POPOUT: {
-            BG_COLOR: COLOR_PALETTE.BG_LIGHT,
-            TEXT_COLOR: COLOR_PALETTE.TEXT_DARK,
-            TITLE_COLOR: COLOR_PALETTE.HEADER_BG,
             PADDING: '15px',
             MAX_WIDTH: '300px',
-            TITLE_FONT_SIZE: '18px',
-            INFO_FONT_SIZE: '14px'
+            HEADING_SCALE: 0.8,
         },
 
         ALERTS: {

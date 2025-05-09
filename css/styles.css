@@ -272,38 +272,74 @@ input[type="number"] {
    TIMER POPUP WINDOW
    ============================================ */
 .timer-popup-body {
-    background-color: var(--popup-bg-color);
-    color: var(--popup-text-color);
+    background-color: white;
+    color: inherit;
     padding: var(--popup-padding);
     max-width: var(--popup-max-width);
     margin: 0 auto;
     display: flex;
     flex-direction: column;
-    gap: var(--element-gap);
+    gap: calc(var(--element-gap) * 0.5)
+}
+.timer-popup-body h1 {
+    font-size: calc(2em * var(--popup-heading-scale));
+    color: var(--header-first-color);
+    text-align: center;
+    margin-bottom: 5px;
+    margin-top: 0;
 }
 
 .timer-popup-body h2 {
-    color: var(--popup-title-color);
+    font-size: calc(1.5em * var(--popup-heading-scale));
+    color: var(--header-second-color);
     text-align: center;
-    margin-bottom: var(--element-gap);
-    font-size: var(--popup-title-font-size);
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+#popup-timer-display {
+    margin-top: 5px;
 }
 
 .timer-popup-body #meeting-info {
-    font-size: var(--popup-info-font-size);
-    margin-bottom: var(--element-gap);
     text-align: center;
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+
+.timer-popup-body #timer-popup-title {
+    margin-bottom: 5px;
+    margin-top: 0;
+}
+
+.timer-popup-body .speaker-buttons {
+    gap: 8px;
+    margin-bottom: calc(var(--element-gap) * 0.5);
 }
 
 #tiny-controls-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: var(--element-gap);
     width: 100%;
     max-width: 400px;
-    padding: var(--container-padding);
-    margin: var(--element-gap) auto;
+    gap: calc(var(--element-gap) * 0.5);
+    padding: calc(var(--popup-padding) * 0.7);
+    margin: 0 auto;
+}
+
+#popup-timer-display {
+    font-size: var(--popup-timer-font-size);
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    max-width: var(--popup-timer-width, 250px);
+    padding: 10px 20px;
+    min-width: 120px;
+    background-color: var(--popup-timer-bg, white);
+    color: var(--popup-timer-color, var(--primary-color));
 }
 
 #tiny-control-buttons {
@@ -312,31 +348,25 @@ input[type="number"] {
     justify-content: space-between;
     width: 100%;
     max-width: 300px;
-    gap: 10px;
-    margin-bottom: var(--element-gap);
+    gap: 5px;
+    margin-bottom: calc(var(--element-gap) * 0.5););
 }
-.tiny-control-buttons button {
+
+.tiny-control-buttons button,
+#tiny-control-buttons button {
     flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 10px;
     box-sizing: border-box;
+    font-size: var(--popup-button-font-size, var(--button-font-size));
 }
 
-#popup-timer-display {
-    font-size: var(--popup-timer-font-size);
-    font-weight: bold;
-    text-align: center;
-    margin: 10px 0;
-
-    border: 2px solid var(--border-color);
-    border-radius: var(--border-radius);
+/* Anpassa speaker-buttons inom popup */
+.timer-popup-body .speaker-buttons {
     width: 100%;
-    max-width: 300px;
-    padding: 10px 20px;
-    min-width: 150px;
-
+    max-width: 250px;
 }
 
 /* ============================================
@@ -479,5 +509,22 @@ input[type="number"] {
 @media (max-width: var(--mobile-breakpoint)) {
     .stats-container {
         flex-direction: column;
+    }
+}
+
+
+@media (max-width: 400px) {
+    .timer-popup-body {
+        padding: 10px;
+    }
+
+    #popup-timer-display {
+        font-size: calc(var(--popup-timer-font-size) * 0.8);
+        padding: 8px 10px;
+    }
+
+    #tiny-control-buttons {
+        flex-direction: column;
+        width: 100%;
     }
 }

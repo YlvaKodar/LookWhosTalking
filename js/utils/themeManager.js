@@ -51,13 +51,9 @@ function applyThemeFromConfig() {
     root.style.setProperty('--mobile-breakpoint', CONFIG.THEME.BREAKPOINTS.MOBILE);
 
     //POPOUT STYLING
-    root.style.setProperty('--popup-bg-color', CONFIG.THEME.POPOUT.BG_COLOR);
-    root.style.setProperty('--popup-text-color', CONFIG.THEME.POPOUT.TEXT_COLOR);
-    root.style.setProperty('--popup-title-color', CONFIG.THEME.POPOUT.TITLE_COLOR);
     root.style.setProperty('--popup-padding', CONFIG.THEME.POPOUT.PADDING);
     root.style.setProperty('--popup-max-width', CONFIG.THEME.POPOUT.MAX_WIDTH);
-    root.style.setProperty('--popup-title-font-size', CONFIG.THEME.POPOUT.TITLE_FONT_SIZE);
-    root.style.setProperty('--popup-info-font-size', CONFIG.THEME.POPOUT.INFO_FONT_SIZE);
+    root.style.setProperty('--popup-heading-scale', CONFIG.THEME.POPOUT.HEADING_SCALE);
 
     // ALERT STYLING
     root.style.setProperty('--alert-bg-color', CONFIG.THEME.ALERTS.BG_COLOR);
