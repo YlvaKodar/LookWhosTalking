@@ -142,6 +142,35 @@ input[type="number"] {
 /* ============================================
    ACTIVE MEETING SCREEN
    ============================================ */
+#meeting-controls-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--element-gap);
+    width: 100%;
+    max-width: 400px;
+    padding: var(--container-padding);
+}
+
+#tool-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+    gap: 10px;
+    margin-bottom: var(--element-gap);
+}
+
+#tool-buttons button {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
 /* Timer display */
 #timer-display {
     font-size: var(--timer-font-size);
@@ -152,24 +181,12 @@ input[type="number"] {
 /* Pop-out button */
 .pop-out-btn {
     background-color: var(--secondary-color);
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .pop-out-btn:before {
     content: "↗";
     margin-right: 5px;
     font-size: var(--popup-font-size);
-}
-
-#how-to-use-timer-btn {
-    margin-bottom: 15px;
-    text-align: center;
-    box-sizing: border-box;
-    padding: 10px;
-    min-height: 44px;
 }
 
 /* Speaker button container */
@@ -228,7 +245,15 @@ input[type="number"] {
 /* Control button container */
 .control-buttons {
     display: flex;
-    gap: var(--element-gap);
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+    gap: 10px;
+    margin-bottom: var(--element-gap);
+}
+.control-buttons button {
+    flex: 1;
 }
 
 /* ============================================

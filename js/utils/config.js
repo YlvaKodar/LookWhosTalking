@@ -45,7 +45,7 @@ const CONFIG = {
         ABOUT_BUTTON: "About",
         HOW_TO_USE_BUTTON: "How to use",
 
-        TIMER_POPOUT_BUTTON: "Open popout timer tool",
+        TIMER_POPOUT_BUTTON: "Open tiny timer",
         HOW_TO_USE_TIMER_BUTTON: "How to use",
         PAUSE_MEETING_BUTTON: "Pause",
         END_MEETING_BUTTON: "Meeting ended",
@@ -228,7 +228,7 @@ const CONFIG = {
                 TITLE: "How to use this app",
                 CONTENT: "To use this app, just click the \"New meeting\" button and fill in the details. " +
                 " (Don't worry, you won't be asked to leave any personal information or create an account.)"  +
-                    "Then click \"Start meeting\" and use the timer or the tiny popout tool as instructed. " +
+                    "Then click \"Start meeting\" and use the timer or the tiny popout timer tool as instructed. " +
                     "Note: Do not close the main window while using the app. \n When the meeting is over, " +
                     "click the \"End meeting\" button to see the statistics.",
             },
@@ -238,7 +238,7 @@ const CONFIG = {
                 CONTENT: "Easy! Just click the corresponding gender button every time someone new starts talking. " +
                     "Hit the pause button when nobody talks. Look Who's Talking will keep " +
                     "track both of the spoken time and the amount of statements made per gender. " +
-                    "\n\nUse the timer in the main window or push the \"Open popout timer tool\" button for a " +
+                    "\n\nUse the timer in the main window or push the \"Open tiny timer\" button for a " +
                     "smaller timer tool window. But keep in mind that the popout is nothing but a remote control, " +
                     "so do not close the main window." +
                     "\n\n(Tip: You might check your browser settings for options such as \"Always on top\".)",
