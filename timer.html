@@ -11,20 +11,24 @@
     <script src="js/utils/eventBus.js"></script>
 </head>
 <body class="timer-popup-body">
-<h2 id="timer-popup-title">Meeting Timer</h2>
-<div id="meeting-info">Loading meeting info...</div>
-<div id="popup-timer-display">00:00</div>
+<h1 id="meeting-info" class="primary">Meeting name</h1>
+<h2 id="timer-popup-title" class="secondary">Meeting Timer</h2>
 
-<div class="speaker-buttons">
-    <button id="popup-women-speaking" class="speaker-btn women">PUPP Speaking</button>
-    <button id="popup-nonbinary-speaking" class="speaker-btn nonbinary">Non-binary Speaking</button>
-    <button id="popup-men-speaking" class="speaker-btn men">Man Speaking</button>
-</div>
+    <div id="tiny-controls-container">
 
-<div class="control-buttons">
-    <button id="popup-pause-meeting" class="speaker-btn control-btn">Pause</button>
-    <button id="popup-end-meeting" class="speaker-btn control-btn">End Meeting</button>
-</div>
+        <div id="popup-timer-display">00:00</div>
+
+        <div class="speaker-buttons">
+            <button id="popup-women-speaking" class="speaker-btn women">PUPP Speaking</button>
+            <button id="popup-nonbinary-speaking" class="speaker-btn nonbinary">Non-binary Speaking</button>
+            <button id="popup-men-speaking" class="speaker-btn men">Man Speaking</button>
+        </div>
+
+        <div id="tiny-control-buttons" class="tiny_control-buttons">
+            <button id="popup-pause-meeting" class="speaker-btn control-btn">Pause</button>
+            <button id="popup-end-meeting" class="speaker-btn control-btn">End Meeting</button>
+        </div>
+    </div>
 
 <!-- Utils -->
 <script>
