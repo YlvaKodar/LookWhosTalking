@@ -1,33 +1,38 @@
 /*
  * styles.css - Look Who's Talking App
  *
- * This stylesheet uses only variables that are set dynamically
- * from config.js values. No hardcoded values should be here.
+ * This stylesheet uses variables set dynamically from config.js.
  */
 
-/* Base styles */
+/* ============================================
+   BASE STYLES
+   ============================================ */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
 }
-h1.primary {
-    color: var(--header-first-color);
-}
-h2.secondary {
-    color: var(--header-second-color);
-}
-h3.tertiary {
-    color: var(--header-third-color);
-}
+
 body {
     max-width: var(--body-max-width);
     margin: 0 auto;
     padding: var(--container-padding);
 }
 
-/* Screen container styles for all view screens */
+/* Typography */
+h1, h2, h3 {
+    text-align: center;
+    margin-bottom: var(--element-gap);
+}
+
+h1.primary { color: var(--header-first-color); }
+h2.secondary { color: var(--header-second-color); }
+h3.tertiary { color: var(--header-third-color); }
+
+/* ============================================
+   SCREEN LAYOUTS
+   ============================================ */
 .screen {
     display: flex;
     flex-direction: column;
@@ -36,81 +41,9 @@ body {
     padding: var(--container-padding);
 }
 
-/* Timer display styles for popup */
-#popup-timer-display {
-    font-size: var(--popup-timer-font-size);
-    font-weight: bold;
-    text-align: center;
-    margin: 10px 0;
-}
-
-/* Popup button styling */
-.pop-out-btn {
-    background-color: var(--secondary-color);
-    margin: 10px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.pop-out-btn:before {
-    content: "↗";
-    margin-right: 5px;
-    font-size: var(--popup-font-size);
-}
-
-#how-to-use-timer-btn {
-    margin-bottom: 15px;
-    text-align: center;
-    box-sizing: border-box;
-}
-
-#how-to-use-timer-btn {
-    padding: 10px;
-    min-height: 44px; /* Justera vid behov till samma höjd som övriga knappar */
-}
-
-/* Styling specifikt för popup-fönstret */
-.timer-popup-body {
-    background-color: var(--popup-bg-color);
-    color: var(--popup-text-color);
-    padding: var(--popup-padding);
-    max-width: var(--popup-max-width);
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: var(--element-gap);
-}
-
-.timer-popup-body h2 {
-    color: var(--popup-title-color);
-    text-align: center;
-    margin-bottom: var(--element-gap);
-    font-size: var(--popup-title-font-size);
-}
-
-.timer-popup-body #meeting-info {
-    font-size: var(--popup-info-font-size);
-    margin-bottom: var(--element-gap);
-    text-align: center;
-}
-
-/* Text styles */
-h1 {
-    margin-bottom: var(--element-gap);
-    text-align: center;
-}
-
-h2 {
-    margin-bottom: var(--element-gap);
-    text-align: center;
-}
-
-h3 {
-    margin-bottom: var(--element-gap);
-}
-
-
+/* ============================================
+   BUTTON STYLES
+   ============================================ */
 /* General button styling */
 button {
     padding: var(--button-padding);
@@ -126,6 +59,12 @@ button:hover {
     background-color: var(--primary-hover-color);
 }
 
+button:focus {
+    outline: 2px solid white;
+    outline-offset: 2px;
+}
+
+/* Button variants */
 button.secondary {
     background-color: var(--secondary-color);
 }
@@ -134,7 +73,6 @@ button.secondary:hover {
     background-color: var(--secondary-hover-color);
 }
 
-/* Tertiära knappar */
 button.tertiary {
     background-color: var(--tertiary-color);
 }
@@ -143,9 +81,31 @@ button.tertiary:hover {
     background-color: var(--tertiary-hover-color);
 }
 
+/* ============================================
+   START SCREEN
+   ============================================ */
+.start-buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: var(--element-gap);
+    width: 100%;
+    max-width: 600px;
+    margin: var(--element-gap) auto;
+}
+
+.start-buttons-container button {
+    flex: 1;
+    min-width: 120px;
+    max-width: 180px;
+}
+
+/* ============================================
+   MEETING SETUP SCREEN
+   ============================================ */
 /* Form styling */
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: var(--element-gap);
     width: 100%;
 }
 
@@ -179,6 +139,39 @@ input[type="number"] {
     max-width: 80px;
 }
 
+/* ============================================
+   ACTIVE MEETING SCREEN
+   ============================================ */
+/* Timer display */
+#timer-display {
+    font-size: var(--timer-font-size);
+    font-weight: bold;
+    margin: var(--element-gap) 0;
+}
+
+/* Pop-out button */
+.pop-out-btn {
+    background-color: var(--secondary-color);
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.pop-out-btn:before {
+    content: "↗";
+    margin-right: 5px;
+    font-size: var(--popup-font-size);
+}
+
+#how-to-use-timer-btn {
+    margin-bottom: 15px;
+    text-align: center;
+    box-sizing: border-box;
+    padding: 10px;
+    min-height: 44px;
+}
+
 /* Speaker button container */
 .speaker-buttons {
     display: flex;
@@ -188,7 +181,8 @@ input[type="number"] {
     max-width: 300px;
     margin-bottom: var(--element-gap);
 }
-/* Change witdh depending on number of buttons. */
+
+/* Adjust width based on number of buttons */
 .speaker-buttons.one-button {
     max-width: 250px;
 }
@@ -198,14 +192,15 @@ input[type="number"] {
 }
 
 .speaker-buttons.three-buttons {
-    max-width: 300px; /* Samma som standard */
+    max-width: 300px;
 }
 
 .speaker-buttons.one-button .speaker-btn,
 .speaker-buttons.two-buttons .speaker-btn {
-    padding: 20px; /* Lite större knappar när det finns färre */
-    font-size: calc(var(--speaker-button-font-size) * 1.1); /* Lite större text */
+    padding: 20px;
+    font-size: calc(var(--speaker-button-font-size) * 1.1);
 }
+
 /* Speaker button styles */
 .speaker-btn {
     padding: 15px;
@@ -230,20 +225,49 @@ input[type="number"] {
     border: var(--active-border-width) solid var(--active-border-color);
 }
 
-/* Timer display */
-#timer-display {
-    font-size: var(--timer-font-size);
-    font-weight: bold;
-    margin: var(--element-gap) 0;
-}
-
 /* Control button container */
 .control-buttons {
     display: flex;
-    gap: 10px;
+    gap: var(--element-gap);
 }
 
-/* Statistics display container */
+/* ============================================
+   TIMER POPUP WINDOW
+   ============================================ */
+.timer-popup-body {
+    background-color: var(--popup-bg-color);
+    color: var(--popup-text-color);
+    padding: var(--popup-padding);
+    max-width: var(--popup-max-width);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--element-gap);
+}
+
+.timer-popup-body h2 {
+    color: var(--popup-title-color);
+    text-align: center;
+    margin-bottom: var(--element-gap);
+    font-size: var(--popup-title-font-size);
+}
+
+.timer-popup-body #meeting-info {
+    font-size: var(--popup-info-font-size);
+    margin-bottom: var(--element-gap);
+    text-align: center;
+}
+
+#popup-timer-display {
+    font-size: var(--popup-timer-font-size);
+    font-weight: bold;
+    text-align: center;
+    margin: 10px 0;
+}
+
+/* ============================================
+   STATISTICS SCREEN
+   ============================================ */
 .stats-container {
     width: 100%;
     display: flex;
@@ -264,20 +288,16 @@ input[type="number"] {
 }
 
 .chart-container canvas {
-    max-height: 200px; /* Justera för att få lagom storlek på diagrammen */
-}
-
-@media (max-width: 768px) {
-    .chart-container canvas {
-        max-height: 180px;
-    }
+    max-height: 200px;
 }
 
 .text-stats {
     line-height: 1.6;
 }
 
-/* Custom Alert Styling */
+/* ============================================
+   CUSTOM ALERTS
+   ============================================ */
 .alert-overlay {
     position: fixed;
     top: 0;
@@ -350,7 +370,38 @@ input[type="number"] {
     background-color: var(--alert-cancel-hover-color);
 }
 
-/* Responsive styles */
+/* ============================================
+   RESPONSIVE STYLES
+   ============================================ */
+@media (max-width: 600px) {
+    .start-buttons-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .start-buttons-container button {
+        width: 100%;
+        max-width: 250px;
+    }
+
+    .control-buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+    }
+
+    .control-buttons button {
+        width: 100%;
+        max-width: 250px;
+    }
+}
+
+@media (max-width: 768px) {
+    .chart-container canvas {
+        max-height: 180px;
+    }
+}
+
 @media (max-width: var(--mobile-breakpoint)) {
     .stats-container {
         flex-direction: column;
