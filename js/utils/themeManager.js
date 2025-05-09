@@ -22,6 +22,9 @@ function applyThemeFromConfig() {
     root.style.setProperty('--popup-border-color', CONFIG.THEME.COLORS.POPUP_BORDER);
     root.style.setProperty('--popup-button-color', CONFIG.THEME.COLORS.POPUP_BUTTON);
     root.style.setProperty('--active-border-color', CONFIG.THEME.COLORS.ACTIVE_BORDER);
+    root.style.setProperty('--header-first-color', CONFIG.THEME.COLORS.HEADER_FIRST);
+    root.style.setProperty('--header-second-color', CONFIG.THEME.COLORS.HEADER_SEC);
+    root.style.setProperty('--header-third-color', CONFIG.THEME.COLORS.HEADER_THIRD);
 
     // Apply sizing
     root.style.setProperty('--body-max-width', CONFIG.THEME.SIZING.BODY_MAX_WIDTH);
@@ -77,6 +80,22 @@ function applyThemeFromConfig() {
     root.style.setProperty('--alert-border-color', CONFIG.THEME.ALERTS.BORDER_COLOR);
     root.style.setProperty('--alert-border-width', CONFIG.THEME.ALERTS.BORDER_WIDTH);
     root.style.setProperty('--alert-border-style', CONFIG.THEME.ALERTS.BORDER_STYLE);
+
+    //Headings
+    if (document.getElementById(CONFIG.DOM.SCREENS.START)){
+        document.getElementById(CONFIG.DOM.SCREENS.START_HEAD_FIRST).textContent = CONFIG.LABELS.HEADINGS.START_HEAD_FIRST;
+        document.getElementById(CONFIG.DOM.SCREENS.START_HEAD_SEC).textContent = CONFIG.LABELS.HEADINGS.START_HEAD_SEC;
+    }
+
+    if (document.getElementById(CONFIG.DOM.SCREENS.SETUP)){
+        document.getElementById(CONFIG.DOM.SCREENS.SETUP_HEAD).textContent = CONFIG.LABELS.HEADINGS.SETUP_HEAD;
+        document.getElementById(CONFIG.DOM.SCREENS.SETUP_FORM_HEAD_FIRST).textContent = CONFIG.LABELS.HEADINGS.SETUP_FORM_HEAD_FIRST;
+        document.getElementById(CONFIG.DOM.SCREENS.SETUP_FORM_HEAD_SEC).textContent = CONFIG.LABELS.HEADINGS.SETUP_FORM_HEAD_SEC;
+    }
+
+    if (document.getElementById(CONFIG.DOM.SCREENS.STATS)){
+        document.getElementById(CONFIG.DOM.SCREENS.STATS_HEAD).textContent = CONFIG.LABELS.HEADINGS.STATS_HEAD;
+    }
 
 
     //Buttons

@@ -8,8 +8,8 @@ const COLOR_PALETTE = {
     SECONDARY: '#183b48',
     SECONDARY_HOVER: '#296d85',
 
-    TERTIARY: '#483018',
-    TERTIARY_HOVER: '#80552b',
+    TERTIARY: '#2f0402',
+    TERTIARY_HOVER: '#690905',
 
     // Secondary/UI colors
     HEADER_BG: '#a82b05',
@@ -57,6 +57,16 @@ const CONFIG = {
         ALERT_OK_BUTTON_CONFIRM: "Yes please",
         ALERT_CANCEL_BUTTON: "Cancel",
 
+        HEADINGS: {
+            START_HEAD_FIRST: 'LOOK WHO\'S TALKING',
+            START_HEAD_SEC: 'Timing tool for mixed-gender conversations',
+
+            SETUP_HEAD: 'LET\' S SET IT UP',
+            SETUP_FORM_HEAD_FIRST: 'About this meeting:',
+            SETUP_FORM_HEAD_SEC: 'We\'ll need a participant count:',
+
+            STATS_HEAD: 'MEETING STATISTICS',
+        },
 
         CHART_TITLES: {
             PARTICIPANTS: 'Meeting participants:',
@@ -245,9 +255,20 @@ const CONFIG = {
     DOM: {
         SCREENS: {
             START: 'start-screen',
+            START_HEAD_FIRST: 'start_heading',
+            START_HEAD_SEC: 'start_heading_second',
+
             SETUP: 'setup-screen',
+            SETUP_HEAD: 'setup_heading',
+            SETUP_FORM_HEAD_FIRST: 'setup_form_head_1',
+            SETUP_FORM_HEAD_SEC: 'setup_form_head_2',
+
+
             MEETING: 'meeting-screen',
-            STATS: 'stats-screen'
+
+            STATS: 'stats-screen',
+            STATS_HEAD: 'stats_heading',
+
         },
         TIMER: {
             DISPLAY: 'timer-display',
@@ -264,9 +285,6 @@ const CONFIG = {
             ABOUT: 'about-btn',
             HOW_TO_USE: 'how-to-use-btn',
             HOW_TO_USE_TIMER: 'how-to-use-timer-btn',
-        },
-        LABELS: {
-
         },
         CHARTS: {
             PARTICIPANTS: 'participants-chart',
@@ -348,6 +366,9 @@ const CONFIG = {
             POPUP_BORDER: COLOR_PALETTE.POPUP_BORDER,
             POPUP_BUTTON: COLOR_PALETTE.POPUP_BUTTON,
             ACTIVE_BORDER: COLOR_PALETTE.ACTIVE_BORDER,
+            HEADER_FIRST: COLOR_PALETTE.TERTIARY,
+            HEADER_SEC: COLOR_PALETTE.SECONDARY,
+            HEADER_THIRD: COLOR_PALETTE.PRIMARY,
         },
 
         // Sizing and dimensions

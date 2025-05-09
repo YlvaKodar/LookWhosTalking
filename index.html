@@ -11,8 +11,8 @@
 <body>
 <!-- Start screen -->
 <div id="start-screen" class="screen">
-    <h1>Look Who's Talking</h1>
-    <h2>Timing tool for mixed-gender conversations</h2>
+    <h1 id="start_heading" class="primary">Look Who's Talking</h1>
+    <h2 id="start_heading_second" class="secondary">Timing tool for mixed-gender conversations</h2>
     <button id="new-meeting-btn">New meeting</button>
     <button id="about-btn" class="secondary">About</button>
     <button id="how-to-use-btn" class="tertiary">How to use</button>
@@ -20,9 +20,11 @@
 
 <!-- Setup screen -->
 <div id="setup-screen" class="screen" style="display: none;">
-    <h1>About this meeting:</h1>
+    <h1 id="setup_heading" class="primary">Let's set it up!</h1>
     <form id="meeting-form">
         <div class="form-group">
+            <h2 id="setup_form_head_1" class="secondary">About this meeting:</h2>
+
             <label for="meeting-name">What shall we call it?</label>
             <input type="text" id="meeting-name" required>
         </div>
@@ -33,7 +35,7 @@
         </div>
 
         <div class="form-group">
-            <h2>We need a participant count:</h2>
+            <h2 id="setup_form_head_2" class="secondary">We need a participant count:</h2>
 
             <div class="participant-input">
                 <label for="women-count">Women:</label>
@@ -58,8 +60,8 @@
 
 <!-- Meeting screen -->
 <div id="meeting-screen" class="screen" style="display: none;">
-    <h1 id="meeting-title">Meeting name</h1>
-    <div id="timer-display">00:00</div>
+    <h1 id="meeting-title" class="primary">Meeting name</h1>
+    <div id="timer-display" class="primary">00:00</div>
 
     <button id="timer-popup-btn" class="pop-out-btn">Pop Out Timer</button>
     <button id="how-to-use-timer-btn" class="tertiary">How to use</button>
@@ -78,18 +80,18 @@
 
 <!-- Stats screen -->
 <div id="stats-screen" class="screen" style="display: none;">
-    <h1>Meeting statistics</h1>
+    <h1 id="stats_heading" class="primary">Meeting statistics</h1>
 
     <div class="stats-container">
         <div class="chart-container">
 
-            <h3 id="participants-chart-title">Participants</h3>
+            <h3 id="participants-chart-title" class="tertiary">Participants</h3>
             <canvas id="participants-chart"></canvas>
 
-            <h3 id="speaking-time-chart-title">Speaking time</h3>
+            <h3 id="speaking-time-chart-title" class="tertiary">Speaking time</h3>
             <canvas id="speaking-time-chart"></canvas>
 
-            <h3 id="interventions-chart-title">Intervention count</h3>
+            <h3 id="interventions-chart-title" class="tertiary">Intervention count</h3>
             <canvas id="interventions-chart"></canvas>
 
         </div>
