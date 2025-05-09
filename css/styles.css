@@ -150,6 +150,7 @@ input[type="number"] {
     width: 100%;
     max-width: 400px;
     padding: var(--container-padding);
+    margin: var(--element-gap) auto;
 }
 
 #tool-buttons {
@@ -175,7 +176,13 @@ input[type="number"] {
 #timer-display {
     font-size: var(--timer-font-size);
     font-weight: bold;
-    margin: var(--element-gap) 0;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    width: 100%;
+    max-width: 300px;
+    padding: 10px 20px;
+    min-width: 150px;
+    text-align: center;
 }
 
 /* Pop-out button */
