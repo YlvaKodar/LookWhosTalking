@@ -179,6 +179,9 @@ class MeetingController {
 
             case CONFIG.COMMUNICATION.WINDOW.TO_MAIN.MEETING_ENDED:
                 this.endMeeting()
+
+                App.navigateTo(CONFIG.DOM.SCREENS.STATS);
+
                 break;
 
         }

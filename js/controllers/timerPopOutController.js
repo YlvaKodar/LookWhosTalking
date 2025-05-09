@@ -16,7 +16,6 @@ class TimerPopOutController {
         this.interval = null;
         this.currentSpeaker = null;
 
-        // Setup messaging with parent window
         this.setupWindowCommunication();
     }
 
@@ -25,7 +24,6 @@ class TimerPopOutController {
      * @returns {void}
      */
     setupWindowCommunication() {
-        // Listen for messages from main window
         window.addEventListener('message', this.handleMainWindowMessage.bind(this));
     }
 
@@ -76,15 +74,12 @@ class TimerPopOutController {
     }
 
     startSpeakingWithOffset(gender, elapsedSeconds) {
-        // Start timing but adjust the startTime to account for already elapsed time
         this.currentSpeaker = gender;
         this.startTime = Date.now() - (elapsedSeconds * 1000); // Subtract elapsed milliseconds
         this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
 
-        // Update button states in view
         this.view.updateButtonStates(gender);
 
-        // Update timer display immediately to show correct time
         this.updateTimer();
     }
 
@@ -96,19 +91,15 @@ class TimerPopOutController {
      * @returns {void}
      */
     startSpeaking(gender, notifyMainWindow = true) {
-        //Stop any current timing
         if (this.interval) {
             this.pauseSpeaking(false);
         }
-        //Start new timing
         this.currentSpeaker = gender;
         this.startTime = Date.now();
         this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
 
-        //Update button states in view
         this.view.updateButtonStates(gender);
 
-        //Notify main window if requested
         if (notifyMainWindow && window.opener && !window.opener.closed) {
             try {
                 window.opener.postMessage({
@@ -130,20 +121,16 @@ class TimerPopOutController {
     pauseSpeaking(notifyMainWindow = true) {
         if (!this.startTime || !this.currentSpeaker) return;
 
-        // Calculate duration
         const duration = (Date.now() - this.startTime) / 1000;
 
-        // Reset timer state
         clearInterval(this.interval);
         this.interval = null;
         this.startTime = null;
         this.currentSpeaker = null;
 
-        // Update UI
         this.view.updateButtonStates(null);
         this.view.updateTimerDisplay(CONFIG.TIMER.DEFAULT_DISPLAY);
 
-        // Notify main window if requested
         if (notifyMainWindow && window.opener && !window.opener.closed) {
             try {
                 window.opener.postMessage({

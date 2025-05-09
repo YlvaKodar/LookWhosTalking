@@ -11,6 +11,7 @@ class App {
      * @static
      * @returns {void}
      */
+
     static init() {
         //Store active controllers for resource management
         this.activeControllers = {};
@@ -24,7 +25,6 @@ class App {
         this.navigateTo(CONFIG.DOM.SCREENS.START);
         this.checkForCurrentMeeting();
     }
-
     /**
      * Sets up navigation for elements that don't require validation.
      * @static
@@ -53,7 +53,7 @@ class App {
         if (document.getElementById(elementId)){
             document.getElementById(elementId).addEventListener('click', () => {
                 if (elementId === CONFIG.DOM.BUTTONS.BACK_TO_START) {
-                    StorageManager.clearMeetingData(); // Clear all meeting data
+                    StorageManager.clearMeetingData();
                     this.cleanupActiveControllers()
                 }
                 this.navigateTo(screenId);
@@ -75,7 +75,7 @@ class App {
 
         if (document.getElementById(buttonId)){
             document.getElementById(buttonId).addEventListener('click', (event) => {
-                if (validationCallback && !validationCallback()) { //If there is a VC && the return is false:
+                if (validationCallback && !validationCallback()) {
                     return;
                 }
                 this.navigateTo(targetView);
@@ -93,17 +93,16 @@ class App {
      */
     static navigateTo(screenId) {
         if (screenId === CONFIG.DOM.SCREENS.MEETING) {
-            //Check if there's valid meeting data
+
             const setupData = StorageManager.getSetupMeetingData();
             const currentMeeting = StorageManager.getCurrentMeeting();
 
             if (!setupData && !currentMeeting) {
                 alert(CONFIG.MESSAGES.ALERT.ERROR_MEETING_DATA_REQUIRED);
-                screenId = CONFIG.DOM.SCREENS.SETUP; //Redirect to setup instead
+                screenId = CONFIG.DOM.SCREENS.SETUP;
                 return;
             }
 
-            //If we have setup data but no active meeting, create a meeting from setup data
             if (setupData && !currentMeeting) {
                 const meeting = new Meeting(setupData.name, setupData.date);
                 meeting.setParticipants(
@@ -115,7 +114,6 @@ class App {
             }
         }
 
-        //Clean up any active controllers before changing screens
         this.cleanupActiveControllers();
 
 
@@ -123,7 +121,6 @@ class App {
             element.style.display = CONFIG.DOM.DISPLAY.NONE;
         });
 
-        //Show the target screen
         const targetScreen = document.getElementById(screenId);
         if (targetScreen) {
             targetScreen.style.display = CONFIG.DOM.DISPLAY.BLOCK;
@@ -132,7 +129,6 @@ class App {
             return;
         }
 
-        //Initialize the appropriate controller for the screen
         this.initializeController(screenId);
     }
 
@@ -146,31 +142,24 @@ class App {
     static initializeController(screenId) {
         switch(screenId) {
             case CONFIG.DOM.SCREENS.START:
-                //Start screen doesn't need a controller
                 break;
 
             case CONFIG.DOM.SCREENS.SETUP:
-                //Create SetupView and store its controller reference
                 const setupView = new SetupView();
-                //Store controller reference for cleanup
                 if (setupView.controller) {
                     this.activeControllers.setup = setupView.controller;
                 }
                 break;
 
             case CONFIG.DOM.SCREENS.MEETING:
-                //Create MeetingView and store its controller reference
                 const meetingView = new MeetingView();
-                //Store controller reference for cleanup
                 if (meetingView.controller) {
                     this.activeControllers.meeting = meetingView.controller;
                 }
                 break;
 
             case CONFIG.DOM.SCREENS.STATS:
-                //Create StatsView and store its controller reference
                 const statsView = new StatsView();
-                //Store controller reference for cleanup
                 if (statsView.controller) {
                     this.activeControllers.stats = statsView.controller;
                 }
@@ -245,7 +234,7 @@ class App {
         });
     }
 }
-// Initializes the app when the DOM is fully loaded
+
 document.addEventListener('DOMContentLoaded', () => {
     applyThemeFromConfig();
     App.init();
