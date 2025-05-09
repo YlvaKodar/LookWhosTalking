@@ -180,10 +180,7 @@ class TimerPopOutController {
 
             } catch (error) {
                 console.error(CONFIG.MESSAGES.CONSOLE.ERROR_END_MEETING, error);
-                this.view.showAlert(CONFIG.MESSAGES.ALERT.MEETING_COMPLETED);
             }
-        } else {
-            this.view.showAlert(CONFIG.MESSAGES.ALERT.MEETING_COMPLETED);
         }
     }
 
