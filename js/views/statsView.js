@@ -155,7 +155,7 @@ class StatsView {
      * @returns {void}
      */
     displayTextStats(stats) {
-        if (!this.totalTimeElement || !this.genderStatsElement || !this.fairDistElement) {
+        if (!this.totalTimeElement || !this.genderStatsElement) {
             console.error(CONFIG.MESSAGES.CONSOLE.ELEMENT_NOT_FOUND + 'statistics elements');
             return;
         }
@@ -169,42 +169,24 @@ class StatsView {
 
             if (hasParticipants) {
                 const statsDiv = document.createElement('div');
+
                 statsDiv.className = `${CONFIG.STATS.DISPLAY.GENDER_STAT_CLASS_PREFIX}${gender}`;
 
                 const totalTime = this.formatTime(stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender]);
                 const interventions = stats[CONFIG.STATS.STRUCTURE.STATEMENTS_COUNT][gender];
                 const avgTime = this.formatTime(stats[CONFIG.STATS.STRUCTURE.AVG_DURATION][gender]);
+                const fair = this.formatTime(stats[CONFIG.STATS.STRUCTURE.FAIR_DISTRIBUTION][gender]);
 
                 statsDiv.innerHTML = `
                 <h3>${CONFIG.GENDERS.labels[gender]}</h3>
-                <p>${CONFIG.STATS.LABELS.SPEAKING_TIME}: ${totalTime}</p>
-                <p>${CONFIG.STATS.LABELS.STATEMENTS_COUNT}: ${interventions}</p>
-                <p>${CONFIG.STATS.LABELS.AVG_LENGTH}: ${avgTime}</p>
+                <p>${CONFIG.STATS.LABELS.SPEAKING_TIME}: ${totalTime} min.</p>
+                <p>${CONFIG.STATS.LABELS.STATEMENTS_COUNT}: ${interventions}.</p>
+                <p>${CONFIG.STATS.LABELS.AVG_LENGTH}: ${avgTime} min.</p>
+                
+                <p><br>Fair share of speaking time for ${gender} would have been ${fair} min.<br></p>
             `;
 
                 this.genderStatsElement.appendChild(statsDiv);
-            }
-        });
-
-        this.fairDistElement.innerHTML = `<h3>${CONFIG.STATS.LABELS.FAIR_DISTRIBUTION_HEADER}</h3>`;
-
-        CONFIG.GENDERS.types.forEach(gender => {
-            const hasParticipants = this.meeting && this.meeting.participants && this.meeting.participants[gender] > 0;
-
-            if (hasParticipants) {
-                const actual = stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender];
-                const fair = stats[CONFIG.STATS.STRUCTURE.FAIR_DISTRIBUTION][gender];
-                const diff = actual - fair;
-
-                const diffText = diff > 0
-                    ? `${this.formatTime(diff)} ${CONFIG.STATS.LABELS.MORE_THAN_FAIR}`
-                    : `${this.formatTime(Math.abs(diff))} ${CONFIG.STATS.LABELS.LESS_THAN_FAIR}`;
-
-                const p = document.createElement('p');
-                p.innerHTML = `${CONFIG.GENDERS.labels[gender]}: ${this.formatTime(actual)} (${CONFIG.STATS.LABELS.FAIR_LABEL}: ${this.formatTime(fair)})<br>
-                           <span class="${diff > 0 ? CONFIG.STATS.DISPLAY.OVER_CLASS : CONFIG.STATS.DISPLAY.UNDER_CLASS}">${diffText}</span>`;
-
-                this.fairDistElement.appendChild(p);
             }
         });
     }
