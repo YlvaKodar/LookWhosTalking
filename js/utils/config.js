@@ -213,7 +213,7 @@ const CONFIG = {
             ERROR_MEETING_NAME_REQUIRED: 'Your meeting needs a name.',
             ERROR_DATE_REQUIRED: 'What day is it?',
             ERROR_MEETING_DATA_REQUIRED: 'No meeting find ... Please fill out the form.',
-            ERROR_SAVE_TO_LOCAL: 'We\' re sorry but we fail to save to the local storage ... Maybe check your browser settings or try another browser.',
+            ERROR_SAVE_TO_LOCAL: 'We\' re sorry but we fail to save to the local storage ... Maybe check your browser settings (privacy, incognito or storage settings may cause this) or try another browser.',
             get ERROR_MIN_PARTICIPANTS() {
                 return `No meeting without at least ${CONFIG.MEETING.MIN_PARTICIPANTS} meeters.`;
             },

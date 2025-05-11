@@ -12,7 +12,14 @@ class StorageManager {
      * @returns {void}
      */
     static saveMeeting(meeting) {
-        localStorage.setItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING, JSON.stringify(meeting));
+        try {
+            localStorage.setItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING, JSON.stringify(meeting));
+            return true;
+        } catch (error) {
+            console.error(CONFIG.MESSAGES.ERROR_SAVE_TO_LOCAL, error);
+            AlertManager.showAlert(ERROR_SAVE_TO_LOCAL);
+            return false;
+        }
     }
     /**
      * Retrieves the current meeting from localStorage.
@@ -24,7 +31,7 @@ class StorageManager {
         try {
             const data = localStorage.getItem(CONFIG.STORAGE.KEYS.CURRENT_MEETING);
             if (!data) {
-                // Try to get setup data as an alternative
+
                 const setupData = this.getSetupMeetingData();
                 if (setupData) {
                     const meeting = new Meeting(setupData.name, setupData.date);

@@ -19,16 +19,16 @@ class EventBus {
      * @returns {Function} Unsubscribe function that can be called to remove the subscription
      */
     subscribe(event, callback) {
-        if (!this.events[event]) { //If there's no event array for this event yet,
-            this.events[event] = []; //create one.
+        if (!this.events[event]) {
+            this.events[event] = [];
         }
 
-        this.events[event].push(callback); //Callback is the function that will run when the event happens.
+        this.events[event].push(callback);
 
         //Return a function to unsubscribe
         return () => {
-            this.events[event] = this.events[event].filter(cb => cb !== callback); //Sort out events we don't  want anymore.
-            if (this.events[event].length === 0) { //Delete if event array is empty.
+            this.events[event] = this.events[event].filter(cb => cb !== callback);
+            if (this.events[event].length === 0) {
                 delete this.events[event];
             }
         };
@@ -68,5 +68,4 @@ class EventBus {
     }
 }
 
-// Create a global EventBus instance
 const eventBus = new EventBus();

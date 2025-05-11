@@ -121,8 +121,6 @@ class TimerPopOutController {
     pauseSpeaking(notifyMainWindow = true) {
         if (!this.startTime || !this.currentSpeaker) return;
 
-        const duration = (Date.now() - this.startTime) / 1000;
-
         clearInterval(this.interval);
         this.interval = null;
         this.startTime = null;
@@ -170,7 +168,6 @@ class TimerPopOutController {
         //This a good place ..?
         this.cleanup();
 
-        // Notify main window if open
         if (window.opener && !window.opener.closed) {
             try {
                 window.opener.postMessage({

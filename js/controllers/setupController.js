@@ -104,6 +104,5 @@ class SetupController {
      */
     cleanup() {
         //Do I need to clean something?
-        console.log('Pretendeing to clean setupController.');
     }
 }

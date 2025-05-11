@@ -13,7 +13,6 @@ class App {
      */
 
     static init() {
-        //Store active controllers for resource management
         this.activeControllers = {};
 
         this.setupGlobalNavigationListener(CONFIG.DOM.BUTTONS.NEW_MEETING, CONFIG.DOM.SCREENS.SETUP);

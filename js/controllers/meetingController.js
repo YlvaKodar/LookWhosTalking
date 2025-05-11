@@ -45,7 +45,6 @@ class MeetingController {
      * @returns {void}
      */
     initEventSubscriptions() {
-        // Setup window message listener for communication with popup
         window.addEventListener('message', this.handleTimerWindowMessage.bind(this));
     }
     /**
@@ -59,7 +58,6 @@ class MeetingController {
         this.timer.startTimer(gender);
         this.view.updateButtonStates(gender);
 
-        //Update popout timer
         if (updateTimerWindow && this.timerWindow && !this.timerWindow.closed) {
             try {
                 this.timerWindow.postMessage({
@@ -86,10 +84,6 @@ class MeetingController {
         this.timer.stopTimer();
         this.view.updateButtonStates(null);
 
-        // Save current state
-        StorageManager.saveMeeting(this.meeting);
-
-        //Update popout timer
         if (updateTimerWindow && this.timerWindow && !this.timerWindow.closed) {
             try {
                 this.timerWindow.postMessage({
@@ -157,7 +151,6 @@ class MeetingController {
      * @returns {void}
      */
     handleTimerWindowMessage(event) {
-        //Verify origin for security
         if (event.origin !== window.location.origin) return;
 
         const { type, data } = event.data;
@@ -179,9 +172,7 @@ class MeetingController {
 
             case CONFIG.COMMUNICATION.WINDOW.TO_MAIN.MEETING_ENDED:
                 this.endMeeting()
-
                 App.navigateTo(CONFIG.DOM.SCREENS.STATS);
-
                 break;
 
         }
@@ -196,7 +187,6 @@ class MeetingController {
         this.meeting.active = false;
         StorageManager.saveMeeting(this.meeting);
 
-        // Close timer window if open
         if (this.timerWindow && !this.timerWindow.closed) {
             this.timerWindow.close();
         }
@@ -211,12 +201,10 @@ class MeetingController {
      * @returns {void}
      */
     updateVisibleButtons() {
-        // Get participant counts
         const menCount = this.meeting.participants[CONFIG.GENDERS.types[0]];
         const womenCount = this.meeting.participants[CONFIG.GENDERS.types[1]];
         const nonbinaryCount = this.meeting.participants[CONFIG.GENDERS.types[2]];
 
-        // Tell view to update button visibility
         this.view.setButtonVisibility(
             menCount > 0,
             womenCount > 0,
@@ -229,18 +217,14 @@ class MeetingController {
      * @returns {void}
      */
     cleanup() {
-        // Stop any active timers
         if (this.timer) {
             this.timer.cleanup();
         }
 
-        // Close timer window if open
         if (this.timerWindow && !this.timerWindow.closed) {
             this.timerWindow.close();
             this.timerWindow = null;
         }
-
         window.removeEventListener('beforeunload', this.handleBeforeUnload.bind(this));
-        // Remove message listener        window.removeEventListener('message', this.handleTimerWindowMessage);
     }
 }

@@ -158,8 +158,6 @@ class StatsController {
             });
         }
 
-        // Additional export formats could be added here
-
         return null;
     }
 

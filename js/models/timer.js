@@ -25,16 +25,12 @@ class SpeakingTimer {
      * @returns {void}
      */
     startTimer(gender) {
-        //Stop existing timer
         this.stopTimer();
 
-        //Update state with new speaker
         this.currentSpeaker = gender;
         this.meeting.currentSpeaker = gender;
         this.startTime = Date.now();
 
-
-        //Update interval
         this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
     }
     /**
@@ -59,18 +55,15 @@ class SpeakingTimer {
 
         StorageManager.saveMeeting(this.meeting);
 
-        //Calculate duration
         const duration = (Date.now() - this.startTime) / 1000;
         const gender = this.meeting.currentSpeaker;
 
-        //Save speaking data
         if (gender && this.meeting.speakingData && this.meeting.speakingData[gender]) {
             this.meeting.speakingData[gender].push(duration);
         } else {
             console.log("Failed to record speaking data - conditions not met");
         }
 
-        //Reset timer state
         if (CONFIG.TIMER.UPDATE_ANIMATION_FRAME && this.animationFrameId) {
             cancelAnimationFrame(this.animationFrameId);
             this.animationFrameId = null;
@@ -83,7 +76,6 @@ class SpeakingTimer {
         this.currentSpeaker = null;
         this.meeting.currentSpeaker = null;
 
-        //Reset displays to default
         this.updateTimerDisplays(CONFIG.TIMER.DEFAULT_DISPLAY);
     }
 
@@ -98,7 +90,6 @@ class SpeakingTimer {
         this.currentDuration = (Date.now() - this.startTime) / 1000;
         const formattedTime = this.formatTime(this.currentDuration);
 
-        // Update displays
         this.updateTimerDisplays(formattedTime);
 
         return formattedTime;
