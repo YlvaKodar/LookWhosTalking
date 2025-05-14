@@ -40,10 +40,10 @@ class Meeting {
      * @param {number} nonBinary - Number of non-binary participants
      * @returns {void}
      */
-    setParticipants(men, women, nonbinary) {
-        this.participants[CONFIG.GENDERS.types[0]] = men;
-        this.participants[CONFIG.GENDERS.types[1]] = women;
-        this.participants[CONFIG.GENDERS.types[2]] = nonbinary;
+    setParticipants(women, nonbinary, men) {
+        this.participants[CONFIG.GENDERS.types[0]] = women;
+        this.participants[CONFIG.GENDERS.types[1]] = nonbinary;
+        this.participants[CONFIG.GENDERS.types[2]] = men;
     }
     /**
      * Calculates the total number of participants in the meeting.

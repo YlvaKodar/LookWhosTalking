@@ -132,9 +132,9 @@ class MeetingController {
                 data: {
                     meetingName: this.meeting.name,
                     visibleButtons: {
-                        men: this.meeting.participants[CONFIG.GENDERS.types[0]] > 0,
-                        women: this.meeting.participants[CONFIG.GENDERS.types[1]] > 0,
-                        nonbinary: this.meeting.participants[CONFIG.GENDERS.types[2]] > 0
+                        women: this.meeting.participants[CONFIG.GENDERS.types[0]] > 0,
+                        nonbinary: this.meeting.participants[CONFIG.GENDERS.types[1]] > 0,
+                        men: this.meeting.participants[CONFIG.GENDERS.types[2]] > 0
                     },
 
                     currentSpeaker: this.timer.currentSpeaker,
@@ -201,14 +201,14 @@ class MeetingController {
      * @returns {void}
      */
     updateVisibleButtons() {
-        const menCount = this.meeting.participants[CONFIG.GENDERS.types[0]];
-        const womenCount = this.meeting.participants[CONFIG.GENDERS.types[1]];
-        const nonbinaryCount = this.meeting.participants[CONFIG.GENDERS.types[2]];
+        const womenCount = this.meeting.participants[CONFIG.GENDERS.types[0]];
+        const nonbinaryCount = this.meeting.participants[CONFIG.GENDERS.types[1]];
+        const menCount = this.meeting.participants[CONFIG.GENDERS.types[2]];
 
         this.view.setButtonVisibility(
-            menCount > 0,
             womenCount > 0,
-            nonbinaryCount > 0
+            nonbinaryCount > 0,
+            menCount > 0,
         );
     }
     /**

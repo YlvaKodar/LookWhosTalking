@@ -24,6 +24,7 @@ class StatsView {
         this.fairDistElement = document.getElementById(CONFIG.DOM.STATS.FAIR_DISTRIBUTION);
         this.chartCanvas = document.getElementById(CONFIG.DOM.CHARTS.SPEAKING_TIME);
         this.exportPdfBtn = document.getElementById(CONFIG.DOM.BUTTONS.EXPORT_PDF);
+        this.participantCount = document.getElementById(CONFIG.DOM.SCREENS.PARTICIPANT_COUNT);
 
         if (this.exportPdfBtn) {
             this.exportPdfBtn.addEventListener('click', () => {
@@ -252,7 +253,6 @@ class StatsView {
         }
 
         this.totalTimeElement.textContent = this.formatTime(stats[CONFIG.STATS.STRUCTURE.TOTAL_TIME]);
-
         this.genderStatsElement.innerHTML = '';
 
         CONFIG.GENDERS.types.forEach(gender => {
@@ -264,12 +264,15 @@ class StatsView {
                 statsDiv.className = `${CONFIG.STATS.DISPLAY.GENDER_STAT_CLASS_PREFIX}${gender}`;
 
                 const totalTime = this.formatTime(stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender]);
+                const totalParticipants = this.meeting.getTotalParticipants();
                 const interventions = stats[CONFIG.STATS.STRUCTURE.STATEMENTS_COUNT][gender];
                 const avgTime = this.formatTime(stats[CONFIG.STATS.STRUCTURE.AVG_DURATION][gender]);
                 const fair = this.formatTime(stats[CONFIG.STATS.STRUCTURE.FAIR_DISTRIBUTION][gender]);
 
+                this.participantCount.textContent = `Participant count: ${totalParticipants}`;
+
                 statsDiv.innerHTML = `
-                <h3>${CONFIG.GENDERS.labels[gender]}</h3>
+                <h3>${CONFIG.GENDERS.labels[gender]}: ${this.meeting.participants[gender]} </h3>
                 <p>${CONFIG.STATS.LABELS.SPEAKING_TIME}: ${totalTime} min.</p>
                 <p>${CONFIG.STATS.LABELS.STATEMENTS_COUNT}: ${interventions}.</p>
                 <p>${CONFIG.STATS.LABELS.AVG_LENGTH}: ${avgTime} min.</p>
