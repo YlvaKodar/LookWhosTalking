@@ -151,7 +151,6 @@ class StatsController {
         try {
             console.log('Starting PDF export process...');
 
-            // Get the stats container element that's already in the DOM
             const statsContainer = document.querySelector('.stats-container');
 
             if (!statsContainer) {
@@ -164,20 +163,20 @@ class StatsController {
 
             // Basic PDF options
             const options = {
-                margin: 10, // Behåll detta oförändrat för tillfället
+                margin: 10,
                 filename: 'meeting-stats.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: {
                     scale: 2,
-                    scrollY: 0, // Viktigt - förhindrar tomrum från scroll-position
-                    y: 0        // Viktigt - börjar från toppen av elementet
+                    scrollY: 0,
+                    y: 0
                 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
             console.log('Generating PDF with options:', options);
 
-            // Generate and download the PDF
+
             await html2pdf()
                 .from(statsContainer)
                 .set(options)

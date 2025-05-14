@@ -40,89 +40,89 @@ class StatsView {
         this.controller = new StatsController(this.meeting, this);
     }
 
-
-
     /**
-     * Optimizes the statistics display for PDF export.
-     * Makes temporary changes to improve PDF appearance.
+     * Optimize view of statistics for PDF.
      * @returns {void}
      */
     optimizeForPdfExport() {
         console.log('Optimizing view for PDF export...');
 
-        // Get the stats container
         const statsContainer = document.querySelector('.stats-container');
+        const textStatsElement = document.querySelector('.text-stats');
+
         if (!statsContainer) return;
 
-        // Save original styles to restore later
         this._originalStyles = {
-            width: statsContainer.style.width,
-            padding: statsContainer.style.padding,
-            backgroundColor: statsContainer.style.backgroundColor,
-            fontFamily: statsContainer.style.fontFamily,
-            maxWidth: statsContainer.style.maxWidth
+            containerBorder: statsContainer.style.border,
+            containerBoxShadow: statsContainer.style.boxShadow
         };
 
-        // Apply PDF-friendly styles
-        statsContainer.style.width = 'auto';
-        statsContainer.style.maxWidth = '100%';
-        statsContainer.style.padding = '20px';
-        statsContainer.style.backgroundColor = 'white';
-        statsContainer.style.fontFamily = 'Arial, sans-serif';
+        statsContainer.style.border = 'none';
+        statsContainer.style.boxShadow = 'none';
 
-        // Add meeting title and date if not present
+        if (textStatsElement) {
+            this._originalStyles.textStatsPageBreak = textStatsElement.style.pageBreakBefore;
+            textStatsElement.style.pageBreakBefore = 'always';
+            textStatsElement.style.breakBefore = 'page';
+        }
+
         if (!document.getElementById('pdf-header')) {
             const header = document.createElement('div');
             header.id = 'pdf-header';
             header.style.textAlign = 'center';
-            header.style.marginBottom = '20px';
+            header.style.marginBottom = '10px';
             header.innerHTML = `
-            <h1 style="margin-bottom: 5px;">${this.meeting.name}</h1>
-            <p style="color: #666;">Date: ${this.meeting.date}</p>
+            <h1 style="margin-bottom: 5px; margin-top: 0; color: #183b48;">${this.meeting.name} ${this.meeting.date}</h1>
+            <h3 style="margin-bottom: 5px;  margin-top: 5; color: #2f0402; ">MEETING CHARTS</h3>
         `;
             statsContainer.insertBefore(header, statsContainer.firstChild);
+        }
+
+        if (textStatsElement && !document.getElementById('pdf-header-page2')) {
+            const header2 = document.createElement('div');
+            header2.id = 'pdf-header-page2';
+            header2.style.textAlign = 'center';
+            header2.style.marginBottom = '10px';
+            header2.innerHTML = `
+            <h1 style="margin-bottom: 5px; margin-top: 0; color: #183b48;">${this.meeting.name} ${this.meeting.date}</h1>
+            <h3 style="margin-bottom: 10px; margin-top: 5; color: #2f0402;">MEETING STATISTICS</h3>
+        `;
+            textStatsElement.insertBefore(header2, textStatsElement.firstChild);
         }
     }
 
     /**
-     * Restores the statistics display after PDF export.
-     * Removes temporary changes made for PDF optimization.
+     * Reinstates view of statistics from before PDF optimization.
      * @returns {void}
      */
     restoreFromPdfOptimization() {
         console.log('Restoring view after PDF export...');
 
-        // Get the stats container
         const statsContainer = document.querySelector('.stats-container');
-        if (!statsContainer) return;
+        const textStatsElement = document.querySelector('.text-stats');
 
-        // Restore original styles
-        if (this._originalStyles) {
-            Object.keys(this._originalStyles).forEach(key => {
-                statsContainer.style[key] = this._originalStyles[key];
-            });
+        if (!statsContainer || !this._originalStyles) return;
+
+        statsContainer.style.border = this._originalStyles.containerBorder || '';
+        statsContainer.style.boxShadow = this._originalStyles.containerBoxShadow || '';
+
+        if (textStatsElement && this._originalStyles.hasOwnProperty('textStatsPageBreak')) {
+            textStatsElement.style.pageBreakBefore = this._originalStyles.textStatsPageBreak || '';
+            textStatsElement.style.breakBefore = this._originalStyles.textStatsPageBreak || '';
         }
 
-        // Remove the temporary header
-        const header = document.getElementById('pdf-header');
-        if (header) {
-            header.parentNode.removeChild(header);
+        const header1 = document.getElementById('pdf-header');
+        if (header1) {
+            header1.parentNode.removeChild(header1);
         }
+
+        const header2 = document.getElementById('pdf-header-page2');
+        if (header2) {
+            header2.parentNode.removeChild(header2);
+        }
+
+        this._originalStyles = null;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     /**
      * Renders chart visualizations of meeting statistics.
