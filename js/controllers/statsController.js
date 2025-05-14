@@ -164,10 +164,14 @@ class StatsController {
 
             // Basic PDF options
             const options = {
-                margin: 10,
+                margin: 10, // Behåll detta oförändrat för tillfället
                 filename: 'meeting-stats.pdf',
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
+                html2canvas: {
+                    scale: 2,
+                    scrollY: 0, // Viktigt - förhindrar tomrum från scroll-position
+                    y: 0        // Viktigt - börjar från toppen av elementet
+                },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
