@@ -27,12 +27,100 @@ class StatsView {
 
         if (this.exportPdfBtn) {
             this.exportPdfBtn.addEventListener('click', () => {
+
+               this.optimizeForPdfExport();
+
                 this.controller.exportToPdf();
+
+                setTimeout(() => this.restoreFromPdfOptimization(), 1000);
+
             });
         }
 
         this.controller = new StatsController(this.meeting, this);
     }
+
+
+
+    /**
+     * Optimizes the statistics display for PDF export.
+     * Makes temporary changes to improve PDF appearance.
+     * @returns {void}
+     */
+    optimizeForPdfExport() {
+        console.log('Optimizing view for PDF export...');
+
+        // Get the stats container
+        const statsContainer = document.querySelector('.stats-container');
+        if (!statsContainer) return;
+
+        // Save original styles to restore later
+        this._originalStyles = {
+            width: statsContainer.style.width,
+            padding: statsContainer.style.padding,
+            backgroundColor: statsContainer.style.backgroundColor,
+            fontFamily: statsContainer.style.fontFamily,
+            maxWidth: statsContainer.style.maxWidth
+        };
+
+        // Apply PDF-friendly styles
+        statsContainer.style.width = 'auto';
+        statsContainer.style.maxWidth = '100%';
+        statsContainer.style.padding = '20px';
+        statsContainer.style.backgroundColor = 'white';
+        statsContainer.style.fontFamily = 'Arial, sans-serif';
+
+        // Add meeting title and date if not present
+        if (!document.getElementById('pdf-header')) {
+            const header = document.createElement('div');
+            header.id = 'pdf-header';
+            header.style.textAlign = 'center';
+            header.style.marginBottom = '20px';
+            header.innerHTML = `
+            <h1 style="margin-bottom: 5px;">${this.meeting.name}</h1>
+            <p style="color: #666;">Date: ${this.meeting.date}</p>
+        `;
+            statsContainer.insertBefore(header, statsContainer.firstChild);
+        }
+    }
+
+    /**
+     * Restores the statistics display after PDF export.
+     * Removes temporary changes made for PDF optimization.
+     * @returns {void}
+     */
+    restoreFromPdfOptimization() {
+        console.log('Restoring view after PDF export...');
+
+        // Get the stats container
+        const statsContainer = document.querySelector('.stats-container');
+        if (!statsContainer) return;
+
+        // Restore original styles
+        if (this._originalStyles) {
+            Object.keys(this._originalStyles).forEach(key => {
+                statsContainer.style[key] = this._originalStyles[key];
+            });
+        }
+
+        // Remove the temporary header
+        const header = document.getElementById('pdf-header');
+        if (header) {
+            header.parentNode.removeChild(header);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
