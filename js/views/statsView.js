@@ -23,8 +23,99 @@ class StatsView {
         this.genderStatsElement = document.getElementById(CONFIG.DOM.STATS.GENDER_STATS);
         this.fairDistElement = document.getElementById(CONFIG.DOM.STATS.FAIR_DISTRIBUTION);
         this.chartCanvas = document.getElementById(CONFIG.DOM.CHARTS.SPEAKING_TIME);
+        this.exportPdfBtn = document.getElementById(CONFIG.DOM.BUTTONS.EXPORT_PDF);
+
+        if (this.exportPdfBtn) {
+            this.exportPdfBtn.addEventListener('click', () => {
+
+               this.optimizeForPdfExport();
+
+                this.controller.exportToPdf();
+            });
+        }
 
         this.controller = new StatsController(this.meeting, this);
+    }
+
+    /**
+     * Optimize view of statistics for PDF.
+     * @returns {void}
+     */
+    optimizeForPdfExport() {
+        const statsContainer = document.querySelector('.stats-container');
+        const textStatsElement = document.querySelector('.text-stats');
+
+        if (!statsContainer) return;
+
+        this._originalStyles = {
+            containerBorder: statsContainer.style.border,
+            containerBoxShadow: statsContainer.style.boxShadow
+        };
+
+        statsContainer.style.border = 'none';
+        statsContainer.style.boxShadow = 'none';
+
+        if (textStatsElement) {
+            this._originalStyles.textStatsPageBreak = textStatsElement.style.pageBreakBefore;
+            textStatsElement.style.pageBreakBefore = 'always';
+            textStatsElement.style.breakBefore = 'page';
+        }
+
+        if (!document.getElementById('pdf-header')) {
+            const header = document.createElement('div');
+            header.id = 'pdf-header';
+            header.style.textAlign = 'center';
+            header.style.marginBottom = '10px';
+            header.innerHTML = `
+            <h1 style="margin-bottom: 5px; margin-top: 0; color: #183b48;">${this.meeting.name} ${this.meeting.date}</h1>
+            <h3 style="margin-bottom: 5px;  margin-top: 5; color: #2f0402; ">MEETING CHARTS</h3>
+        `;
+            statsContainer.insertBefore(header, statsContainer.firstChild);
+        }
+
+        if (textStatsElement && !document.getElementById('pdf-header-page2')) {
+            const header2 = document.createElement('div');
+            header2.id = 'pdf-header-page2';
+            header2.style.textAlign = 'center';
+            header2.style.marginBottom = '10px';
+            header2.innerHTML = `
+            <h1 style="margin-bottom: 5px; margin-top: 0; color: #183b48;">${this.meeting.name} ${this.meeting.date}</h1>
+            <h3 style="margin-bottom: 10px; margin-top: 5; color: #2f0402;">MEETING STATISTICS</h3>
+        `;
+            textStatsElement.insertBefore(header2, textStatsElement.firstChild);
+        }
+    }
+
+    /**
+     * Reinstates view of statistics from before PDF optimization.
+     * @returns {void}
+     */
+    restoreFromPdfOptimization() {
+
+        const statsContainer = document.querySelector('.stats-container');
+        const textStatsElement = document.querySelector('.text-stats');
+
+        if (!statsContainer || !this._originalStyles) return;
+
+        statsContainer.style.border = this._originalStyles.containerBorder || '';
+        statsContainer.style.boxShadow = this._originalStyles.containerBoxShadow || '';
+
+        if (textStatsElement && this._originalStyles.hasOwnProperty('textStatsPageBreak')) {
+            textStatsElement.style.pageBreakBefore = this._originalStyles.textStatsPageBreak || '';
+            textStatsElement.style.breakBefore = this._originalStyles.textStatsPageBreak || '';
+        }
+
+        const header1 = document.getElementById('pdf-header');
+        if (header1) {
+            header1.parentNode.removeChild(header1);
+        }
+
+        const header2 = document.getElementById('pdf-header-page2');
+        if (header2) {
+            header2.parentNode.removeChild(header2);
+        }
+
+        this._originalStyles = null;
     }
 
     /**
@@ -204,5 +295,14 @@ class StatsView {
         const secs = Math.floor(seconds % 60);
 
         return `${mins.toString().padStart(CONFIG.FORMATTING.TIME.PAD_LENGTH, CONFIG.FORMATTING.TIME.PAD_CHAR)}${CONFIG.FORMATTING.TIME.TIME_SEPARATOR}${secs.toString().padStart(CONFIG.FORMATTING.TIME.PAD_LENGTH, CONFIG.FORMATTING.TIME.PAD_CHAR)}`;
+    }
+
+    /**
+     * Shows an alert message to the user using the custom alert.
+     * @param {string} message - The message to display
+     * @returns {void}
+     */
+    showAlert(message) {
+        AlertManager.showAlert(message);
     }
 }

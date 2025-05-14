@@ -143,22 +143,41 @@ class StatsController {
     }
 
     /**
-     * Exports statistics to a format suitable for saving or sharing.
-     * Could be extended to support different export formats (e.g., JSON, CSV).
-     * @param {string} format - The desired export format
-     * @returns {string|Object} The exported statistics in the requested format
+     * Exports the meeting statistics as a PDF file.
+     * Uses the html2pdf library to generate a PDF from the statistics content.
+     * @returns {Promise<void>} A promise that resolves when the PDF has been generated
      */
-    exportStats(format = 'json') {
-        if (format === 'json') {
-            return JSON.stringify({
-                meetingName: this.meeting.name,
-                meetingDate: this.meeting.date,
-                participants: this.meeting.participants,
-                statistics: this.stats
-            });
-        }
+    async exportToPdf() {
+        try {
+            const statsContainer = document.querySelector('.stats-container');
 
-        return null;
+            if (!statsContainer) {
+                console.error('Stats container not found in DOM');
+                this.view.showAlert('Error: Stats container not found');
+                return;
+            }
+
+            // Basic PDF options
+            const options = {
+                margin: 10,
+                filename: 'meeting-stats.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    scrollY: 0,
+                    y: 0
+                },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            await html2pdf().from(statsContainer).set(options).save();
+
+        } catch (error) {
+            console.error('Error exporting PDF:', error);
+            this.view.showAlert('Error exporting PDF: ' + error.message);
+        } finally {
+            this.view.restoreFromPdfOptimization();
+        }
     }
 
     /**

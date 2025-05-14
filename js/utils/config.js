@@ -285,6 +285,7 @@ const CONFIG = {
             ABOUT: 'about-btn',
             HOW_TO_USE: 'how-to-use-btn',
             HOW_TO_USE_TIMER: 'how-to-use-timer-btn',
+            EXPORT_PDF: 'export-pdf-btn',
         },
         CHARTS: {
             PARTICIPANTS: 'participants-chart',

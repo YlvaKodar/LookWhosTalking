@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="css/styles.css">
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- PDF Export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 <!-- Start screen -->
@@ -114,8 +116,10 @@
 
         </div>
     </div>
-
-    <button id="back-to-start">Start</button>
+    <div id="stats-actions">
+        <button id="export-pdf-btn" class="tertiary">Export as PDF</button>
+        <button id="back-to-start">Start</button>
+    </div>
 </div>
 
 <!-- JavaScript -->
