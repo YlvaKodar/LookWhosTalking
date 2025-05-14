@@ -33,6 +33,7 @@ It is on one hand a commissioned project, but it is also an experiment and a lea
 3. **End the Meeting**:
    - Click "End Meeting" when the meeting concludes
    - View statistics about the speaking time distribution
+   - Download meeting statistics as PDF (if desired, it's totally up to you)
 
 ## Technical Details
 
@@ -55,7 +56,7 @@ It is on one hand a commissioned project, but it is also an experiment and a lea
 - There is as yet no tool for getting statiatics downloaded or emailed. 
 
 Oh, and also:
-- The app is in severe need of some deep styling.
+- The app is in need of some styling.
 - The code is in severe need of some deep cleaning.
 - There are, as of now, some structural issues, and designe patterns and utils are not fully implemented.
 - There are lots of things I should have done differently. But that's learning for ya. 
@@ -63,7 +64,6 @@ Oh, and also:
 ## Roadmap
 
 Features planned for future releases:
-- Email or PDF export of meeting statistics
 - Data persistence across sessions
 - Historical data and trends across multiple meetings
 - Mobile app version in Java/Kotlin
