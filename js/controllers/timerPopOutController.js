@@ -43,9 +43,9 @@ class TimerPopOutController {
                     }
                     if (data.visibleButtons) {
                         this.view.setButtonVisibility(
-                            data.visibleButtons.men,
                             data.visibleButtons.women,
-                            data.visibleButtons.nonbinary
+                            data.visibleButtons.nonbinary,
+                            data.visibleButtons.men,
                         );
                     }
 

@@ -11,9 +11,9 @@ class TimerPopOutView {
      */
     constructor() {
         // Get DOM elements
-        this.menButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.MEN);
         this.womenButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.WOMEN);
         this.nonbinaryButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.NON_BINARY);
+        this.menButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.MEN);
         this.pauseButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.PAUSE);
         this.endButton = document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.END);
         this.timerDisplay = document.getElementById(CONFIG.TIMER_POPOUT_DOM.DISPLAY);
@@ -41,13 +41,13 @@ class TimerPopOutView {
      * @returns {void}
      */
     initEventListeners() {
-        this.menButton.addEventListener('click', () =>
+        this.womenButton.addEventListener('click', () =>
             this.controller.startSpeaking(CONFIG.GENDERS.types[0]));
 
-        this.womenButton.addEventListener('click', () =>
+        this.nonbinaryButton.addEventListener('click', () =>
             this.controller.startSpeaking(CONFIG.GENDERS.types[1]));
 
-        this.nonbinaryButton.addEventListener('click', () =>
+        this.menButton.addEventListener('click', () =>
             this.controller.startSpeaking(CONFIG.GENDERS.types[2]));
 
         this.pauseButton.addEventListener('click', () =>
@@ -73,20 +73,19 @@ class TimerPopOutView {
      */
     updateButtonStates(activeGender) {
         // Remove active class from all buttons
-        [this.menButton, this.womenButton, this.nonbinaryButton].forEach(button => {
+        [this.womenButton, this.nonbinaryButton, this.menButton].forEach(button => {
             if (button) button.classList.remove(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         });
 
         // Add active class to the appropriate button
-        if (activeGender === CONFIG.GENDERS.types[0] && this.menButton) {
-            this.menButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
-        } else if (activeGender === CONFIG.GENDERS.types[1] && this.womenButton) {
+        if (activeGender === CONFIG.GENDERS.types[0] && this.womenButton) {
             this.womenButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
-        } else if (activeGender === CONFIG.GENDERS.types[2] && this.nonbinaryButton) {
+        } else if (activeGender === CONFIG.GENDERS.types[1] && this.nonbinaryButton) {
             this.nonbinaryButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
+        } else if (activeGender === CONFIG.GENDERS.types[2] && this.menButton) {
+            this.menButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         }
     }
-
     /**
      * Sets the visibility of gender buttons based on participant counts.
      * Only shows buttons for genders that have participants.
@@ -95,23 +94,21 @@ class TimerPopOutView {
      * @param {boolean} showNonbinary - Whether to show the non-binary button
      * @returns {void}
      */
-    setButtonVisibility(showMen, showWomen, showNonbinary) {
-        if (this.menButton) {
-            this.menButton.style.display = showMen ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
-        }
-
+    setButtonVisibility(showWomen, showNonbinary, showMen) {
         if (this.womenButton) {
             this.womenButton.style.display = showWomen ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
         }
-
         if (this.nonbinaryButton) {
             this.nonbinaryButton.style.display = showNonbinary ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
+        }
+        if (this.menButton) {
+            this.menButton.style.display = showMen ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
         }
 
         // Update container class based on visible button count
         const speakerButtonsContainer = document.querySelector('.speaker-buttons');
         if (speakerButtonsContainer) {
-            const visibleCount = [showMen, showWomen, showNonbinary].filter(Boolean).length;
+            const visibleCount = [showWomen, showNonbinary, showMen].filter(Boolean).length;
 
             // Remove previous classes
             speakerButtonsContainer.classList.remove('one-button', 'two-buttons', 'three-buttons');

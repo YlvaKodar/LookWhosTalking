@@ -58,9 +58,9 @@ class SetupController {
             return false;
         }
 
-        const menCount = parseInt(this.view.menCount?.value || 0);
         const womenCount = parseInt(this.view.womenCount?.value || 0);
         const nonbinaryCount = parseInt(this.view.nonbinaryCount?.value || 0);
+        const menCount = parseInt(this.view.menCount?.value || 0);
 
         if (menCount + womenCount + nonbinaryCount < CONFIG.MEETING.MIN_PARTICIPANTS) {
             this.view.showAlert(CONFIG.MESSAGES.ALERT.ERROR_MIN_PARTICIPANTS);
@@ -80,9 +80,9 @@ class SetupController {
                 name: this.view.meetingNameInput.value,
                 date: this.view.dateInput.value,
                 participants: {
-                    [CONFIG.GENDERS.types[0]]: parseInt(this.view.menCount.value || 0),
-                    [CONFIG.GENDERS.types[1]]: parseInt(this.view.womenCount.value || 0),
-                    [CONFIG.GENDERS.types[2]]: parseInt(this.view.nonbinaryCount.value || 0)
+                    [CONFIG.GENDERS.types[0]]: parseInt(this.view.womenCount.value || 0),
+                    [CONFIG.GENDERS.types[1]]: parseInt(this.view.nonbinaryCount.value || 0),
+                    [CONFIG.GENDERS.types[2]]: parseInt(this.view.menCount.value || 0)
                 }
             };
 

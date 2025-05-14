@@ -77,21 +77,21 @@ const CONFIG = {
 
     //Genders:
     GENDERS: {
-        types: ['men', 'women', 'nonbinary'],
+        types: ['women', 'nonbinary', 'men' ],
         labels: {
-            men: 'Men',
             women: 'Women',
             nonbinary: 'Non-binary',
+            men: 'Men',
         },
         colors: {
-            men: COLOR_PALETTE.MEN,
             women: COLOR_PALETTE.WOMEN,
             nonbinary: COLOR_PALETTE.NONBINARY,
+            men: COLOR_PALETTE.MEN,
         },
         buttonLabels: {
-            men: 'Man speaking',
             women: 'Woman speaking',
             nonbinary: 'Non-binary speaking',
+            men: 'Man speaking',
         },
     },
     //Meeting settings
@@ -268,7 +268,7 @@ const CONFIG = {
 
             STATS: 'stats-screen',
             STATS_HEAD: 'stats_heading',
-
+            PARTICIPANT_COUNT: 'participant-count',
         },
         TIMER: {
             DISPLAY: 'timer-display',

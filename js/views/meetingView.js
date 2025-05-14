@@ -46,9 +46,9 @@ class MeetingView {
      * @returns {void}
      */
     initEventListeners() {
-        this.menButton.addEventListener('click', () => this.controller.startSpeaking(CONFIG.GENDERS.types[0]));
-        this.womenButton.addEventListener('click', () => this.controller.startSpeaking(CONFIG.GENDERS.types[1]));
-        this.nonbinaryButton.addEventListener('click', () => this.controller.startSpeaking(CONFIG.GENDERS.types[2]));
+        this.womenButton.addEventListener('click', () => this.controller.startSpeaking(CONFIG.GENDERS.types[0]));
+        this.nonbinaryButton.addEventListener('click', () => this.controller.startSpeaking(CONFIG.GENDERS.types[1]));
+        this.menButton.addEventListener('click', () => this.controller.startSpeaking(CONFIG.GENDERS.types[2]));
         this.pauseButton.addEventListener('click', () => this.controller.pauseSpeaking());
         this.endButton.addEventListener('click', () => this.controller.endMeeting());
         this.popOutButton.addEventListener('click', () => this.controller.openTimerWindow());
@@ -79,12 +79,12 @@ class MeetingView {
         });
 
         // Add active class to the button for the currently speaking gender
-        if (activeGender === CONFIG.GENDERS.types[0] && this.menButton) {
-            this.menButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
-        } else if (activeGender === CONFIG.GENDERS.types[1] && this.womenButton) {
+        if (activeGender === CONFIG.GENDERS.types[0] && this.womenButton) {
             this.womenButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
-        } else if (activeGender === CONFIG.GENDERS.types[2] && this.nonbinaryButton) {
+        }else if (activeGender === CONFIG.GENDERS.types[1] && this.nonbinaryButton) {
             this.nonbinaryButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
+        }else if (activeGender === CONFIG.GENDERS.types[2] && this.menButton) {
+            this.menButton.classList.add(CONFIG.THEME.CSS_CLASSES.ACTIVE);
         }
     }
 
@@ -96,23 +96,21 @@ class MeetingView {
      * @param {boolean} showNonbinary - Whether to show the non-binary button
      * @returns {void}
      */
-    setButtonVisibility(showMen, showWomen, showNonbinary) {
-        if (this.menButton) {
-            this.menButton.style.display = showMen ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
-        }
-
+    setButtonVisibility(showWomen, showNonbinary, showMen) {
         if (this.womenButton) {
             this.womenButton.style.display = showWomen ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
         }
-
         if (this.nonbinaryButton) {
             this.nonbinaryButton.style.display = showNonbinary ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
+        }
+        if (this.menButton) {
+            this.menButton.style.display = showMen ? CONFIG.DOM.DISPLAY.BLOCK : CONFIG.DOM.DISPLAY.NONE;
         }
 
         //Add class container on element to adjust layout
         const speakerButtonsContainer = document.querySelector('.speaker-buttons');
         if (speakerButtonsContainer) {
-            const visibleCount = [showMen, showWomen, showNonbinary].filter(Boolean).length;
+            const visibleCount = [showWomen, showNonbinary, showMen].filter(Boolean).length;
 
             //remove earlier classes
             speakerButtonsContainer.classList.remove('one-button', 'two-buttons', 'three-buttons');
