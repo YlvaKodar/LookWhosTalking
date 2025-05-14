@@ -285,6 +285,7 @@ const CONFIG = {
             ABOUT: 'about-btn',
             HOW_TO_USE: 'how-to-use-btn',
             HOW_TO_USE_TIMER: 'how-to-use-timer-btn',
+            EXPORT_PDF: 'export-pdf-btn',
         },
         CHARTS: {
             PARTICIPANTS: 'participants-chart',
@@ -348,6 +349,23 @@ const CONFIG = {
             TIME_SEPARATOR: ':',
             PAD_CHAR: '0',
             PAD_LENGTH: 2
+        }
+    },
+
+    PDF: {
+        FILE_NAME_PREFIX: 'meeting-stats_',
+        FILE_NAME_DATE_FORMAT: 'yyyy-MM-dd',
+        OPTIONS: {
+            margin: [10, 10, 10, 10],
+            filename: 'meeting-stats.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        },
+        CONTENT_ID: 'stats-pdf-content',
+        MESSAGES: { //Flytta dessa till messages
+            SUCCESS: 'PDF exported successfully!',
+            ERROR: 'Error exporting PDF. Please try again.'
         }
     },
 

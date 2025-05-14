@@ -23,9 +23,18 @@ class StatsView {
         this.genderStatsElement = document.getElementById(CONFIG.DOM.STATS.GENDER_STATS);
         this.fairDistElement = document.getElementById(CONFIG.DOM.STATS.FAIR_DISTRIBUTION);
         this.chartCanvas = document.getElementById(CONFIG.DOM.CHARTS.SPEAKING_TIME);
+        this.exportPdfBtn = document.getElementById(CONFIG.DOM.BUTTONS.EXPORT_PDF);
+
+        if (this.exportPdfBtn) {
+            this.exportPdfBtn.addEventListener('click', () => {
+                this.controller.exportToPdf();
+            });
+        }
 
         this.controller = new StatsController(this.meeting, this);
     }
+
+
 
     /**
      * Renders chart visualizations of meeting statistics.
@@ -204,5 +213,14 @@ class StatsView {
         const secs = Math.floor(seconds % 60);
 
         return `${mins.toString().padStart(CONFIG.FORMATTING.TIME.PAD_LENGTH, CONFIG.FORMATTING.TIME.PAD_CHAR)}${CONFIG.FORMATTING.TIME.TIME_SEPARATOR}${secs.toString().padStart(CONFIG.FORMATTING.TIME.PAD_LENGTH, CONFIG.FORMATTING.TIME.PAD_CHAR)}`;
+    }
+
+    /**
+     * Shows an alert message to the user using the custom alert.
+     * @param {string} message - The message to display
+     * @returns {void}
+     */
+    showAlert(message) {
+        AlertManager.showAlert(message);
     }
 }

@@ -143,22 +143,49 @@ class StatsController {
     }
 
     /**
-     * Exports statistics to a format suitable for saving or sharing.
-     * Could be extended to support different export formats (e.g., JSON, CSV).
-     * @param {string} format - The desired export format
-     * @returns {string|Object} The exported statistics in the requested format
+     * Exports the meeting statistics as a PDF file.
+     * Uses the html2pdf library to generate a PDF from the statistics content.
+     * @returns {Promise<void>} A promise that resolves when the PDF has been generated
      */
-    exportStats(format = 'json') {
-        if (format === 'json') {
-            return JSON.stringify({
-                meetingName: this.meeting.name,
-                meetingDate: this.meeting.date,
-                participants: this.meeting.participants,
-                statistics: this.stats
-            });
-        }
+    async exportToPdf() {
+        try {
+            console.log('Starting PDF export process...');
 
-        return null;
+            // Get the stats container element that's already in the DOM
+            const statsContainer = document.querySelector('.stats-container');
+
+            if (!statsContainer) {
+                console.error('Stats container not found in DOM');
+                this.view.showAlert('Error: Stats container not found');
+                return;
+            }
+
+            console.log('Stats container found:', statsContainer);
+
+            // Basic PDF options
+            const options = {
+                margin: 10,
+                filename: 'meeting-stats.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            console.log('Generating PDF with options:', options);
+
+            // Generate and download the PDF
+            await html2pdf()
+                .from(statsContainer)
+                .set(options)
+                .save();
+
+            console.log('PDF generated successfully');
+            this.view.showAlert('PDF exported successfully!');
+
+        } catch (error) {
+            console.error('Error exporting PDF:', error);
+            this.view.showAlert('Error exporting PDF: ' + error.message);
+        }
     }
 
     /**
