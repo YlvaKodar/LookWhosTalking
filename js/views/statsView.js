@@ -31,9 +31,6 @@ class StatsView {
                this.optimizeForPdfExport();
 
                 this.controller.exportToPdf();
-
-                setTimeout(() => this.restoreFromPdfOptimization(), 1000);
-
             });
         }
 
@@ -45,8 +42,6 @@ class StatsView {
      * @returns {void}
      */
     optimizeForPdfExport() {
-        console.log('Optimizing view for PDF export...');
-
         const statsContainer = document.querySelector('.stats-container');
         const textStatsElement = document.querySelector('.text-stats');
 
@@ -96,7 +91,6 @@ class StatsView {
      * @returns {void}
      */
     restoreFromPdfOptimization() {
-        console.log('Restoring view after PDF export...');
 
         const statsContainer = document.querySelector('.stats-container');
         const textStatsElement = document.querySelector('.text-stats');

@@ -149,8 +149,6 @@ class StatsController {
      */
     async exportToPdf() {
         try {
-            console.log('Starting PDF export process...');
-
             const statsContainer = document.querySelector('.stats-container');
 
             if (!statsContainer) {
@@ -158,8 +156,6 @@ class StatsController {
                 this.view.showAlert('Error: Stats container not found');
                 return;
             }
-
-            console.log('Stats container found:', statsContainer);
 
             // Basic PDF options
             const options = {
@@ -174,20 +170,13 @@ class StatsController {
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             };
 
-            console.log('Generating PDF with options:', options);
-
-
-            await html2pdf()
-                .from(statsContainer)
-                .set(options)
-                .save();
-
-            console.log('PDF generated successfully');
-            this.view.showAlert('PDF exported successfully!');
+            await html2pdf().from(statsContainer).set(options).save();
 
         } catch (error) {
             console.error('Error exporting PDF:', error);
             this.view.showAlert('Error exporting PDF: ' + error.message);
+        } finally {
+            this.view.restoreFromPdfOptimization();
         }
     }
 
