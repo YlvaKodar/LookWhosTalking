@@ -21,6 +21,25 @@ class MeetingController {
         this.timer = new SpeakingTimer(meeting);
         this.timerWindow = null;
         this.meeting.active = true;
+
+
+        this.wakeLockSupported = typeof NoSleep !== 'undefined';
+        this.noSleep = null;
+        this.wakeLockActive = false;
+
+        if (this.wakeLockSupported) {
+            try {
+                this.noSleep = new NoSleep();
+                console.log('Wake lock support detected');
+            } catch (error) {
+                console.log('Wake lock initialization failed:', error);
+                this.wakeLockSupported = false;
+            }
+        } else {
+            console.log('NoSleep.js not loaded - app will work normally without wake lock');
+        }
+
+
         StorageManager.saveMeeting(this.meeting);
 
         window.addEventListener('beforeunload', this.handleBeforeUnload.bind(this));
@@ -55,6 +74,10 @@ class MeetingController {
      * @returns {void}
      */
     startSpeaking(gender, updateTimerWindow = true) {
+        if (!this.wakeLockActive) {
+            this.activateWakeLock();
+        }
+
         this.timer.startTimer(gender);
         this.view.updateButtonStates(gender);
 
@@ -81,6 +104,8 @@ class MeetingController {
      * @returns {void}
      */
     pauseSpeaking(updateTimerWindow = true) {
+        this.deactivateWakeLock();
+
         this.timer.stopTimer();
         this.view.updateButtonStates(null);
 
@@ -211,12 +236,52 @@ class MeetingController {
             menCount > 0,
         );
     }
+
+    /**
+     * Activates wake lock with error handling
+     * @returns {void}
+     */
+    activateWakeLock() {
+        if (!this.wakeLockSupported || !this.noSleep || this.wakeLockActive) {
+            return;
+        }
+
+        try {
+            this.noSleep.enable();
+            this.wakeLockActive = true;
+            console.log('✅ Wake lock activated - screen will stay awake');
+
+        } catch (error) {
+            console.log('❌ Wake lock activation failed (not critical):', error);
+        }
+    }
+
+    /**
+     * inactivates wake lock safly
+     * @returns {void}
+     */
+    deactivateWakeLock() {
+        if (!this.wakeLockSupported || !this.noSleep || !this.wakeLockActive) {
+            return;
+        }
+
+        try {
+            this.noSleep.disable();
+            this.wakeLockActive = false;
+            console.log('✅ Wake lock deactivated - normal screen timeout resumed');
+        } catch (error) {
+            console.log('❌ Wake lock deactivation failed (not critical):', error);
+        }
+    }
+
     /**
      * Cleans up resources when the controller is no longer needed.
      * Removes event listeners and closes any open windows.
      * @returns {void}
      */
     cleanup() {
+        this.deactivateWakeLock();
+
         if (this.timer) {
             this.timer.cleanup();
         }

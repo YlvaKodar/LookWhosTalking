@@ -16,6 +16,20 @@ class TimerPopOutController {
         this.interval = null;
         this.currentSpeaker = null;
 
+        this.wakeLockSupported = typeof NoSleep !== 'undefined';
+        this.noSleep = null;
+        this.wakeLockActive = false;
+
+        if (this.wakeLockSupported) {
+            try {
+                this.noSleep = new NoSleep();
+                console.log('Wake lock support detected in popup timer');
+            } catch (error) {
+                console.log('Wake lock initialization failed in popup:', error);
+                this.wakeLockSupported = false;
+            }
+        }
+
         this.setupWindowCommunication();
     }
 
@@ -91,9 +105,21 @@ class TimerPopOutController {
      * @returns {void}
      */
     startSpeaking(gender, notifyMainWindow = true) {
+
         if (this.interval) {
             this.pauseSpeaking(false);
         }
+
+        if (!this.wakeLockActive && this.wakeLockSupported && this.noSleep) {
+            try {
+                this.noSleep.enable();
+                this.wakeLockActive = true;
+                console.log('✅ Wake lock activated in popup timer');
+            } catch (error) {
+                console.log('❌ Wake lock activation failed in popup (not critical):', error);
+            }
+        }
+
         this.currentSpeaker = gender;
         this.startTime = Date.now();
         this.interval = setInterval(() => this.updateTimer(), CONFIG.TIMER.UPDATE_INTERVAL);
@@ -186,6 +212,17 @@ class TimerPopOutController {
      * @returns {void}
      */
     cleanup() {
+
+        if (this.noSleep && this.wakeLockActive && this.wakeLockSupported) {
+            try {
+                this.noSleep.disable();
+                this.wakeLockActive = false;
+                console.log('✅ Wake lock deactivated in popup timer');
+            } catch (error) {
+                console.log('❌ Error deactivating wake lock in popup (not critical):', error);
+            }
+        }
+
         if (this.interval) {
             clearInterval(this.interval);
             this.interval = null;
