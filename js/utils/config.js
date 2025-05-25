@@ -1,37 +1,6 @@
 /**
  * Head config for Look Who's Talking app
  */
-const COLOR_PALETTE = {
-    PRIMARY: '#281848',
-    PRIMARY_HOVER: '#42277c',
-
-    SECONDARY: '#183b48',
-    SECONDARY_HOVER: '#296d85',
-
-    TERTIARY: '#2f0402',
-    TERTIARY_HOVER: '#690905',
-
-    // Secondary/UI colors
-    HEADER_BG: '#a82b05',
-    BORDER: '#420407',
-    ACTIVE_BORDER: '#2f1848',
-
-    // Gender-specific colors
-    MEN: '#be7e0a',
-    WOMEN: '#a82b05',
-    NONBINARY: '#420407',
-
-    // Text colors
-    TEXT_DARK: '#333333',
-    TEXT_LIGHT: '#ffffff',
-
-    // Background and overlay colors
-    BG_LIGHT: '#ffffff',
-    OVERLAY: 'rgba(0, 0, 0, 0.5)',
-
-    // Shadows
-    SHADOW_MEDIUM: '0 0 10px rgba(0, 0, 0, 0.3)'
-};
 
 const CONFIG = {
     //App info:
@@ -73,6 +42,11 @@ const CONFIG = {
             SPEAKING_TIME: 'Speaking time distribution:',
             INTERVENTIONS: 'Statement distribution:',
         },
+
+        COLOR_THEMES: {
+            SECTION_TITLE: 'Choose color theme for gender buttons:',
+            PREVIEW_TEXT: 'Preview:'
+        },
     },
 
     //Genders:
@@ -84,9 +58,9 @@ const CONFIG = {
             men: 'Men',
         },
         colors: {
-            women: COLOR_PALETTE.WOMEN,
-            nonbinary: COLOR_PALETTE.NONBINARY,
-            men: COLOR_PALETTE.MEN,
+            women: '#a82b05',
+            nonbinary: '#420407',
+            men: '#be7e0a',
         },
         buttonLabels: {
             women: 'Woman speaking',
@@ -99,11 +73,46 @@ const CONFIG = {
         MIN_PARTICIPANTS: 2,
     },
 
+    // Gender color themes
+    GENDER_COLOR_THEMES: {
+        original: {
+            name: 'Original',
+            women: '#e03906',
+            nonbinary: '#420407',
+            men: '#c5891d'
+        },
+        ocean: {
+            name: 'Ocean',
+            women: '#04c1e1',
+            nonbinary: '#101e34',
+            men: '#346249'
+        },
+        contrast: {
+            name: 'Contrast',
+            women: '#322942',
+            nonbinary: '#720902',
+            men: '#b09403'
+        },
+        forest: {
+            name: 'Forest',
+            women: '#033d0b',
+            nonbinary: '#7f916f',
+            men: '#2f1807'
+        },
+        berry: {
+            name: 'Berry',
+            women: '#15173a',
+            nonbinary: '#fa3850',
+            men: '#330107'
+        }
+    },
+
     //Local keys:
     STORAGE: {
         KEYS: {
             CURRENT_MEETING: 'currentMeeting',
-            SETUP_MEETING_DATA: 'setupMeetingData'
+            SETUP_MEETING_DATA: 'setupMeetingData',
+            COLOR_THEME_PREFERENCE: 'userColorTheme'
         }
     },
 
@@ -173,10 +182,6 @@ const CONFIG = {
                 }
             }
         },
-        COLORS: {
-            OVER: '#ff6666',  // For showing speaking over fair time
-            UNDER: '#66ff66'  // For showing speaking under fair time
-        },
         TYPES: {
             SPEAKING_TIME_DISTRIBUTION: 'pie'
         },
@@ -221,13 +226,13 @@ const CONFIG = {
             ABOUT: {
                 TITLE: "About Look Who's Talking",
                 CONTENT: "This web app is a prototype timing tool intended to help you see how speaking time " +
-                "is distributed in your meetings. It is free to use, but please remember that this is a prototype " +
-                "app, and still under evaluation.",
+                    "is distributed in your meetings. It is free to use, but please remember that this is a prototype " +
+                    "app, and still under evaluation.",
             },
             HOW_TO_USE: {
                 TITLE: "How to use this app",
                 CONTENT: "To use this app, just click the \"New meeting\" button and fill in the details. " +
-                " (Don't worry, you won't be asked to leave any personal information or create an account.)"  +
+                    " (Don't worry, you won't be asked to leave any personal information or create an account.)"  +
                     "Then click \"Start meeting\" and use the timer or the tiny popout timer tool as instructed. " +
                     "Note: Do not close the main window while using the app. \n When the meeting is over, " +
                     "click the \"End meeting\" button to see the statistics.",
@@ -262,7 +267,6 @@ const CONFIG = {
             SETUP_HEAD: 'setup_heading',
             SETUP_FORM_HEAD_FIRST: 'setup_form_head_1',
             SETUP_FORM_HEAD_SEC: 'setup_form_head_2',
-
 
             MEETING: 'meeting-screen',
 
@@ -321,10 +325,7 @@ const CONFIG = {
             FAIR_DISTRIBUTION: 'fairDistribution'
         },
         DISPLAY: {
-            HEADER_CLASSES: 'stats-header',
             GENDER_STAT_CLASS_PREFIX: 'stats-',
-            OVER_CLASS: 'over',
-            UNDER_CLASS: 'under'
         },
         LABELS: {
             FAIR_DISTRIBUTION_HEADER: 'Who got there fair share of speaky speaks?',
@@ -354,22 +355,22 @@ const CONFIG = {
 
     // UI Theme configuration
     THEME: {
-        // Colors
+        // Colors - direkta värden istället för COLOR_PALETTE referenser
         COLORS: {
-            PRIMARY: COLOR_PALETTE.PRIMARY,
-            PRIMARY_HOVER: COLOR_PALETTE.PRIMARY_HOVER,
-            SECONDARY: COLOR_PALETTE.SECONDARY,
-            SECONDARY_HOVER: COLOR_PALETTE.SECONDARY_HOVER,
-            TERTIARY: COLOR_PALETTE.TERTIARY,
-            TERTIARY_HOVER: COLOR_PALETTE.TERTIARY_HOVER,
-            HEADER_BG: COLOR_PALETTE.HEADER_BG,
-            BORDER: COLOR_PALETTE.BORDER,
-            POPUP_BORDER: COLOR_PALETTE.POPUP_BORDER,
-            POPUP_BUTTON: COLOR_PALETTE.SECONDARY,
-            ACTIVE_BORDER: COLOR_PALETTE.ACTIVE_BORDER,
-            HEADER_FIRST: COLOR_PALETTE.TERTIARY,
-            HEADER_SEC: COLOR_PALETTE.SECONDARY,
-            HEADER_THIRD: COLOR_PALETTE.PRIMARY,
+            PRIMARY: '#281848',
+            PRIMARY_HOVER: '#42277c',
+            SECONDARY: '#183b48',
+            SECONDARY_HOVER: '#296d85',
+            TERTIARY: '#2f0402',
+            TERTIARY_HOVER: '#690905',
+            HEADER_BG: '#a82b05',
+            BORDER: '#420407',
+            POPUP_BORDER: '#420407', // Fast nu, var undefined innan
+            POPUP_BUTTON: '#183b48',
+            ACTIVE_BORDER: '#2f1848',
+            HEADER_FIRST: '#2f0402',
+            HEADER_SEC: '#183b48',
+            HEADER_THIRD: '#281848',
         },
 
         // Sizing and dimensions
@@ -415,22 +416,22 @@ const CONFIG = {
         },
 
         ALERTS: {
-            BG_COLOR: COLOR_PALETTE.BG_LIGHT,
-            TEXT_COLOR: COLOR_PALETTE.TEXT_DARK,
-            OVERLAY_COLOR: COLOR_PALETTE.OVERLAY,
-            SHADOW: COLOR_PALETTE.SHADOW_MEDIUM,
+            BG_COLOR: '#ffffff',
+            TEXT_COLOR: '#333333',
+            OVERLAY_COLOR: 'rgba(0, 0, 0, 0.5)',
+            SHADOW: '0 0 10px rgba(0, 0, 0, 0.3)',
             MIN_WIDTH: '300px',
             MAX_WIDTH: '90%',
             PADDING: '20px',
             FONT_SIZE: '16px',
             MARGIN_BOTTOM: '20px',
-            OK_BG_COLOR: COLOR_PALETTE.PRIMARY,
-            OK_HOVER_COLOR: COLOR_PALETTE.PRIMARY_HOVER,
-            CANCEL_BG_COLOR: COLOR_PALETTE.SECONDARY,
-            CANCEL_HOVER_COLOR: COLOR_PALETTE.SECONDARY_HOVER,
+            OK_BG_COLOR: '#281848',
+            OK_HOVER_COLOR: '#42277c',
+            CANCEL_BG_COLOR: '#183b48',
+            CANCEL_HOVER_COLOR: '#296d85',
             BUTTON_MIN_WIDTH: '80px',
             BUTTON_GAP: '10px',
-            BORDER_COLOR: COLOR_PALETTE.PRIMARY,
+            BORDER_COLOR: '#281848',
             BORDER_WIDTH: '4px',
             BORDER_STYLE: 'solid',
             Z_INDEX_OVERLAY: 9999,

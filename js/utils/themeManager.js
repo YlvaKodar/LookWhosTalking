@@ -77,64 +77,98 @@ function applyThemeFromConfig() {
     root.style.setProperty('--alert-border-width', CONFIG.THEME.ALERTS.BORDER_WIDTH);
     root.style.setProperty('--alert-border-style', CONFIG.THEME.ALERTS.BORDER_STYLE);
 
-    //Headings
-    if (document.getElementById(CONFIG.DOM.SCREENS.START)){
-        document.getElementById(CONFIG.DOM.SCREENS.START_HEAD_FIRST).textContent = CONFIG.LABELS.HEADINGS.START_HEAD_FIRST;
-        document.getElementById(CONFIG.DOM.SCREENS.START_HEAD_SEC).textContent = CONFIG.LABELS.HEADINGS.START_HEAD_SEC;
-    }
-
-    if (document.getElementById(CONFIG.DOM.SCREENS.SETUP)){
-        document.getElementById(CONFIG.DOM.SCREENS.SETUP_HEAD).textContent = CONFIG.LABELS.HEADINGS.SETUP_HEAD;
-        document.getElementById(CONFIG.DOM.SCREENS.SETUP_FORM_HEAD_FIRST).textContent = CONFIG.LABELS.HEADINGS.SETUP_FORM_HEAD_FIRST;
-        document.getElementById(CONFIG.DOM.SCREENS.SETUP_FORM_HEAD_SEC).textContent = CONFIG.LABELS.HEADINGS.SETUP_FORM_HEAD_SEC;
-    }
-
-    if (document.getElementById(CONFIG.DOM.SCREENS.STATS)){
-        document.getElementById(CONFIG.DOM.SCREENS.STATS_HEAD).textContent = CONFIG.LABELS.HEADINGS.STATS_HEAD;
-    }
-
-
-    //Buttons
-    if (document.getElementById(CONFIG.DOM.BUTTONS.WOMEN)) {
-        document.getElementById(CONFIG.DOM.BUTTONS.WOMEN).textContent = CONFIG.GENDERS.buttonLabels.women;
-        document.getElementById(CONFIG.DOM.BUTTONS.NON_BINARY).textContent = CONFIG.GENDERS.buttonLabels.nonbinary;
-        document.getElementById(CONFIG.DOM.BUTTONS.MEN).textContent = CONFIG.GENDERS.buttonLabels.men;
-        document.getElementById(CONFIG.DOM.BUTTONS.PAUSE).textContent = CONFIG.LABELS.PAUSE_MEETING_BUTTON;
-        document.getElementById(CONFIG.DOM.BUTTONS.END_MEETING).textContent = CONFIG.LABELS.END_MEETING_BUTTON;
-        document.getElementById(CONFIG.DOM.BUTTONS.TIMER_POPOUT).textContent = CONFIG.LABELS.TIMER_POPOUT_BUTTON;
-
-        document.getElementById(CONFIG.DOM.BUTTONS.NEW_MEETING).textContent = CONFIG.LABELS.NEW_MEETING_BUTTON;
-
-        document.getElementById(CONFIG.DOM.BUTTONS.BACK_TO_START).textContent = CONFIG.LABELS.BACK_TO_START;
-
-        document.getElementById(CONFIG.DOM.FORM.START_BUTTON).textContent = CONFIG.LABELS.START_BUTTON;
-
-    }
-
-    if (document.getElementById(CONFIG.TIMER_POPOUT_DOM.TITLE)) {
-        document.getElementById(CONFIG.TIMER_POPOUT_DOM.TITLE).textContent = CONFIG.TIMER_POPOUT_DOM.TITLE_LABEL;
-
-        document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.MEN).textContent = CONFIG.GENDERS.buttonLabels.men;
-        document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.WOMEN).textContent = CONFIG.GENDERS.buttonLabels.women;
-        document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.NON_BINARY).textContent = CONFIG.GENDERS.buttonLabels.nonbinary;
-        document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.PAUSE).textContent = CONFIG.LABELS.PAUSE_MEETING_BUTTON;
-        document.getElementById(CONFIG.TIMER_POPOUT_DOM.BUTTONS.END).textContent = CONFIG.LABELS.END_MEETING_BUTTON;
-    }
-
-    if (document.getElementById(CONFIG.DOM.SCREENS.STATS)) {
-        const chartTitles = {
-            'participants-chart-title': CONFIG.LABELS.CHART_TITLES.PARTICIPANTS,
-            'speaking-time-chart-title': CONFIG.LABELS.CHART_TITLES.SPEAKING_TIME,
-            'interventions-chart-title': CONFIG.LABELS.CHART_TITLES.INTERVENTIONS
-        };
-
-        Object.entries(chartTitles).forEach(([id, text]) => {
-            const element = document.getElementById(id);
-            if (element) {
-                element.textContent = text;
-            }
-        });
-    }
+    // Apply text content efficiently with loops instead of many if-checks
+    applyTextContent();
 
     console.log('Theme applied from configuration');
+}
+
+/**
+ * Helper function to apply text content to elements
+ * More efficient than multiple if-checks
+ */
+function applyTextContent() {
+    // Headings mapping
+    const headings = {
+        [CONFIG.DOM.SCREENS.START_HEAD_FIRST]: CONFIG.LABELS.HEADINGS.START_HEAD_FIRST,
+        [CONFIG.DOM.SCREENS.START_HEAD_SEC]: CONFIG.LABELS.HEADINGS.START_HEAD_SEC,
+        [CONFIG.DOM.SCREENS.SETUP_HEAD]: CONFIG.LABELS.HEADINGS.SETUP_HEAD,
+        [CONFIG.DOM.SCREENS.SETUP_FORM_HEAD_FIRST]: CONFIG.LABELS.HEADINGS.SETUP_FORM_HEAD_FIRST,
+        [CONFIG.DOM.SCREENS.SETUP_FORM_HEAD_SEC]: CONFIG.LABELS.HEADINGS.SETUP_FORM_HEAD_SEC,
+        [CONFIG.DOM.SCREENS.STATS_HEAD]: CONFIG.LABELS.HEADINGS.STATS_HEAD
+    };
+
+    // Main window buttons mapping
+    const mainButtons = {
+        [CONFIG.DOM.BUTTONS.WOMEN]: CONFIG.GENDERS.buttonLabels.women,
+        [CONFIG.DOM.BUTTONS.NON_BINARY]: CONFIG.GENDERS.buttonLabels.nonbinary,
+        [CONFIG.DOM.BUTTONS.MEN]: CONFIG.GENDERS.buttonLabels.men,
+        [CONFIG.DOM.BUTTONS.PAUSE]: CONFIG.LABELS.PAUSE_MEETING_BUTTON,
+        [CONFIG.DOM.BUTTONS.END_MEETING]: CONFIG.LABELS.END_MEETING_BUTTON,
+        [CONFIG.DOM.BUTTONS.TIMER_POPOUT]: CONFIG.LABELS.TIMER_POPOUT_BUTTON,
+        [CONFIG.DOM.BUTTONS.NEW_MEETING]: CONFIG.LABELS.NEW_MEETING_BUTTON,
+        [CONFIG.DOM.BUTTONS.BACK_TO_START]: CONFIG.LABELS.BACK_TO_START,
+        [CONFIG.DOM.FORM.START_BUTTON]: CONFIG.LABELS.START_BUTTON
+    };
+
+    // Timer popup buttons mapping
+    const popupButtons = {
+        [CONFIG.TIMER_POPOUT_DOM.TITLE]: CONFIG.TIMER_POPOUT_DOM.TITLE_LABEL,
+        [CONFIG.TIMER_POPOUT_DOM.BUTTONS.MEN]: CONFIG.GENDERS.buttonLabels.men,
+        [CONFIG.TIMER_POPOUT_DOM.BUTTONS.WOMEN]: CONFIG.GENDERS.buttonLabels.women,
+        [CONFIG.TIMER_POPOUT_DOM.BUTTONS.NON_BINARY]: CONFIG.GENDERS.buttonLabels.nonbinary,
+        [CONFIG.TIMER_POPOUT_DOM.BUTTONS.PAUSE]: CONFIG.LABELS.PAUSE_MEETING_BUTTON,
+        [CONFIG.TIMER_POPOUT_DOM.BUTTONS.END]: CONFIG.LABELS.END_MEETING_BUTTON
+    };
+
+    // Chart titles mapping
+    const chartTitles = {
+        'participants-chart-title': CONFIG.LABELS.CHART_TITLES.PARTICIPANTS,
+        'speaking-time-chart-title': CONFIG.LABELS.CHART_TITLES.SPEAKING_TIME,
+        'interventions-chart-title': CONFIG.LABELS.CHART_TITLES.INTERVENTIONS
+    };
+
+    // Apply all text content using the mappings
+    [headings, mainButtons, popupButtons, chartTitles].forEach(mapping => {
+        setTextContent(mapping);
+    });
+}
+
+/**
+ * Helper function to set text content for element mappings
+ * @param {Object} mapping - Object with elementId: textContent pairs
+ */
+function setTextContent(mapping) {
+    Object.entries(mapping).forEach(([elementId, textContent]) => {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.textContent = textContent;
+        }
+    });
+}
+
+/**
+ * Apply selected gender color theme
+ * @param {string} themeName - Name of the theme to apply
+ */
+function applyGenderColorTheme(themeName) {
+    if (!CONFIG.GENDER_COLOR_THEMES || !CONFIG.GENDER_COLOR_THEMES[themeName]) {
+        console.warn(`Theme '${themeName}' not found, using default colors`);
+        return;
+    }
+
+    const theme = CONFIG.GENDER_COLOR_THEMES[themeName];
+    const root = document.documentElement;
+
+    // Apply gender colors from selected theme
+    root.style.setProperty('--men-color', theme.men);
+    root.style.setProperty('--women-color', theme.women);
+    root.style.setProperty('--nonbinary-color', theme.nonbinary);
+
+    // Also update the CONFIG object so charts use the new colors
+    CONFIG.GENDERS.colors.men = theme.men;
+    CONFIG.GENDERS.colors.women = theme.women;
+    CONFIG.GENDERS.colors.nonbinary = theme.nonbinary;
+
+    console.log(`Applied gender color theme: ${themeName}`);
 }
