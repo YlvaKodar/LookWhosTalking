@@ -347,10 +347,14 @@ const CONFIG = {
         },
     },
 
-    // URL settings:
     URLS: {
         TIMER_WINDOW: 'timer.html',
         TIMER_WINDOW_FEATURES: 'width=300,height=400,resizable=yes,status=no,location=no,menubar=no'
+    },
+
+    HTML_META: {
+        MAIN_TITLE: "Look Who's Talking",
+        TIMER_TITLE: "Look Who's Talking – Tiny Timer"
     },
 
     FORMATTING: {

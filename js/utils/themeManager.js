@@ -241,6 +241,23 @@ function updatePreviewButtons() {
     if (menPreview) menPreview.style.backgroundColor = CONFIG.GENDERS.colors.men;
 }
 
+
+/**
+ * Sets document title from config
+ */
+function applyHtmlTitles() {
+    if (!CONFIG.HTML_META) return;
+
+    // Set document title based on window type
+    const isTimerWindow = document.getElementById(CONFIG.TIMER_POPOUT_DOM.DISPLAY);
+
+    if (isTimerWindow) {
+        document.title = CONFIG.HTML_META.TIMER_TITLE;
+    } else {
+        document.title = CONFIG.HTML_META.MAIN_TITLE;
+    }
+}
+
 /**
  * Generates the color theme selector HTML from CONFIG
  * This ensures all colors come from configuration, not hardcoded HTML
