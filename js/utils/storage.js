@@ -50,7 +50,6 @@ class StorageManager {
                 return null;
             }
 
-            //Make sure there's valid meeting data with defaults for missing fields
             const meeting = new Meeting(
                 parsed.name || CONFIG.DEFAULTS.MEETING_NAME,
                 parsed.date || new Date().toISOString().split('T')[0]

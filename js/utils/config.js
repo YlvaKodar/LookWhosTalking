@@ -73,37 +73,31 @@ const CONFIG = {
         MIN_PARTICIPANTS: 2,
     },
 
-    // Gender color themes
+    //Gender color themes
     GENDER_COLOR_THEMES: {
-        original: {
-            name: 'Original',
-            women: '#ec3902',
-            nonbinary: '#230204',
-            men: '#be8825'
+        amber: {
+            name: 'Amber',
+            women: '#d23301',
+            nonbinary: '#410101',
+            men: '#a27118'
         },
         ocean: {
-            name: 'Ocean',
-            women: '#04c1e1',
-            nonbinary: '#101e34',
-            men: '#346249'
+            name: 'Nautilus',
+            women: '#031421',
+            nonbinary: '#188d8d',
+            men: '#6e4e1e'
         },
-        contrast: {
-            name: 'Contrast',
-            women: '#322942',
-            nonbinary: '#720902',
-            men: '#b09403'
-        },
-        forest: {
-            name: 'Forest',
-            women: '#033d0b',
-            nonbinary: '#7f916f',
-            men: '#2f1807'
+        colourful: {
+            name: 'Lollipop Guild',
+            women: '#8f5c01',
+            nonbinary: '#700202',
+            men: '#092c38'
         },
         berry: {
-            name: 'Berry',
-            women: '#15173a',
-            nonbinary: '#fa3850',
-            men: '#330107'
+            name: 'Jam Jar',
+            women: '#490202',
+            nonbinary: '#17122a',
+            men: '#e74d5f'
         }
     },
 
@@ -171,7 +165,7 @@ const CONFIG = {
         },
     },
 
-    // Chart.js settings:
+    //Chart.js settings:
     CHART: {
         pieOptions: {
             responsive: true,
