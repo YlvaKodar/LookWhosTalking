@@ -14,6 +14,7 @@ class SetupController {
 
         this.initEventSubscriptions();
         this.initializeDefaults();
+        this.initColorThemeListeners();
     }
 
     /**
@@ -40,6 +41,32 @@ class SetupController {
             const dateString = today.toISOString().split('T')[0]; // Format: YYYY-MM-DD
             this.view.dateInput.value = dateString;
         }
+    }
+
+    /**
+     * Sets up event listeners for color theme selection.
+     * Applies theme immediately when user selects it.
+     * @returns {void}
+     */
+    initColorThemeListeners() {
+        // Wait a bit for the DOM to be ready
+        setTimeout(() => {
+            const colorThemeInputs = document.querySelectorAll('input[name="colorTheme"]');
+
+            colorThemeInputs.forEach(input => {
+                input.addEventListener('change', (event) => {
+                    const selectedTheme = event.target.value;
+
+                    // Apply theme immediately for preview
+                    applyGenderColorTheme(selectedTheme);
+
+                    // Save preference immediately
+                    StorageManager.saveColorThemePreference(selectedTheme);
+
+                    console.log(`Color theme changed to: ${selectedTheme}`);
+                });
+            });
+        }, 100);
     }
 
     /**
@@ -71,11 +98,15 @@ class SetupController {
 
     /**
      * Saves the meeting configuration data to local storage.
-     * Creates a meeting data object with name, date and participant counts.
+     * Creates a meeting data object with name, date, participant counts, and color theme.
      * @returns {boolean} True if saving was successful
      */
     saveMeetingData() {
         try {
+            // Get selected color theme
+            const selectedThemeInput = document.querySelector('input[name="colorTheme"]:checked');
+            const selectedTheme = selectedThemeInput ? selectedThemeInput.value : Object.keys(CONFIG.GENDER_COLOR_THEMES)[0];
+
             const meetingData = {
                 name: this.view.meetingNameInput.value,
                 date: this.view.dateInput.value,
@@ -83,10 +114,17 @@ class SetupController {
                     [CONFIG.GENDERS.types[0]]: parseInt(this.view.womenCount.value || 0),
                     [CONFIG.GENDERS.types[1]]: parseInt(this.view.nonbinaryCount.value || 0),
                     [CONFIG.GENDERS.types[2]]: parseInt(this.view.menCount.value || 0)
-                }
+                },
+                colorTheme: selectedTheme
             };
 
             localStorage.setItem(CONFIG.STORAGE.KEYS.SETUP_MEETING_DATA, JSON.stringify(meetingData));
+
+            // Save color theme preference for future meetings
+            StorageManager.saveColorThemePreference(selectedTheme);
+
+            // Apply the selected theme
+            applyGenderColorTheme(selectedTheme);
 
             eventBus.publish('setupCompleted', meetingData);
 
@@ -99,10 +137,23 @@ class SetupController {
     }
 
     /**
+     * Gets the currently selected color theme from the form.
+     * @returns {string} The selected theme name or default theme
+     */
+    getSelectedColorTheme() {
+        const selectedThemeInput = document.querySelector('input[name="colorTheme"]:checked');
+        return selectedThemeInput ? selectedThemeInput.value : Object.keys(CONFIG.GENDER_COLOR_THEMES)[0] || 'original';
+    }
+
+    /**
      * Cleans up resources when the controller is no longer needed.
      * @returns {void}
      */
     cleanup() {
-        //Do I need to clean something?
+        // Remove event listeners if needed
+        const colorThemeInputs = document.querySelectorAll('input[name="colorTheme"]');
+        colorThemeInputs.forEach(input => {
+            input.removeEventListener('change', this.handleColorThemeChange);
+        });
     }
 }

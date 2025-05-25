@@ -99,7 +99,123 @@ button.tertiary:hover {
     min-width: 120px;
     max-width: 180px;
 }
+/* ============================================
+   COLOR THEME SELECTOR
+   ============================================ */
+.color-theme-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 10px;
+}
 
+/* Live Preview Section */
+.theme-preview {
+    background-color: rgba(0, 0, 0, 0.05);
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.preview-title {
+    font-size: 14px;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.preview-buttons {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.preview-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 12px;
+    color: white;
+    cursor: default;
+    min-width: 80px;
+}
+
+.preview-btn.women-preview {
+    background-color: var(--women-color);
+}
+
+.preview-btn.nonbinary-preview {
+    background-color: var(--nonbinary-color);
+}
+
+.preview-btn.men-preview {
+    background-color: var(--men-color);
+}
+
+.theme-option {
+    display: flex;
+    align-items: center;
+    border: 2px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.theme-option:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    border-color: var(--primary-color);
+}
+
+.theme-option input[type="radio"] {
+    margin: 0;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+.theme-option input[type="radio"]:checked + .theme-label {
+    font-weight: bold;
+}
+
+.theme-option:has(input[type="radio"]:checked) {
+    border-color: var(--primary-color);
+    background-color: rgba(40, 24, 72, 0.1);
+}
+
+.theme-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    margin: 0;
+}
+
+.theme-name {
+    font-size: 16px;
+    color: var(--primary-color);
+}
+
+.color-preview {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    cursor: pointer;
+}
+
+.color-box:hover {
+    transform: scale(1.1);
+    transition: transform 0.1s ease;
+}
 /* ============================================
    MEETING SETUP SCREEN
    ============================================ */
@@ -565,5 +681,34 @@ input[type="number"] {
     #tiny-control-buttons {
         flex-direction: column;
         width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .color-theme-selector {
+        gap: 8px;
+    }
+
+    .theme-option {
+        padding: 8px;
+    }
+
+    .theme-name {
+        font-size: 14px;
+    }
+
+    .color-box {
+        width: 18px;
+        height: 18px;
+    }
+
+    .preview-buttons {
+        gap: 4px;
+    }
+
+    .preview-btn {
+        padding: 6px 8px;
+        font-size: 11px;
+        min-width: 70px;
     }
 }

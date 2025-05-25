@@ -116,4 +116,49 @@ class StorageManager {
             return null;
         }
     }
+
+    /**
+     * Saves user's color theme preference to localStorage.
+     * @static
+     * @param {string} themeName - The name of the selected theme
+     * @returns {boolean} True if saved successfully, false otherwise
+     */
+    static saveColorThemePreference(themeName) {
+        try {
+            localStorage.setItem(CONFIG.STORAGE.KEYS.COLOR_THEME_PREFERENCE, themeName);
+            return true;
+        } catch (error) {
+            console.error(CONFIG.MESSAGES.CONSOLE.ERROR_SAVE_TO_LOCAL, error);
+            return false;
+        }
+    }
+
+    /**
+     * Retrieves user's color theme preference from localStorage.
+     * @static
+     * @returns {string|null} The saved theme name or null if not found
+     */
+    static getColorThemePreference() {
+        try {
+            return localStorage.getItem(CONFIG.STORAGE.KEYS.COLOR_THEME_PREFERENCE);
+        } catch (error) {
+            console.error(CONFIG.MESSAGES.CONSOLE.ERROR_LOCALSTORAGE, error);
+            return null;
+        }
+    }
+
+    /**
+     * Clears the user's color theme preference from localStorage.
+     * @static
+     * @returns {boolean} True if cleared successfully
+     */
+    static clearColorThemePreference() {
+        try {
+            localStorage.removeItem(CONFIG.STORAGE.KEYS.COLOR_THEME_PREFERENCE);
+            return true;
+        } catch (error) {
+            console.error(CONFIG.MESSAGES.CONSOLE.ERROR_LOCALSTORAGE, error);
+            return false;
+        }
+    }
 }

@@ -80,6 +80,9 @@ function applyThemeFromConfig() {
     // Apply text content efficiently with loops instead of many if-checks
     applyTextContent();
 
+    // Generate color theme selector from CONFIG
+    generateColorThemeSelector();
+
     console.log('Theme applied from configuration');
 }
 
@@ -170,5 +173,62 @@ function applyGenderColorTheme(themeName) {
     CONFIG.GENDERS.colors.women = theme.women;
     CONFIG.GENDERS.colors.nonbinary = theme.nonbinary;
 
+    // Update preview buttons if they exist (for live preview on setup page)
+    updatePreviewButtons();
+
     console.log(`Applied gender color theme: ${themeName}`);
+}
+
+/**
+ * Updates preview buttons with current theme colors
+ * Shows live preview of how gender buttons will look
+ */
+function updatePreviewButtons() {
+    const womenPreview = document.querySelector('.women-preview');
+    const nonbinaryPreview = document.querySelector('.nonbinary-preview');
+    const menPreview = document.querySelector('.men-preview');
+
+    if (womenPreview) womenPreview.style.backgroundColor = CONFIG.GENDERS.colors.women;
+    if (nonbinaryPreview) nonbinaryPreview.style.backgroundColor = CONFIG.GENDERS.colors.nonbinary;
+    if (menPreview) menPreview.style.backgroundColor = CONFIG.GENDERS.colors.men;
+}
+
+/**
+ * Generates the color theme selector HTML from CONFIG
+ * This ensures all colors come from configuration, not hardcoded HTML
+ */
+function generateColorThemeSelector() {
+    const container = document.getElementById('color-theme-selector');
+    if (!container) return;
+
+    // Clear existing content
+    container.innerHTML = '';
+
+    // Get saved theme preference or default to first theme
+    const savedTheme = StorageManager.getColorThemePreference() || Object.keys(CONFIG.GENDER_COLOR_THEMES)[0] || 'original';
+
+    // Generate HTML for each theme from CONFIG
+    Object.entries(CONFIG.GENDER_COLOR_THEMES).forEach(([themeKey, theme], index) => {
+        const themeOption = document.createElement('div');
+        themeOption.className = 'theme-option';
+
+        const isChecked = (themeKey === savedTheme) ? 'checked' : '';
+
+        themeOption.innerHTML = `
+            <input type="radio" id="theme-${themeKey}" name="colorTheme" value="${themeKey}" ${isChecked}>
+            <label for="theme-${themeKey}" class="theme-label">
+                <span class="theme-name">${theme.name}</span>
+                <div class="color-preview">
+                    <div class="color-box" style="background-color: ${theme.women};" title="Women"></div>
+                    <div class="color-box" style="background-color: ${theme.nonbinary};" title="Non-binary"></div>
+                    <div class="color-box" style="background-color: ${theme.men};" title="Men"></div>
+                </div>
+            </label>
+        `;
+
+        container.appendChild(themeOption);
+    });
+
+    // Apply the saved/default theme
+    applyGenderColorTheme(savedTheme);
 }
