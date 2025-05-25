@@ -97,7 +97,9 @@ function applyTextContent() {
         [CONFIG.DOM.SCREENS.SETUP_HEAD]: CONFIG.LABELS.HEADINGS.SETUP_HEAD,
         [CONFIG.DOM.SCREENS.SETUP_FORM_HEAD_FIRST]: CONFIG.LABELS.HEADINGS.SETUP_FORM_HEAD_FIRST,
         [CONFIG.DOM.SCREENS.SETUP_FORM_HEAD_SEC]: CONFIG.LABELS.HEADINGS.SETUP_FORM_HEAD_SEC,
-        [CONFIG.DOM.SCREENS.STATS_HEAD]: CONFIG.LABELS.HEADINGS.STATS_HEAD
+        [CONFIG.DOM.SCREENS.STATS_HEAD]: CONFIG.LABELS.HEADINGS.STATS_HEAD,
+        [CONFIG.DOM.SCREENS.COLOR_THEME_HEAD]: CONFIG.LABELS.HEADINGS.COLOR_THEME_HEAD,
+        [CONFIG.DOM.SCREENS.STATS_HEAD]: CONFIG.LABELS.HEADINGS.STATS_HEAD,
     };
 
     const mainButtons = {
@@ -109,28 +111,77 @@ function applyTextContent() {
         [CONFIG.DOM.BUTTONS.TIMER_POPOUT]: CONFIG.LABELS.TIMER_POPOUT_BUTTON,
         [CONFIG.DOM.BUTTONS.NEW_MEETING]: CONFIG.LABELS.NEW_MEETING_BUTTON,
         [CONFIG.DOM.BUTTONS.BACK_TO_START]: CONFIG.LABELS.BACK_TO_START,
-        [CONFIG.DOM.FORM.START_BUTTON]: CONFIG.LABELS.START_BUTTON
+        [CONFIG.DOM.FORM.START_BUTTON]: CONFIG.LABELS.START_BUTTON,
+        [CONFIG.DOM.BUTTONS.EXPORT_PDF]: CONFIG.LABELS.EXPORT_PDF_BUTTON,
     };
 
     const popupButtons = {
         [CONFIG.TIMER_POPOUT_DOM.TITLE]: CONFIG.TIMER_POPOUT_DOM.TITLE_LABEL,
+
         [CONFIG.TIMER_POPOUT_DOM.BUTTONS.MEN]: CONFIG.GENDERS.buttonLabels.men,
         [CONFIG.TIMER_POPOUT_DOM.BUTTONS.WOMEN]: CONFIG.GENDERS.buttonLabels.women,
         [CONFIG.TIMER_POPOUT_DOM.BUTTONS.NON_BINARY]: CONFIG.GENDERS.buttonLabels.nonbinary,
+
         [CONFIG.TIMER_POPOUT_DOM.BUTTONS.PAUSE]: CONFIG.LABELS.PAUSE_MEETING_BUTTON,
-        [CONFIG.TIMER_POPOUT_DOM.BUTTONS.END]: CONFIG.LABELS.END_MEETING_BUTTON
+        [CONFIG.TIMER_POPOUT_DOM.BUTTONS.END]: CONFIG.LABELS.END_MEETING_BUTTON,
     };
 
     // Chart titles mapping
     const chartTitles = {
         'participants-chart-title': CONFIG.LABELS.CHART_TITLES.PARTICIPANTS,
         'speaking-time-chart-title': CONFIG.LABELS.CHART_TITLES.SPEAKING_TIME,
-        'interventions-chart-title': CONFIG.LABELS.CHART_TITLES.INTERVENTIONS
+        'interventions-chart-title': CONFIG.LABELS.CHART_TITLES.INTERVENTIONS,
     };
 
     // Apply all text content using the mappings
     [headings, mainButtons, popupButtons, chartTitles].forEach(mapping => {
         setTextContent(mapping);
+    });
+
+    applyFormLabels();
+    applyPreviewLabels();
+}
+
+function applyFormLabels() {
+    const labels = [
+        { selector: 'label[for="meeting-name"]', text: CONFIG.LABELS.MEETING_NAME_LABEL },
+        { selector: 'label[for="meeting-date"]', text: CONFIG.LABELS.MEETING_DATE_LABEL },
+        { selector: 'label[for="women-count"]', text: CONFIG.LABELS.WOMEN_COUNT_LABEL },
+        { selector: 'label[for="nonbinary-count"]', text: CONFIG.LABELS.NONBINARY_COUNT_LABEL },
+        { selector: 'label[for="men-count"]', text: CONFIG.LABELS.MEN_COUNT_LABEL }
+    ];
+
+    labels.forEach(({ selector, text }) => {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.textContent = text;
+        }
+    });
+}
+
+
+/**
+ * Apply preview section labels
+ */
+function applyPreviewLabels() {
+    // Preview titel
+    const previewTitle = document.querySelector('.preview-title');
+    if (previewTitle) {
+        previewTitle.textContent = CONFIG.LABELS.COLOR_THEMES.PREVIEW_TEXT;
+    }
+
+    // Preview buttons - använd samma som vanliga knappar
+    const previews = [
+        { selector: '.women-preview', text: CONFIG.GENDERS.buttonLabels.women },
+        { selector: '.nonbinary-preview', text: CONFIG.GENDERS.buttonLabels.nonbinary },
+        { selector: '.men-preview', text: CONFIG.GENDERS.buttonLabels.men }
+    ];
+
+    previews.forEach(({ selector, text }) => {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.textContent = text;
+        }
     });
 }
 

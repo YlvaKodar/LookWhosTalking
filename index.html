@@ -30,12 +30,12 @@
         <div class="form-group">
             <h2 id="setup_form_head_1" class="secondary">About this meeting:</h2>
 
-            <label for="meeting-name">What shall we call it?</label>
+            <label for="meeting-name"></label>
             <input type="text" id="meeting-name" required>
         </div>
 
         <div class="form-group">
-            <label for="meeting-date">Meeting date?</label>
+            <label for="meeting-date"></label>
             <input type="date" id="meeting-date" required>
         </div>
 
@@ -43,17 +43,17 @@
             <h2 id="setup_form_head_2" class="secondary">We need a participant count:</h2>
 
             <div class="participant-input">
-                <label for="women-count">Women:</label>
+                <label for="women-count"></label>
                 <input type="number" id="women-count" min="0" value="0">
             </div>
 
             <div class="participant-input">
-                <label for="nonbinary-count">Non-binary:</label>
+                <label for="nonbinary-count"></label>
                 <input type="number" id="nonbinary-count" min="0" value="0">
             </div>
 
             <div class="participant-input">
-                <label for="men-count">Men:</label>
+                <label for="men-count"></label>
                 <input type="number" id="men-count" min="0" value="0">
             </div>
         </div>
@@ -64,11 +64,11 @@
 
             <!-- Preview of gender buttons -->
             <div id="theme-preview" class="theme-preview">
-                <h3 class="preview-title">Preview:</h3>
+                <h3 class="preview-title"></h3>
                 <div class="preview-buttons">
-                    <button type="button" class="preview-btn women-preview">Woman speaking</button>
-                    <button type="button" class="preview-btn nonbinary-preview">Non-binary speaking</button>
-                    <button type="button" class="preview-btn men-preview">Man speaking</button>
+                    <button type="button" class="preview-btn women-preview"></button>
+                    <button type="button" class="preview-btn nonbinary-preview"></button>
+                    <button type="button" class="preview-btn men-preview"></button>
                 </div>
             </div>
 
@@ -116,13 +116,13 @@
     <div class="stats-container">
         <div class="chart-container">
 
-            <h3 id="participants-chart-title" class="tertiary">Participants</h3>
+            <h3 id="participants-chart-title" class="tertiary"></h3>
             <canvas id="participants-chart"></canvas>
 
-            <h3 id="speaking-time-chart-title" class="tertiary">Speaking time</h3>
+            <h3 id="speaking-time-chart-title" class="tertiary"></h3>
             <canvas id="speaking-time-chart"></canvas>
 
-            <h3 id="interventions-chart-title" class="tertiary">Intervention count</h3>
+            <h3 id="interventions-chart-title" class="tertiary"></h3>
             <canvas id="interventions-chart"></canvas>
 
         </div>
@@ -135,7 +135,7 @@
         </div>
     </div>
     <div id="stats-actions">
-        <button id="export-pdf-btn" class="tertiary">Export as PDF</button>
+        <button id="export-pdf-btn" class="tertiary"></button>
         <button id="back-to-start">Start</button>
     </div>
 </div>

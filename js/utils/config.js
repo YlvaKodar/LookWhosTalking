@@ -26,6 +26,17 @@ const CONFIG = {
         ALERT_OK_BUTTON_CONFIRM: "Yes please",
         ALERT_CANCEL_BUTTON: "Cancel",
 
+        //Form
+        MEETING_NAME_LABEL: "What shall we call it?",
+        MEETING_DATE_LABEL: "Meeting date?",
+        WOMEN_COUNT_LABEL: "Women:",
+        NONBINARY_COUNT_LABEL: "Non-binary:",
+        MEN_COUNT_LABEL: "Men:",
+
+        EXPORT_PDF_BUTTON: "Export as PDF",
+
+
+
         HEADINGS: {
             START_HEAD_FIRST: 'LOOK WHO\'S TALKING',
             START_HEAD_SEC: 'Timing tool for mixed-gender conversations',
@@ -35,17 +46,20 @@ const CONFIG = {
             SETUP_FORM_HEAD_SEC: 'We\'ll need a participant count:',
 
             STATS_HEAD: 'MEETING STATISTICS',
+
+            COLOR_THEME_HEAD: 'Choose color theme for gender buttons:',
+            STATS_HEAD: 'Meeting statistics',
         },
 
         CHART_TITLES: {
             PARTICIPANTS: 'Meeting participants:',
             SPEAKING_TIME: 'Speaking time distribution:',
-            INTERVENTIONS: 'Statement distribution:',
+            INTERVENTIONS: 'Intervention count',
         },
 
         COLOR_THEMES: {
             SECTION_TITLE: 'Choose color theme for gender buttons:',
-            PREVIEW_TEXT: 'Preview:'
+            PREVIEW_TEXT: 'Preview:',
         },
     },
 
@@ -261,6 +275,7 @@ const CONFIG = {
             SETUP_HEAD: 'setup_heading',
             SETUP_FORM_HEAD_FIRST: 'setup_form_head_1',
             SETUP_FORM_HEAD_SEC: 'setup_form_head_2',
+            COLOR_THEME_HEAD: 'color_theme_heading',
 
             MEETING: 'meeting-screen',
 
