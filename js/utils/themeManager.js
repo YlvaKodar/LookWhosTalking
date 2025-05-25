@@ -91,7 +91,6 @@ function applyThemeFromConfig() {
  * More efficient than multiple if-checks
  */
 function applyTextContent() {
-    // Headings mapping
     const headings = {
         [CONFIG.DOM.SCREENS.START_HEAD_FIRST]: CONFIG.LABELS.HEADINGS.START_HEAD_FIRST,
         [CONFIG.DOM.SCREENS.START_HEAD_SEC]: CONFIG.LABELS.HEADINGS.START_HEAD_SEC,
@@ -101,7 +100,6 @@ function applyTextContent() {
         [CONFIG.DOM.SCREENS.STATS_HEAD]: CONFIG.LABELS.HEADINGS.STATS_HEAD
     };
 
-    // Main window buttons mapping
     const mainButtons = {
         [CONFIG.DOM.BUTTONS.WOMEN]: CONFIG.GENDERS.buttonLabels.women,
         [CONFIG.DOM.BUTTONS.NON_BINARY]: CONFIG.GENDERS.buttonLabels.nonbinary,
@@ -114,7 +112,6 @@ function applyTextContent() {
         [CONFIG.DOM.FORM.START_BUTTON]: CONFIG.LABELS.START_BUTTON
     };
 
-    // Timer popup buttons mapping
     const popupButtons = {
         [CONFIG.TIMER_POPOUT_DOM.TITLE]: CONFIG.TIMER_POPOUT_DOM.TITLE_LABEL,
         [CONFIG.TIMER_POPOUT_DOM.BUTTONS.MEN]: CONFIG.GENDERS.buttonLabels.men,
@@ -207,7 +204,7 @@ function generateColorThemeSelector() {
     // Get saved theme preference or default to first theme
     const savedTheme = StorageManager.getColorThemePreference() || Object.keys(CONFIG.GENDER_COLOR_THEMES)[0] || 'original';
 
-    // Generate HTML for each theme from CONFIG
+    // Generate simple radio buttons for each theme from CONFIG
     Object.entries(CONFIG.GENDER_COLOR_THEMES).forEach(([themeKey, theme], index) => {
         const themeOption = document.createElement('div');
         themeOption.className = 'theme-option';
@@ -216,13 +213,8 @@ function generateColorThemeSelector() {
 
         themeOption.innerHTML = `
             <input type="radio" id="theme-${themeKey}" name="colorTheme" value="${themeKey}" ${isChecked}>
-            <label for="theme-${themeKey}" class="theme-label">
-                <span class="theme-name">${theme.name}</span>
-                <div class="color-preview">
-                    <div class="color-box" style="background-color: ${theme.women};" title="Women"></div>
-                    <div class="color-box" style="background-color: ${theme.nonbinary};" title="Non-binary"></div>
-                    <div class="color-box" style="background-color: ${theme.men};" title="Men"></div>
-                </div>
+            <label for="theme-${themeKey}" class="theme-label-simple">
+                ${theme.name}
             </label>
         `;
 

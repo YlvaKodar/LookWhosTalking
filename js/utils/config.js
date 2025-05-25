@@ -77,9 +77,9 @@ const CONFIG = {
     GENDER_COLOR_THEMES: {
         amber: {
             name: 'Amber',
-            women: '#d23301',
+            women: '#c23a10',
             nonbinary: '#410101',
-            men: '#a27118'
+            men: '#af7610'
         },
         ocean: {
             name: 'Nautilus',
@@ -89,15 +89,15 @@ const CONFIG = {
         },
         colourful: {
             name: 'Lollipop Guild',
-            women: '#8f5c01',
+            women: '#9a6a15',
             nonbinary: '#700202',
-            men: '#092c38'
+            men: '#093338'
         },
         berry: {
             name: 'Jam Jar',
-            women: '#490202',
-            nonbinary: '#17122a',
-            men: '#e74d5f'
+            women: '#7c0505',
+            nonbinary: '#261d46',
+            men: '#ff8594'
         }
     },
 
