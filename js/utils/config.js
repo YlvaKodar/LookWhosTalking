@@ -77,9 +77,9 @@ const CONFIG = {
     GENDER_COLOR_THEMES: {
         original: {
             name: 'Original',
-            women: '#e03906',
-            nonbinary: '#420407',
-            men: '#c5891d'
+            women: '#ec3902',
+            nonbinary: '#230204',
+            men: '#be8825'
         },
         ocean: {
             name: 'Ocean',
