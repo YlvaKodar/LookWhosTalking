@@ -508,6 +508,13 @@ input[type="number"] {
     margin: 5px 0;
 }
 
+[class^="stats-"] p strong {
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+    display: block;
+}
+
 .stats-women {
     border-color: var(--women-color);
 }

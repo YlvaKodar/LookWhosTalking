@@ -269,10 +269,15 @@ class StatsView {
                 const avgTime = this.formatTime(stats[CONFIG.STATS.STRUCTURE.AVG_DURATION][gender]);
                 const fair = this.formatTime(stats[CONFIG.STATS.STRUCTURE.FAIR_DISTRIBUTION][gender]);
 
+                const actualTime = stats[CONFIG.STATS.STRUCTURE.GENDER_TIME][gender];
+                const fairTime = stats[CONFIG.STATS.STRUCTURE.FAIR_DISTRIBUTION][gender];
+                const representationStatus = this.getRepresentationStatus(actualTime, fairTime);
+
                 this.participantCount.textContent = `Participant count: ${totalParticipants}`;
 
                 statsDiv.innerHTML = `
                 <h3>${CONFIG.GENDERS.labels[gender]}: ${this.meeting.participants[gender]} </h3>
+                <p><strong>${representationStatus}</strong></p>
                 <p>${CONFIG.STATS.LABELS.SPEAKING_TIME}: ${totalTime} min.</p>
                 <p>${CONFIG.STATS.LABELS.STATEMENTS_COUNT}: ${interventions}.</p>
                 <p>${CONFIG.STATS.LABELS.AVG_LENGTH}: ${avgTime} min.</p>
@@ -298,6 +303,18 @@ class StatsView {
         const secs = Math.floor(seconds % 60);
 
         return `${mins.toString().padStart(CONFIG.FORMATTING.TIME.PAD_LENGTH, CONFIG.FORMATTING.TIME.PAD_CHAR)}${CONFIG.FORMATTING.TIME.TIME_SEPARATOR}${secs.toString().padStart(CONFIG.FORMATTING.TIME.PAD_LENGTH, CONFIG.FORMATTING.TIME.PAD_CHAR)}`;
+    }
+
+    getRepresentationStatus(actualTime, fairTime) {
+        const threshold = fairTime * 0.1;
+
+        if (actualTime > fairTime + threshold) {
+            return CONFIG.STATS.LABELS.OVERREPRESENTED;
+        } else if (actualTime < fairTime - threshold) {
+            return CONFIG.STATS.LABELS.UNDERREPRESENTED;
+        } else {
+            return CONFIG.STATS.LABELS.FAIRLY_REPRESENTED;
+        }
     }
 
     /**

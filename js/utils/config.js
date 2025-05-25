@@ -343,7 +343,10 @@ const CONFIG = {
             AVG_LENGTH: 'Average length of statement',
             MORE_THAN_FAIR: 'More than fair share',
             LESS_THAN_FAIR: 'Less than fair share',
-            FAIR_LABEL: 'Fair share'
+            FAIR_LABEL: 'Fair share',
+            OVERREPRESENTED: 'Spoke more than fair share',
+            UNDERREPRESENTED: 'Spoke less than fair share',
+            FAIRLY_REPRESENTED: 'Spoke their fair share',
         },
     },
 
