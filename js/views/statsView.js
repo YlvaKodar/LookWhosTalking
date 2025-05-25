@@ -56,6 +56,33 @@ class StatsView {
         statsContainer.style.border = 'none';
         statsContainer.style.boxShadow = 'none';
 
+        const chartContainer = document.querySelector('.chart-container');
+        if (chartContainer && !document.getElementById('pdf-footer-page1')) {
+            const footer1 = document.createElement('div');
+            footer1.id = 'pdf-footer-page1';
+            footer1.style.textAlign = 'center';
+            footer1.style.marginTop = '20px';
+            footer1.style.fontSize = '12px';
+            footer1.innerHTML = `
+            ${CONFIG.FOOTER.TEXT}<br>
+            ${CONFIG.FOOTER.LINK_TEXT}
+        `;
+            chartContainer.appendChild(footer1);
+        }
+
+        if (textStatsElement && !document.getElementById('pdf-footer-page2')) {
+            const footer2 = document.createElement('div');
+            footer2.id = 'pdf-footer-page2';
+            footer2.style.textAlign = 'center';
+            footer2.style.marginTop = '20px';
+            footer2.style.fontSize = '12px';
+            footer2.innerHTML = `
+            ${CONFIG.FOOTER.TEXT}<br>
+            ${CONFIG.FOOTER.LINK_TEXT}
+        `;
+            textStatsElement.appendChild(footer2);
+        }
+
         if (textStatsElement) {
             this._originalStyles.textStatsPageBreak = textStatsElement.style.pageBreakBefore;
             textStatsElement.style.pageBreakBefore = 'always';
@@ -85,6 +112,8 @@ class StatsView {
         `;
             textStatsElement.insertBefore(header2, textStatsElement.firstChild);
         }
+
+
     }
 
     /**
@@ -114,6 +143,21 @@ class StatsView {
         const header2 = document.getElementById('pdf-header-page2');
         if (header2) {
             header2.parentNode.removeChild(header2);
+        }
+
+        const footer = document.getElementById('pdf-footer');
+        if (footer) {
+            footer.parentNode.removeChild(footer);
+        }
+
+        const footer1 = document.getElementById('pdf-footer-page1');
+        if (footer1) {
+            footer1.parentNode.removeChild(footer1);
+        }
+
+        const footer2 = document.getElementById('pdf-footer-page2');
+        if (footer2) {
+            footer2.parentNode.removeChild(footer2);
         }
 
         this._originalStyles = null;

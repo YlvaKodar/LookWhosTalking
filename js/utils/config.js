@@ -235,7 +235,8 @@ const CONFIG = {
                 TITLE: "About Look Who's Talking",
                 CONTENT: "This web app is a prototype timing tool intended to help you see how speaking time " +
                     "is distributed in your meetings. It is free to use, but please remember that this is a prototype " +
-                    "app, and still under evaluation.",
+                    "app, and still under evaluation. And also remember that this app is brought to you by Gender balance " +
+                    "(genderbalance.se) and Ylva Kodar.",
             },
             HOW_TO_USE: {
                 TITLE: "How to use this app",
@@ -350,6 +351,13 @@ const CONFIG = {
         },
     },
 
+    FOOTER: {
+        TEXT: "© 2025 YlvaKodar & Gender Balance",
+        LINK_URL: "https://genderbalance.se/",
+        LINK_TEXT: "https://genderbalance.se/",
+        ELEMENT_ID: "app-footer"
+    },
+
     URLS: {
         TIMER_WINDOW: 'timer.html',
         TIMER_WINDOW_FEATURES: 'width=300,height=400,resizable=yes,status=no,location=no,menubar=no'
@@ -371,7 +379,7 @@ const CONFIG = {
 
     // UI Theme configuration
     THEME: {
-        // Colors - direkta värden istället för COLOR_PALETTE referenser
+
         COLORS: {
             PRIMARY: '#281848',
             PRIMARY_HOVER: '#42277c',
@@ -381,7 +389,7 @@ const CONFIG = {
             TERTIARY_HOVER: '#690905',
             HEADER_BG: '#a82b05',
             BORDER: '#420407',
-            POPUP_BORDER: '#420407', // Fast nu, var undefined innan
+            POPUP_BORDER: '#420407',
             POPUP_BUTTON: '#183b48',
             ACTIVE_BORDER: '#2f1848',
             HEADER_FIRST: '#2f0402',

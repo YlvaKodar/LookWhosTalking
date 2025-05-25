@@ -140,6 +140,7 @@ function applyTextContent() {
 
     applyFormLabels();
     applyPreviewLabels();
+    applyFooterText();
 }
 
 function applyFormLabels() {
@@ -291,4 +292,13 @@ function generateColorThemeSelector() {
 
     // Apply the saved/default theme
     applyGenderColorTheme(savedTheme);
+}
+function applyFooterText() {
+    const footerElement = document.getElementById(CONFIG.FOOTER.ELEMENT_ID);
+    if (footerElement) {
+        footerElement.innerHTML = `
+            ${CONFIG.FOOTER.TEXT}<br>
+            <a href="${CONFIG.FOOTER.LINK_URL}" target="_blank" rel="noopener noreferrer">${CONFIG.FOOTER.LINK_TEXT}</a>
+        `;
+    }
 }
