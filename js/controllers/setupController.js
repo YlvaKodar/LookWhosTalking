@@ -49,7 +49,6 @@ class SetupController {
      * @returns {void}
      */
     initColorThemeListeners() {
-        // Wait a bit for the DOM to be ready
         setTimeout(() => {
             const colorThemeInputs = document.querySelectorAll('input[name="colorTheme"]');
 
@@ -57,10 +56,8 @@ class SetupController {
                 input.addEventListener('change', (event) => {
                     const selectedTheme = event.target.value;
 
-                    // Apply theme immediately for preview
                     applyGenderColorTheme(selectedTheme);
 
-                    // Save preference immediately
                     StorageManager.saveColorThemePreference(selectedTheme);
 
                     console.log(`Color theme changed to: ${selectedTheme}`);
@@ -103,7 +100,7 @@ class SetupController {
      */
     saveMeetingData() {
         try {
-            // Get selected color theme
+            //Get colour theme
             const selectedThemeInput = document.querySelector('input[name="colorTheme"]:checked');
             const selectedTheme = selectedThemeInput ? selectedThemeInput.value : Object.keys(CONFIG.GENDER_COLOR_THEMES)[0];
 
@@ -120,10 +117,10 @@ class SetupController {
 
             localStorage.setItem(CONFIG.STORAGE.KEYS.SETUP_MEETING_DATA, JSON.stringify(meetingData));
 
-            // Save color theme preference for future meetings
+            //Save theme preference for future meetings
             StorageManager.saveColorThemePreference(selectedTheme);
 
-            // Apply the selected theme
+            //Apply selected theme
             applyGenderColorTheme(selectedTheme);
 
             eventBus.publish('setupCompleted', meetingData);
@@ -150,7 +147,6 @@ class SetupController {
      * @returns {void}
      */
     cleanup() {
-        // Remove event listeners if needed
         const colorThemeInputs = document.querySelectorAll('input[name="colorTheme"]');
         colorThemeInputs.forEach(input => {
             input.removeEventListener('change', this.handleColorThemeChange);

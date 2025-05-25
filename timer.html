@@ -8,33 +8,37 @@
     <script src="js/utils/config.js"></script>
     <script src="js/utils/themeManager.js"></script>
     <script src="js/utils/eventBus.js"></script>
+    <script src="js/utils/storage.js"></script>
 </head>
 <body class="timer-popup-body">
 
 <h2 id="timer-popup-title" class="secondary">Meeting Timer</h2>
 <h1 id="meeting-info" class="primary">Meeting name</h1>
 
-    <div id="tiny-controls-container">
+<div id="tiny-controls-container">
 
-        <div id="popup-timer-display">00:00</div>
+    <div id="popup-timer-display">00:00</div>
 
-        <div class="speaker-buttons">
-            <button id="popup-women-speaking" class="speaker-btn women">PUPP Speaking</button>
-            <button id="popup-nonbinary-speaking" class="speaker-btn nonbinary">Non-binary Speaking</button>
-            <button id="popup-men-speaking" class="speaker-btn men">Man Speaking</button>
-        </div>
-
-        <div id="tiny-control-buttons" class="tiny-control-buttons">
-            <button id="popup-pause-meeting" class="speaker-btn control-btn">Pause</button>
-            <button id="popup-end-meeting" class="speaker-btn control-btn">End Meeting</button>
-        </div>
+    <div class="speaker-buttons">
+        <button id="popup-women-speaking" class="speaker-btn women">Woman Speaking</button>
+        <button id="popup-nonbinary-speaking" class="speaker-btn nonbinary">Non-binary Speaking</button>
+        <button id="popup-men-speaking" class="speaker-btn men">Man Speaking</button>
     </div>
+
+    <div id="tiny-control-buttons" class="tiny-control-buttons">
+        <button id="popup-pause-meeting" class="speaker-btn control-btn">Pause</button>
+        <button id="popup-end-meeting" class="speaker-btn control-btn">End Meeting</button>
+    </div>
+</div>
 
 <!-- Utils -->
 <script>
     //Theme application
     document.addEventListener('DOMContentLoaded', () => {
         applyThemeFromConfig();
+
+        const savedTheme = StorageManager.getColorThemePreference() || 'original';
+        applyGenderColorTheme(savedTheme);
     });
 </script>
 <script src="js/utils/alertManager.js"></script>
