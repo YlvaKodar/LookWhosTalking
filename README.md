@@ -1,4 +1,6 @@
-# Look Who's Talking
+# Look Who's Talking Prototype app
+
+NOTE: This prototype is now replaced with Look Whos Talking Next ( https://github.com/YlvaKodar/look-who-s-talking-next ) and hosted here: https://look-who-s-talking.vercel.app/ 
 
 A web-based meeting timer tool that helps track and analyze speaking time distribution by gender in meetings and group conversations.
 
